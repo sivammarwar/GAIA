@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAIA — See your financial future before you live it</title>
+<meta name="description" content="GAIA is a financial-life simulator built for women — model your income, goals and life events into a real roadmap, not a generic calculator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1D33;
+    --ink-2:#1C3155;
+    --ink-soft:#55637C;
+    --paper:#F8F6F0;
+    --paper-deep:#EFEADD;
+    --gold:#C08A3E;
+    --gold-deep:#9C6D2B;
+    --teal:#2F6F62;
+    --teal-deep:#204E44;
+    --coral:#D6603E;
+    --coral-deep:#B24A2C;
+    --line:#E2DCCB;
+    --line-dark:rgba(255,255,255,0.14);
+    --radius-lg:26px;
+    --radius-md:16px;
+    --radius-sm:9px;
+    --ease-out-quad: cubic-bezier(0.25,0.46,0.45,0.94);
+    --ease-out-cubic: cubic-bezier(0.215,0.61,0.355,1);
+    --ease-in-out-circ: cubic-bezier(0.785,0.135,0.15,0.86);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ font-family:'Inter', sans-serif; color:var(--ink); background:var(--paper); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  ::selection{ background:var(--gold); color:#fff; }
+  h1,h2,h3,.display{ font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em; line-height:1.06; }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); }
+  .num{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  img{max-width:100%; display:block; loading:lazy;}
+  .wrap{ max-width:1220px; margin:0 auto; padding:0 32px; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* Buttons */
+  .btn{ display:inline-flex; align-items:center; gap:9px; font-family:'Inter', sans-serif; font-weight:600; font-size:15px; padding:14px 28px; border-radius:999px; border:1px solid transparent; cursor:pointer; transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease; }
+  .btn-primary{ background:var(--ink); color:#fff; }
+  .btn-primary:hover{ background:var(--coral-deep); transform:translateY(-2px); box-shadow:0 12px 26px rgba(178,74,44,0.3); }
+  .btn-ghost{ background:transparent; color:var(--ink); border-color:rgba(15,29,51,0.22); }
+  .btn-ghost:hover{ border-color:var(--ink); background:var(--ink); color:#fff; transform:translateY(-2px); }
+  .btn-on-dark{ background:#fff; color:var(--ink); }
+  .btn-on-dark:hover{ background:var(--gold); color:#fff; transform:translateY(-2px); }
+  .btn:focus-visible{ outline:2px solid var(--coral); outline-offset:3px; }
+
+  /* Nav */
+  header{ position:sticky; top:0; z-index:100; background:rgba(248,246,240,0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:transform .35s var(--ease-out-quad), box-shadow .35s ease; animation:navReveal .8s .1s var(--ease-out-cubic) both; }
+  header.is-hidden{ transform:translateY(-100%); box-shadow:0 10px 24px rgba(15,29,51,0.08); }
+  @keyframes navReveal{ 0%{opacity:.001; transform:translateY(-100%);} to{opacity:1; transform:translateY(0);} }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:19px 32px; max-width:1220px; margin:0 auto; }
+  .logo{ font-family:'Newsreader', serif; font-weight:600; font-size:24px; letter-spacing:0.01em; display:flex; align-items:center; gap:9px; }
+  .logo-mark{ width:16px; height:16px; border-radius:3px; background:linear-gradient(135deg, var(--gold), var(--coral)); display:inline-block; transform:rotate(8deg); }
+  .nav-links{ display:flex; gap:32px; font-size:14.5px; font-weight:500; }
+  .nav-links a{ color:var(--ink-soft); transition:color .2s; position:relative; }
+  .nav-links a:after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--coral-deep); transition:width .25s var(--ease-out-quad); }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links a:hover:after{ width:100%; }
+  .nav-cta{ display:flex; align-items:center; gap:20px; }
+  .nav-signin{ font-size:14.5px; font-weight:600; color:var(--ink-soft); }
+  @media (max-width:940px){ .nav-links{ display:none; } }
+
+  /* ===== HERO — financial topography ===== */
+  .hero{ position:relative; padding:72px 32px 0; background:var(--ink); color:#fff; overflow:hidden; }
+  .hero-contours{ position:absolute; inset:0; z-index:0; opacity:0.5; pointer-events:none; }
+  .hero-contours svg{ width:100%; height:100%; }
+  .contour{ fill:none; stroke:rgba(255,255,255,0.09); stroke-width:1; }
+  .contour-hi{ fill:none; stroke:var(--gold); stroke-width:1.4; stroke-dasharray:2600; stroke-dashoffset:2600; transition:stroke-dashoffset 2.4s var(--ease-in-out-circ); opacity:.75; }
+  .hero-contours.in .contour-hi{ stroke-dashoffset:0; }
+  .hero-inner{ max-width:1220px; margin:0 auto; position:relative; z-index:1; }
+  .hero-eyebrow{ display:flex; align-items:center; gap:10px; margin-bottom:24px; opacity:0; animation:fadeUp .7s .05s var(--ease-out-cubic) forwards; }
+  .hero-eyebrow .rule{ width:34px; height:1px; background:var(--gold); }
+  .hero-eyebrow span.eyebrow{ color:#E9C77E; }
+  .hero-copy{ max-width:660px; }
+  .hero h1{ font-size:clamp(38px, 5.4vw, 68px); color:#fff; opacity:0; animation:fadeUp .8s .15s var(--ease-out-cubic) forwards; }
+  .hero h1 em{ font-style:italic; color:#E9C77E; }
+  .hero-sub{ max-width:520px; margin:24px 0 0; font-size:18px; line-height:1.65; color:rgba(255,255,255,0.68); opacity:0; animation:fadeUp .8s .3s var(--ease-out-cubic) forwards; }
+  .hero-actions{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:34px; opacity:0; animation:fadeUp .8s .42s var(--ease-out-cubic) forwards; }
+  @keyframes fadeUp{ 0%{opacity:.001; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  .hero-panel{ position:relative; z-index:1; max-width:1080px; margin:64px auto 0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-lg); padding:8px; opacity:0; animation:fadeUp .9s .5s var(--ease-out-cubic) forwards; box-shadow:0 60px 120px -40px rgba(0,0,0,0.55); }
+  .hero-panel-inner{ background:#0C1728; border-radius:22px; padding:32px 34px 26px; }
+  .hp-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .hp-head h3{ font-size:19px; font-weight:500; color:#fff; }
+  .hp-head p{ font-size:12.5px; color:rgba(255,255,255,0.5); margin-top:6px; max-width:320px; }
+  .hp-legend{ display:flex; gap:16px; flex-wrap:wrap; }
+  .hp-legend span{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:rgba(255,255,255,0.55); display:flex; align-items:center; gap:6px; }
+  .hp-legend i{ width:12px; height:3px; border-radius:2px; display:inline-block; }
+  #pathSvg{ width:100%; height:auto; display:block; margin-top:6px; }
+  .line-draw{ stroke-dasharray:1600; stroke-dashoffset:1600; transition:stroke-dashoffset 1.8s var(--ease-in-out-circ); }
+  .hero-panel.in .line-draw{ stroke-dashoffset:0; }
+  .line-draw.d1{ transition-delay:.1s; }
+  .line-draw.d2{ transition-delay:.5s; }
+  .line-draw.d3{ transition-delay:.9s; }
+  .hp-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:10px; }
+  .hp-stat{ display:flex; gap:26px; }
+  .hp-stat div .l{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.06em; color:rgba(255,255,255,0.45); text-transform:uppercase; }
+  .hp-stat div .v{ font-family:'Newsreader', serif; font-size:22px; color:#E9C77E; margin-top:4px; }
+  .hp-tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:rgba(255,255,255,0.4); }
+
+  section{ padding:120px 0; }
+  .section-head{ max-width:640px; margin-bottom:56px; }
+  .section-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+  .section-head .eyebrow{ margin-bottom:16px; display:block; }
+  .section-head h2{ font-size:clamp(30px, 4vw, 46px); }
+  .section-head p{ margin-top:18px; font-size:16.5px; line-height:1.65; color:var(--ink-soft); }
+  .section-paper-deep{ background:var(--paper-deep); }
+  .section-ink{ background:var(--ink); color:#fff; }
+  .section-ink .section-head p{ color:rgba(255,255,255,0.65); }
+  .section-ink .eyebrow{ color:#E9C77E; }
+
+  /* Problem statement w/ side rule */
+  .statement{ padding:0; }
+  .statement-inner{ display:grid; grid-template-columns:1.15fr 0.85fr; align-items:center; gap:0; }
+  .statement-text{ padding:110px 60px; }
+  .statement-text .eyebrow{ margin-bottom:20px; display:block; }
+  .statement-text h2{ font-size:clamp(30px,4.2vw,50px); line-height:1.1; }
+  .statement-text p.lede{ margin-top:20px; color:var(--ink-soft); font-size:16.5px; line-height:1.65; max-width:440px; }
+  .statement-photo{ height:100%; min-height:440px; position:relative; overflow:hidden; }
+  .statement-photo img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.15) contrast(1.03); transition:transform .6s var(--ease-out-quad); }
+  .statement-photo:hover img{ transform:scale(1.06); }
+  .statement-photo:after{ content:""; position:absolute; inset:0; background:linear-gradient(160deg, rgba(15,29,51,0.28), transparent 55%); }
+  @media (max-width:900px){
+    .statement-inner{ grid-template-columns:1fr; }
+    .statement-text{ padding:70px 32px 40px; }
+    .statement-photo{ min-height:300px; }
+  }
+
+  /* Journey feature rows */
+  .feature-row{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:64px; align-items:center; margin-bottom:120px; }
+  .feature-row:last-child{ margin-bottom:0; }
+  .feature-row.reverse .feature-photo{ order:2; }
+  .feature-row.reverse .feature-copy{ order:1; }
+  .feature-index{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--coral-deep); letter-spacing:0.1em; margin-bottom:18px; display:block; }
+  .feature-copy h3{ font-size:clamp(24px,3vw,34px); margin-bottom:16px; }
+  .feature-copy p{ font-size:16px; line-height:1.65; color:var(--ink-soft); margin-bottom:20px; max-width:420px; }
+  .feature-copy a.link-arrow{ font-weight:600; font-size:14.5px; border-bottom:1px solid var(--ink); padding-bottom:2px; transition:color .2s, border-color .2s; }
+  .feature-copy a.link-arrow:hover{ color:var(--coral-deep); border-color:var(--coral-deep); }
+  .feature-photo{ position:relative; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3.3; box-shadow:0 30px 60px -30px rgba(15,29,51,0.35); }
+  .feature-photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out-quad); filter:grayscale(0.1); }
+  .feature-photo:hover img{ transform:scale(1.06); }
+  .feature-photo .chip{ position:absolute; left:18px; bottom:18px; background:#fff; padding:9px 15px; border-radius:11px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink); box-shadow:0 12px 24px rgba(0,0,0,0.18); }
+  @media (max-width:880px){
+    .feature-row, .feature-row.reverse{ grid-template-columns:1fr; gap:28px; }
+    .feature-row.reverse .feature-photo, .feature-row.reverse .feature-copy{ order:initial; }
+  }
+
+  /* Demo slider */
+  .demo-panel{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:0; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 30px 70px -35px rgba(15,29,51,0.22); }
+  .demo-left{ padding:52px 46px; background:var(--ink); color:#fff; display:flex; flex-direction:column; justify-content:center; }
+  .demo-left .eyebrow{ color:#E9C77E; margin-bottom:18px; }
+  .demo-left h3{ font-size:27px; font-weight:500; margin-bottom:16px; }
+  .demo-left p{ color:rgba(255,255,255,0.62); font-size:15px; line-height:1.6; margin-bottom:32px; }
+  .slider-row label{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em; color:rgba(255,255,255,0.55); display:flex; justify-content:space-between; margin-bottom:10px; }
+  .slider-row label span{ color:#fff; font-size:14px; }
+  input[type="range"]{ -webkit-appearance:none; width:100%; height:3px; border-radius:3px; background:rgba(255,255,255,0.22); outline:none; }
+  input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--gold); border:3px solid #fff; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.35); }
+  input[type="range"]::-moz-range-thumb{ width:20px; height:20px; border-radius:50%; background:var(--gold); border:3px solid #fff; cursor:pointer; }
+  .demo-right{ padding:46px; display:flex; flex-direction:column; justify-content:space-between; }
+  .demo-metrics{ display:flex; gap:36px; margin-bottom:18px; flex-wrap:wrap; }
+  .demo-metric .m-label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.05em; }
+  .demo-metric .m-value{ font-family:'Newsreader', serif; font-size:32px; font-weight:500; color:var(--coral-deep); margin-top:6px; }
+  #chartSvg{ width:100%; height:auto; }
+  .demo-caption{ font-size:12.5px; color:var(--ink-soft); margin-top:10px; }
+
+  /* Life event grid */
+  .events-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; }
+  .event-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:26px 22px; transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+  .event-card:hover{ transform:translateY(-6px); box-shadow:0 24px 50px -28px rgba(15,29,51,0.28); border-color:var(--gold); }
+  .event-thumb{ width:44px; height:44px; border-radius:12px; object-fit:cover; margin-bottom:18px; }
+  .event-glyph{ width:44px; height:44px; border-radius:12px; background:var(--paper-deep); display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:19px; }
+  .event-card h4{ font-family:'Newsreader', serif; font-size:17px; font-weight:500; margin-bottom:8px; }
+  .event-card p{ font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+  @media (max-width:900px){ .events-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:560px){ .events-grid{ grid-template-columns:1fr; } }
+
+  /* Sticky card stack */
+  .stack-section{ background:var(--paper-deep); padding-bottom:0; }
+  .stack-head{ text-align:center; padding-bottom:40px; }
+  .stack-container{ position:relative; }
+  .stack-card{ position:sticky; top:110px; padding-bottom:32px; }
+  .stack-card-inner{ background:#fff; border-radius:30px; box-shadow:0 26px 60px -24px rgba(15,29,51,0.26); padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; min-height:380px; }
+  .stack-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--coral-deep); margin-bottom:18px; display:block; }
+  .stack-card-inner h3{ font-size:clamp(24px,3vw,34px); margin-bottom:16px; }
+  .stack-card-inner p{ font-size:15.5px; line-height:1.65; color:var(--ink-soft); max-width:420px; }
+  .stack-visual{ border-radius:20px; overflow:hidden; aspect-ratio:4/3; background:var(--paper-deep); }
+  .stack-visual img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.1); }
+  @media (max-width:860px){
+    .stack-card{ top:80px; }
+    .stack-card-inner{ grid-template-columns:1fr; padding:32px; gap:24px; }
+  }
+
+  /* Chat / assistant */
+  .chat-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+  .chat-window{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:8px; box-shadow:0 30px 70px -35px rgba(15,29,51,0.2); }
+  .chat-header{ display:flex; align-items:center; gap:10px; padding:16px 18px; border-bottom:1px solid var(--line); }
+  .chat-header .dot{ width:8px; height:8px; border-radius:50%; background:var(--teal); }
+  .chat-header span{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); }
+  .chat-body{ padding:26px 22px 22px; }
+  .bubble{ max-width:82%; padding:14px 18px; border-radius:16px; font-size:14.5px; line-height:1.55; margin-bottom:14px; }
+  .bubble.user{ background:var(--paper-deep); color:var(--ink); margin-left:auto; border-bottom-right-radius:4px; }
+  .bubble.gaia{ background:var(--ink); color:#fff; border-bottom-left-radius:4px; }
+  .bubble.gaia .g-label{ display:block; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#E9C77E; margin-bottom:8px; letter-spacing:0.06em; }
+  .bubble ul{ margin:10px 0 0 18px; }
+  .bubble li{ margin-bottom:4px; }
+  .chat-copy .eyebrow{ margin-bottom:18px; display:block; }
+  .chat-copy h2{ font-size:clamp(28px,3.6vw,42px); margin-bottom:20px; }
+  .chat-copy p{ font-size:16px; color:var(--ink-soft); line-height:1.65; margin-bottom:26px; }
+  .chat-copy .fine{ font-size:12.5px; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:18px; }
+  @media (max-width:900px){ .chat-wrap{ grid-template-columns:1fr; } }
+
+  /* Testimonial carousel */
+  .testi-root{ position:relative; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:56px; box-shadow:0 30px 70px -35px rgba(15,29,51,0.16); overflow:hidden; }
+  .testi-track{ display:grid; }
+  .testi-slide{ grid-area:1/1; display:grid; grid-template-columns:0.8fr 1.2fr; gap:48px; align-items:center; opacity:0; pointer-events:none; transition:opacity .5s ease; }
+  .testi-slide.active{ opacity:1; pointer-events:auto; }
+  .testi-photo{ border-radius:20px; overflow:hidden; aspect-ratio:3/4; background:var(--paper-deep); }
+  .testi-photo img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.1); }
+  .testi-quote{ font-family:'Newsreader', serif; font-size:clamp(20px,2.4vw,28px); font-weight:400; font-style:italic; line-height:1.4; color:var(--ink); margin-bottom:22px; }
+  .testi-name{ font-weight:600; font-size:15px; }
+  .testi-role{ font-size:13px; color:var(--ink-soft); margin-top:2px; }
+  .testi-stats{ display:flex; gap:32px; margin-top:26px; }
+  .testi-stat-value{ font-family:'Newsreader', serif; font-size:26px; color:var(--coral-deep); }
+  .testi-stat-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--ink-soft); margin-top:4px; }
+  .testi-nav{ display:flex; justify-content:center; gap:12px; margin-top:40px; }
+  .testi-nav-btn{ width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s, transform .2s, border-color .2s; }
+  .testi-nav-btn:hover{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .testi-nav-btn:hover svg{ stroke:#fff; }
+  .testi-nav-btn.prev svg{ transform:scaleX(-1); }
+  .testi-nav-btn svg{ width:14px; height:14px; stroke:var(--ink); fill:none; stroke-width:2; }
+  .testi-dots{ display:flex; align-items:center; gap:8px; margin:0 8px; }
+  .testi-dot{ width:6px; height:6px; border-radius:50%; background:var(--line); cursor:pointer; transition:background .2s, width .2s; }
+  .testi-dot.active{ background:var(--coral); width:20px; border-radius:4px; }
+  @media (max-width:800px){
+    .testi-root{ padding:32px 24px; }
+    .testi-slide{ grid-template-columns:1fr; gap:24px; }
+    .testi-photo{ max-width:200px; }
+  }
+
+  /* Roadmap on ink */
+  .roadmap-list{ display:flex; flex-direction:column; }
+  .roadmap-item{ display:flex; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid var(--line-dark); }
+  .roadmap-item:first-child{ border-top:1px solid var(--line-dark); }
+  .roadmap-check{ width:26px; height:26px; border-radius:50%; border:1.5px solid #E9C77E; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:13px; color:#E9C77E; }
+  .roadmap-item p{ font-size:16px; font-weight:500; }
+  .roadmap-item span{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:rgba(255,255,255,0.5); margin-left:auto; flex-shrink:0; }
+
+  /* Trust flip */
+  .trust-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; }
+  .trust-cell{ background:#fff; padding:38px 32px; perspective:160rem; }
+  .trust-flipper{ position:relative; transition:transform .5s var(--ease-out-quad); transform-style:preserve-3d; min-height:150px; }
+  .trust-cell:hover .trust-flipper{ transform:rotateY(180deg); }
+  .trust-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .trust-face.back{ position:absolute; top:0; left:0; width:100%; transform:rotateY(180deg); }
+  .trust-cell .num{ font-size:15px; color:var(--coral-deep); display:block; margin-bottom:14px; }
+  .trust-cell p{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; }
+  .trust-face.back p{ color:var(--ink); }
+  @media (max-width:800px){ .trust-grid{ grid-template-columns:1fr; } }
+
+  /* Marquee */
+  .marquee-section{ padding:64px 0; background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .marquee-label{ text-align:center; font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:32px; }
+  .marquee-viewport{ overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee-track{ display:flex; width:max-content; gap:72px; animation:marquee 28s linear infinite; align-items:center; }
+  .marquee-track span{ font-family:'Newsreader', serif; font-size:22px; color:var(--ink-soft); white-space:nowrap; opacity:.7; }
+  @keyframes marquee{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+
+  .photo-strip{ display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; margin-top:60px; }
+  .photo-strip img{ width:100%; height:130px; object-fit:cover; border-radius:14px; filter:grayscale(0.1); }
+  .photo-strip div:nth-child(2){ transform:translateY(16px); }
+  .photo-strip div:nth-child(4){ transform:translateY(-10px); }
+  .photo-strip div:nth-child(5){ transform:translateY(10px); }
+  @media (max-width:800px){ .photo-strip{ grid-template-columns:repeat(3, 1fr); } .photo-strip div{ transform:none !important; } }
+
+  .final-cta{ text-align:center; background:var(--ink); color:#fff; position:relative; overflow:hidden; }
+  .final-cta .hero-contours{ opacity:0.4; }
+  .final-cta-inner{ position:relative; z-index:1; }
+  .final-cta h2{ font-size:clamp(34px,5vw,58px); max-width:760px; margin:0 auto 26px; color:#fff; }
+  .final-cta p{ max-width:460px; margin:0 auto 40px; color:rgba(255,255,255,0.66); font-size:16px; }
+
+  footer{ background:var(--ink); color:rgba(255,255,255,0.55); padding:60px 0 34px; font-size:13.5px; border-top:1px solid var(--line-dark); }
+  .footer-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px; padding-bottom:44px; border-bottom:1px solid rgba(255,255,255,0.12); }
+  .footer-brand .logo{ color:#fff; margin-bottom:14px; }
+  .footer-brand p{ max-width:280px; line-height:1.6; color:rgba(255,255,255,0.4); }
+  .footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+  .footer-col h5{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:16px; }
+  .footer-col a{ display:block; margin-bottom:10px; color:rgba(255,255,255,0.68); transition:color .2s; }
+  .footer-col a:hover{ color:#E9C77E; }
+  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:26px; color:rgba(255,255,255,0.35); }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease-out-cubic), transform .8s var(--ease-out-cubic); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal-stagger.in > *{ animation:fadeUp .7s var(--ease-out-cubic) both; }
+  .reveal-stagger.in > *:nth-child(1){ animation-delay:.05s; }
+  .reveal-stagger.in > *:nth-child(2){ animation-delay:.14s; }
+  .reveal-stagger.in > *:nth-child(3){ animation-delay:.23s; }
+  .reveal-stagger.in > *:nth-child(4){ animation-delay:.32s; }
+  .reveal-stagger.in > *:nth-child(5){ animation-delay:.41s; }
+  .reveal-stagger.in > *:nth-child(6){ animation-delay:.5s; }
+  .reveal-stagger.in > *:nth-child(7){ animation-delay:.59s; }
+  .reveal-stagger.in > *:nth-child(8){ animation-delay:.68s; }
+  .reveal-stagger > *{ opacity:0; }
+
+  a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--coral-deep); outline-offset:2px; }
+
+  @media (max-width:640px){
+    .hero{ padding-top:52px; }
+    section{ padding:80px 0; }
+    .demo-panel{ grid-template-columns:1fr; }
+    .statement-text{ padding:56px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav>
+    <div class="logo"><span class="logo-mark"></span>GAIA</div>
+    <div class="nav-links">
+      <a href="#journey">How it works</a>
+      <a href="#events">Life events</a>
+      <a href="#stack">Why GAIA</a>
+      <a href="#stories">Stories</a>
+      <a href="#trust">Trust</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="nav-signin">Sign in</a>
+      <a href="#" class="btn btn-primary">Build my future</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-contours" id="heroContours">
+    <svg viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path class="contour" d="M-40,120 C 260,60 420,180 720,110 S 1180,220 1260,90"/>
+      <path class="contour" d="M-40,260 C 260,190 460,330 760,240 S 1180,360 1260,220"/>
+      <path class="contour" d="M-40,400 C 260,330 460,470 760,380 S 1180,500 1260,360"/>
+      <path class="contour-hi" d="M-40,540 C 260,470 460,600 760,510 S 1180,630 1260,500"/>
+      <path class="contour" d="M-40,680 C 260,610 460,740 760,650 S 1180,760 1260,640"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-eyebrow"><span class="rule"></span><span class="eyebrow">A financial-life simulator, built for women</span></div>
+      <h1>See your financial future <em>before</em> you live it.</h1>
+      <p class="hero-sub">Tell GAIA where you are today, where you want to go, and what life events you expect along the way. We turn it into a roadmap — grounded in your numbers, not a generic calculator.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-on-dark">Build my future</a>
+        <a href="#journey" class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3);">See how it works</a>
+      </div>
+    </div>
+
+    <div class="hero-panel" id="heroPanel">
+      <div class="hero-panel-inner">
+        <div class="hp-head">
+          <div>
+            <h3>Your net worth, three ways</h3>
+            <p>One life event, three outcomes — add a six-month leave at 32 and see exactly where the plan bends.</p>
+          </div>
+          <div class="hp-legend">
+            <span><i style="background:#4A5B78"></i>Current plan</span>
+            <span><i style="background:#E9C77E"></i>With leave</span>
+            <span><i style="background:#D6603E"></i>Recovery plan</span>
+          </div>
+        </div>
+        <svg id="pathSvg" viewBox="0 0 1080 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="60" x2="1080" y2="60" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="0" y1="140" x2="1080" y2="140" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="0" y1="220" x2="1080" y2="220" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <path class="line-draw d1" pathLength="1600" d="M20,260 C 220,225 320,145 420,115 S 700,55 1050,30" stroke="#4A5B78" stroke-width="2.5" stroke-linecap="round"/>
+          <path class="line-draw d2" pathLength="1600" d="M20,260 C 220,225 320,145 420,115 C 480,145 520,200 560,210 C 700,230 850,145 1050,90" stroke="#E9C77E" stroke-width="3" stroke-linecap="round"/>
+          <path class="line-draw d3" pathLength="1600" d="M420,115 C 480,145 520,200 560,210 C 640,220 700,170 780,135 C 880,92 970,66 1050,52" stroke="#D6603E" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
+          <circle cx="420" cy="115" r="6" fill="#0C1728" stroke="#fff" stroke-width="2"/>
+          <line x1="420" y1="115" x2="420" y2="290" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="3 5"/>
+          <circle cx="20" cy="260" r="5" fill="#fff"/>
+          <circle cx="1050" cy="30" r="5" fill="#4A5B78"/>
+          <circle cx="1050" cy="90" r="5" fill="#E9C77E"/>
+          <circle cx="1050" cy="52" r="5" fill="#D6603E"/>
+        </svg>
+        <div class="hp-foot">
+          <div class="hp-stat">
+            <div><div class="l">Retirement at 60</div><div class="v">$2.1M</div></div>
+            <div><div class="l">With 6-mo leave</div><div class="v">$1.92M</div></div>
+            <div><div class="l">Goal probability</div><div class="v">79%</div></div>
+          </div>
+          <span class="hp-tag">Scenario estimate · not a guarantee</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">The problem</span>
+      <h2>Life doesn't follow a spreadsheet.</h2>
+      <p>Most financial tools calculate a straight line. Your actual life bends, pauses, and changes direction — a promotion, a leave, a move — and every one of those moments changes the math. GAIA is built to show you how, before you make it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="statement">
+  <div class="statement-inner">
+    <div class="statement-text reveal">
+      <span class="eyebrow">One profile, a living model</span>
+      <h2>Your money, your career, your family — modeled as one future, not three spreadsheets.</h2>
+      <p class="lede">Update your income, add a goal, drop in a life event — GAIA recalculates the entire timeline instantly, every time.</p>
+    </div>
+    <div class="statement-photo">
+      <img src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?auto=format&fit=crop&w=1200&q=80" alt="Woman working confidently on a laptop" loading="eager">
+    </div>
+  </div>
+</section>
+
+<section id="journey" class="section-paper-deep">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The GAIA journey</span>
+      <h2>Three moments that show you exactly where you stand.</h2>
+      <p>Your profile isn't a form you fill out once. It's a living model that updates every time your life — or your mind — changes.</p>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-photo">
+        <img src="https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?auto=format&fit=crop&w=900&q=80" alt="Woman working from home on a laptop" loading="lazy">
+        <div class="chip">STEP 01 · PROFILE</div>
+      </div>
+      <div class="feature-copy">
+        <span class="feature-index">01 — PROFILE</span>
+        <h3>Start with where you actually are.</h3>
+        <p>Income, savings, debt, and goals — your real starting point, not a national average. Five minutes, done once, updated forever.</p>
+        <a href="#" class="link-arrow">Build my profile →</a>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal">
+      <div class="feature-photo">
+        <img src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?auto=format&fit=crop&w=900&q=80" alt="Mother holding her baby by the ocean" loading="lazy">
+        <div class="chip">STEP 02 · SIMULATE</div>
+      </div>
+      <div class="feature-copy">
+        <span class="feature-index">02 — SIMULATE</span>
+        <h3>Add the moments that actually happen.</h3>
+        <p>Maternity leave, a career break, a home purchase — GAIA models conservative, base, and optimistic outcomes for each one. Never one "magic" number.</p>
+        <a href="#events" class="link-arrow">See life events →</a>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-photo">
+        <img src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?auto=format&fit=crop&w=900&q=80" alt="Woman holding the keys to a new home" loading="lazy">
+        <div class="chip">STEP 03 · ACT</div>
+      </div>
+      <div class="feature-copy">
+        <span class="feature-index">03 — ACT</span>
+        <h3>Get a plan you can actually follow.</h3>
+        <p>A prioritized, specific list of what to change — not generic advice to "save more." GAIA tells you the number, the deadline, and why it matters.</p>
+        <a href="#assistant" class="link-arrow">Meet your AI guide →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Try it</span>
+      <h2>Move one number. Watch your future move.</h2>
+      <p>This is the core of GAIA — every assumption you touch recalculates your whole timeline instantly.</p>
+    </div>
+    <div class="demo-panel reveal">
+      <div class="demo-left">
+        <span class="eyebrow">What if?</span>
+        <h3>Increase your monthly investment</h3>
+        <p>Drag the slider to see what $500 more a month could mean by the time you're 60 — same income, same goals, one changed habit.</p>
+        <div class="slider-row">
+          <label>Monthly investment <span id="sliderVal">$500 / mo</span></label>
+          <input type="range" id="investSlider" min="500" max="2000" step="50" value="500">
+        </div>
+      </div>
+      <div class="demo-right">
+        <div class="demo-metrics">
+          <div class="demo-metric"><div class="m-label">PROJECTED AT 60</div><div class="m-value num" id="projValue">$1.64M</div></div>
+          <div class="demo-metric"><div class="m-label">GOAL PROBABILITY</div><div class="m-value num" id="goalProb">74%</div></div>
+        </div>
+        <svg id="chartSvg" viewBox="0 0 480 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="40" x2="480" y2="40" stroke="#E2DCCB"/>
+          <line x1="0" y1="90" x2="480" y2="90" stroke="#E2DCCB"/>
+          <line x1="0" y1="140" x2="480" y2="140" stroke="#E2DCCB"/>
+          <path id="chartPath" d="" stroke="#D6603E" stroke-width="3" stroke-linecap="round"/>
+          <circle id="chartDot" cx="470" cy="30" r="5" fill="#D6603E"/>
+        </svg>
+        <p class="demo-caption">Scenario estimate · base case assumptions · not a guarantee.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="events" class="section-paper-deep">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Life event simulator</span>
+      <h2>Model the moments that actually move your money.</h2>
+      <p>Add any of these to your timeline and GAIA recalculates income, contributions, compounding, and your goal dates — automatically.</p>
+    </div>
+    <div class="events-grid reveal reveal-stagger">
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?auto=format&fit=crop&w=120&q=80" alt="Maternity leave" loading="lazy">
+        <h4>Maternity leave</h4><p>Income during leave, employer policy, and the compounding cost of missed contributions.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?auto=format&fit=crop&w=120&q=80" alt="Buy a home" loading="lazy">
+        <h4>Buy a home</h4><p>Down payment timing, mortgage impact, and post-purchase cash-flow resilience.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?auto=format&fit=crop&w=120&q=80" alt="Career change" loading="lazy">
+        <h4>Career change</h4><p>New salary curve, benefits shift, and how a raise changes your retirement date.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1653566031568-71626c8247f5?auto=format&fit=crop&w=120&q=80" alt="Marriage" loading="lazy">
+        <h4>Marriage</h4><p>Combined finances, shared goals, and how two plans become one.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=120&q=80" alt="Education" loading="lazy">
+        <h4>Education</h4><p>Tuition, loans, and the long-run return on a degree or certification.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=120&q=80" alt="Career break" loading="lazy">
+        <h4>Career break</h4><p>Lost contributions, lost match, lost compounding — quantified, not guessed.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1644945586733-73c3cb9cb648?auto=format&fit=crop&w=120&q=80" alt="Early retirement" loading="lazy">
+        <h4>Early retirement</h4><p>Withdrawal rate, longevity risk, and what "enough" actually looks like for you.</p>
+      </div>
+      <div class="event-card">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=120&q=80" alt="Add your own" loading="lazy">
+        <h4>Add your own</h4><p>Every event follows the same model — GAIA grows with whatever comes next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack" class="stack-section">
+  <div class="wrap">
+    <div class="stack-head section-head center reveal">
+      <span class="eyebrow">Why women choose GAIA</span>
+      <h2>Built for the plan life actually asks you to run.</h2>
+    </div>
+  </div>
+  <div class="wrap stack-container">
+    <div class="stack-card" style="top:100px; z-index:1;">
+      <div class="stack-card-inner reveal">
+        <div>
+          <span class="stack-num">01 / THE PAY GAP, MODELED</span>
+          <h3>We don't pretend the gap doesn't exist.</h3>
+          <p>GAIA lets you model income interruptions and unequal pay growth explicitly, so your plan accounts for the real curve of a career — not the idealized one.</p>
+        </div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80" alt="Woman reviewing financial charts" loading="lazy"></div>
+      </div>
+    </div>
+    <div class="stack-card" style="top:132px; z-index:2;">
+      <div class="stack-card-inner reveal">
+        <div>
+          <span class="stack-num">02 / CAREGIVING, COSTED OUT</span>
+          <h3>Time off is a number, not a footnote.</h3>
+          <p>Every pause — parental leave, elder care, a sabbatical — gets its own line item: lost income, lost match, lost compounding. See it before you take it.</p>
+        </div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=900&q=80" alt="Mother and daughter at home" loading="lazy"></div>
+      </div>
+    </div>
+    <div class="stack-card" style="top:164px; z-index:3;">
+      <div class="stack-card-inner reveal">
+        <div>
+          <span class="stack-num">03 / LONGEVITY, TAKEN SERIOUSLY</span>
+          <h3>Your money needs to last longer. We plan for it.</h3>
+          <p>Women retirees live longer on average — GAIA's withdrawal models default to longer time horizons instead of quietly underestimating them.</p>
+        </div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80" alt="Older woman smiling outdoors" loading="lazy"></div>
+      </div>
+    </div>
+    <div class="stack-card" style="top:196px; z-index:4;">
+      <div class="stack-card-inner reveal">
+        <div>
+          <span class="stack-num">04 / A COMMUNITY OF NUMBERS</span>
+          <h3>Anonymized benchmarks, not empty averages.</h3>
+          <p>Compare your trajectory to other women at your stage — same income band, same goals — without ever sharing your actual data with anyone.</p>
+        </div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=900&q=80" alt="Group of women collaborating" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="assistant">
+  <div class="wrap chat-wrap">
+    <div class="chat-window reveal">
+      <div class="chat-header"><span class="dot"></span><span>GAIA · grounded in your profile</span></div>
+      <div class="chat-body">
+        <div class="bubble user">Can I afford to take six months off when I have my baby?</div>
+        <div class="bubble gaia">
+          <span class="g-label">SHORT ANSWER</span>
+          Yes — but your current plan creates a cash-flow gap.
+          <ul>
+            <li>~$21,000 estimated income reduction</li>
+            <li>~$4,500 estimated additional expenses</li>
+            <li>~$8,000 reduction in investment contributions</li>
+          </ul>
+        </div>
+        <div class="bubble user">What would close that gap?</div>
+        <div class="bubble gaia">
+          <span class="g-label">SUGGESTED ACTION</span>
+          Build an additional $18,000 reserve over the next 18 months. Want me to compare 3, 6, and 9-month leave scenarios?
+        </div>
+      </div>
+    </div>
+    <div class="chat-copy reveal">
+      <span class="eyebrow">Your personal AI guide</span>
+      <h2>Ask it anything. It already knows your numbers.</h2>
+      <p>GAIA's assistant explains your plan — it doesn't calculate it. Every answer is grounded in your actual profile and validated by a deterministic financial engine underneath, never invented by the model.</p>
+      <p class="fine">GAIA never guarantees outcomes or predicts market performance. Every projection is a scenario, clearly labeled, with its assumptions shown.</p>
+    </div>
+  </div>
+</section>
+
+<section id="stories" class="section-paper-deep">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Real plans, real women</span>
+      <h2>Stories from the GAIA community.</h2>
+    </div>
+    <div class="testi-root reveal">
+      <div class="testi-track" id="testiTrack">
+        <div class="testi-slide active">
+          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80" alt="Priya, GAIA member" loading="lazy"></div>
+          <div>
+            <p class="testi-quote">"I finally saw what a six-month leave would actually cost — down to the dollar. That number changed how I negotiated my return-to-work date."</p>
+            <div class="testi-name">Priya M.</div>
+            <div class="testi-role">Product manager, first-time mom</div>
+            <div class="testi-stats">
+              <div><div class="testi-stat-value num">$18K</div><div class="testi-stat-label">RESERVE BUILT</div></div>
+              <div><div class="testi-stat-value num">4 mo</div><div class="testi-stat-label">PLANNING WINDOW</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=600&q=80" alt="Dana, GAIA member" loading="lazy"></div>
+          <div>
+            <p class="testi-quote">"GAIA modeled my career break and my partner's income together. Seeing it as one plan instead of two spreadsheets was the whole point."</p>
+            <div class="testi-name">Dana R.</div>
+            <div class="testi-role">Freelance designer, newly married</div>
+            <div class="testi-stats">
+              <div><div class="testi-stat-value num">+12%</div><div class="testi-stat-label">GOAL PROBABILITY</div></div>
+              <div><div class="testi-stat-value num">2 goals</div><div class="testi-stat-label">MERGED</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Elena, GAIA member" loading="lazy"></div>
+          <div>
+            <p class="testi-quote">"I'm 58 and planning for 35 more years, not 20. GAIA was the first tool that didn't quietly assume I'd need less."</p>
+            <div class="testi-name">Elena T.</div>
+            <div class="testi-role">Nonprofit director, pre-retirement</div>
+            <div class="testi-stats">
+              <div><div class="testi-stat-value num">35 yr</div><div class="testi-stat-label">HORIZON MODELED</div></div>
+              <div><div class="testi-stat-value num">3.1%</div><div class="testi-stat-label">SAFE WITHDRAWAL</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-nav">
+        <button class="testi-nav-btn prev" id="testiPrev" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <div class="testi-dots" id="testiDots"></div>
+        <button class="testi-nav-btn next" id="testiNext" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-ink">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Your next 12 months</span>
+      <h2>A roadmap, not a lecture.</h2>
+    </div>
+    <div class="roadmap-list reveal">
+      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Build a $15,000 emergency fund</p><span>PRIORITY · HIGH</span></div>
+      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Increase your 401(k) contribution to 10%</p><span>+$180K BY 60</span></div>
+      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Pay down your $4,000 credit card balance</p><span>PRIORITY · HIGH</span></div>
+      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Save $12,000 toward your maternity reserve</p><span>18 MONTHS</span></div>
+      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Review your insurance coverage</p><span>THIS QUARTER</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why trust the numbers</span>
+      <h2>Transparent by design.</h2>
+      <p>GAIA never tells you what your future will be. It shows you what it could look like — and exactly why. Hover a card for the detail.</p>
+    </div>
+    <div class="trust-grid reveal">
+      <div class="trust-cell">
+        <div class="trust-flipper">
+          <div class="trust-face front"><span class="num">01 / ENGINE</span><p>A deterministic financial engine does every calculation. The AI explains it — it never invents a number.</p></div>
+          <div class="trust-face back"><span class="num">01 / ENGINE</span><p>Every projection runs through the same open-methodology engine used across GAIA — same formulas whether you're 24 or 64, so nothing is quietly softened for engagement.</p></div>
+        </div>
+      </div>
+      <div class="trust-cell">
+        <div class="trust-flipper">
+          <div class="trust-face front"><span class="num">02 / SOURCES</span><p>Tax and benefit rules are retrieved from the IRS, SEC, CFPB, and Department of Labor — never from model memory.</p></div>
+          <div class="trust-face back"><span class="num">02 / SOURCES</span><p>Rule updates are dated and versioned. If a contribution limit or bracket changes, your plan re-runs automatically with the new figure.</p></div>
+        </div>
+      </div>
+      <div class="trust-cell">
+        <div class="trust-flipper">
+          <div class="trust-face front"><span class="num">03 / PRIVACY</span><p>Your data is encrypted, never sold, and deletable in full — profile, goals, and conversations included.</p></div>
+          <div class="trust-face back"><span class="num">03 / PRIVACY</span><p>Benchmarks are computed on anonymized, aggregated cohorts only. No individual profile is ever visible to another member or advertiser.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="marquee-section">
+  <div class="marquee-label">As featured in</div>
+  <div class="marquee-viewport">
+    <div class="marquee-track">
+      <span>The Ledger</span><span>Her Wealth Weekly</span><span>Fintech Digest</span><span>MoneyWise</span><span>The Compound</span><span>Founders &amp; Finance</span>
+      <span>The Ledger</span><span>Her Wealth Weekly</span><span>Fintech Digest</span><span>MoneyWise</span><span>The Compound</span><span>Founders &amp; Finance</span>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="hero-contours in" style="opacity:.35;">
+    <svg viewBox="0 0 1200 500" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path class="contour" d="M-40,80 C 260,20 420,140 720,70 S 1180,180 1260,50"/>
+      <path class="contour" d="M-40,220 C 260,150 460,290 760,200 S 1180,320 1260,180"/>
+      <path class="contour" d="M-40,360 C 260,290 460,430 760,340 S 1180,460 1260,320"/>
+    </svg>
+  </div>
+  <div class="wrap final-cta-inner">
+    <span class="eyebrow reveal" style="color:#E9C77E;">Ready when you are</span>
+    <h2 class="reveal">What if you could see your financial future before you lived it?</h2>
+    <p class="reveal">Five minutes to build your profile. A lifetime of decisions made a little clearer.</p>
+    <div class="reveal"><a href="#" class="btn btn-on-dark">Build my future</a></div>
+
+    <div class="photo-strip reveal reveal-stagger">
+      <div><img src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1653566031568-71626c8247f5?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1644945586733-73c3cb9cb648?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-mark"></span>GAIA</div>
+        <p>A financial-life simulator for women — built to show you what your choices could mean, never what they will.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Product</h5>
+          <a href="#journey">How it works</a>
+          <a href="#events">Life events</a>
+          <a href="#assistant">AI guide</a>
+          <a href="#demo">Try the demo</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="#">About</a>
+          <a href="#">Careers</a>
+          <a href="#trust">Trust &amp; privacy</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="#">Help center</a>
+          <a href="#">Delete my account</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GAIA. Financial planning, education, and scenario analysis — not investment advice. Photography via Unsplash (placeholder).</span>
+      <span>Made for the futures we haven't lived yet.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Scroll reveal */
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.12});
+  reveals.forEach(el=>io.observe(el));
+
+  /* Hero contour + panel draw-in */
+  const heroContours = document.getElementById('heroContours');
+  requestAnimationFrame(()=> setTimeout(()=> heroContours.classList.add('in'), 150));
+  const heroPanel = document.getElementById('heroPanel');
+  const panelIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.2});
+  panelIO.observe(heroPanel);
+  setTimeout(()=> heroPanel.classList.add('in'), 550); /* also trigger on load since hero is above the fold */
+
+  /* Header hide-on-scroll-down / show-on-scroll-up */
+  const header = document.getElementById('siteHeader');
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    if(y > lastY && y > 160){ header.classList.add('is-hidden'); }
+    else { header.classList.remove('is-hidden'); }
+    lastY = y;
+  }, {passive:true});
+
+  /* Investment slider demo */
+  const slider = document.getElementById('investSlider');
+  const sliderVal = document.getElementById('sliderVal');
+  const projValue = document.getElementById('projValue');
+  const goalProb = document.getElementById('goalProb');
+  const chartPath = document.getElementById('chartPath');
+  const chartDot = document.getElementById('chartDot');
+
+  function buildPath(monthly){
+    const t = (monthly - 500) / (2000 - 500);
+    const endY = 170 - t*140;
+    const midY = 170 - t*95;
+    return { path: `M10,170 C 140,${160 - t*40} 260,${midY} 470,${endY}`, endY };
+  }
+  function update(monthly){
+    sliderVal.textContent = '$' + monthly.toLocaleString() + ' / mo';
+    const base = 1_640_000;
+    const perDollar = 620;
+    const projected = base + (monthly - 500) * perDollar;
+    projValue.textContent = '$' + (projected/1_000_000).toFixed(2) + 'M';
+    const prob = Math.min(96, Math.round(74 + (monthly-500)/1500*22));
+    goalProb.textContent = prob + '%';
+    const {path, endY} = buildPath(monthly);
+    chartPath.setAttribute('d', path);
+    chartDot.setAttribute('cy', endY);
+  }
+  slider.addEventListener('input', (e)=> update(parseInt(e.target.value,10)) );
+  update(500);
+
+  /* Testimonial carousel */
+  const testiSlides = Array.from(document.querySelectorAll('.testi-slide'));
+  const testiDotsWrap = document.getElementById('testiDots');
+  let testiIndex = 0;
+  testiSlides.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'testi-dot' + (i===0 ? ' active' : '');
+    d.addEventListener('click', ()=> goToTesti(i));
+    testiDotsWrap.appendChild(d);
+  });
+  const testiDots = Array.from(testiDotsWrap.children);
+  function goToTesti(i){
+    testiSlides[testiIndex].classList.remove('active');
+    testiDots[testiIndex].classList.remove('active');
+    testiIndex = (i + testiSlides.length) % testiSlides.length;
+    testiSlides[testiIndex].classList.add('active');
+    testiDots[testiIndex].classList.add('active');
+  }
+  document.getElementById('testiNext').addEventListener('click', ()=> goToTesti(testiIndex+1));
+  document.getElementById('testiPrev').addEventListener('click', ()=> goToTesti(testiIndex-1));
+  let testiTimer = setInterval(()=> goToTesti(testiIndex+1), 7000);
+  document.getElementById('testiTrack').addEventListener('mouseenter', ()=> clearInterval(testiTimer));
+  document.getElementById('testiTrack').addEventListener('mouseleave', ()=> testiTimer = setInterval(()=> goToTesti(testiIndex+1), 7000));
+
+  /* Sticky card stack scale-down effect */
+  const stackCards = Array.from(document.querySelectorAll('.stack-card-inner'));
+  function updateStack(){
+    stackCards.forEach((card)=>{
+      const rect = card.parentElement.getBoundingClientRect();
+      const progress = Math.min(Math.max((120 - rect.top) / 300, 0), 1);
+      const scale = 1 - progress*0.035;
+      const opacity = 1 - progress*0.15;
+      card.style.transform = `scale(${scale})`;
+      card.style.opacity = opacity;
+    });
+  }
+  window.addEventListener('scroll', updateStack, {passive:true});
+  updateStack();
+
+  /* Image error handling with fallbacks */
+  const fallbackImages = {
+    'women': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
+    'finance': 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80',
+    'career': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
+    'family': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=900&q=80',
+    'home': 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=900&q=80'
+  };
+
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('error', function() {
+      console.log('Image failed to load, using fallback:', this.src);
+      // Determine appropriate fallback based on context
+      const alt = this.alt.toLowerCase();
+      let fallbackUrl = fallbackImages.women;
+      
+      if (alt.includes('home') || alt.includes('house')) {
+        fallbackUrl = fallbackImages.home;
+      } else if (alt.includes('career') || alt.includes('work')) {
+        fallbackUrl = fallbackImages.career;
+      } else if (alt.includes('family') || alt.includes('mother') || alt.includes('baby')) {
+        fallbackUrl = fallbackImages.family;
+      } else if (alt.includes('finance') || alt.includes('financial') || alt.includes('chart')) {
+        fallbackUrl = fallbackImages.finance;
+      }
+      
+      this.src = fallbackUrl;
+    });
+  });
+</script>
+
+</body>
+</html>
