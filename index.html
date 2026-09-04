@@ -25,6 +25,7 @@
     --coral-deep:#B24A2C;
     --line:#E2DCCB;
     --line-dark:rgba(255,255,255,0.14);
+    --beige:#F5F5DC;
     --radius-lg:26px;
     --radius-md:16px;
     --radius-sm:9px;
@@ -301,7 +302,7 @@
   .demo-right{ padding:0; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1; overflow:hidden; min-height:400px; }
   .chart-image{ position:absolute; inset:0; z-index:0; }
   .chart-image img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .demo-content{ position:relative; z-index:2; padding:12px 46px 46px; display:flex; flex-direction:column; justify-content:flex-start; height:100%; }
+  .demo-content{ position:relative; z-index:2; padding:8px 46px 46px; display:flex; flex-direction:column; justify-content:flex-start; height:100%; }
   .demo-metrics{ margin-top:0; }
   .demo-metrics{ display:flex; gap:36px; margin-bottom:18px; flex-wrap:wrap; }
   .demo-metric{ animation:popIn .6s var(--ease-spring) forwards; opacity:0; }
@@ -312,12 +313,15 @@
   .demo-metric .m-label{ font-family:'Sen', sans-serif; font-size:11.5px; color:#000; letter-spacing:0.05em; }
   .demo-metric .m-value{ font-family:'Passion One', sans-serif; font-size:32px; font-weight:500; color:#000; margin-top:6px; transition:transform .3s ease; }
   @media (max-width:640px){
-    .demo-metric .m-label{ font-size:9px; }
-    .demo-metric .m-value{ font-size:20px; }
+    .demo-metrics{ flex-direction:row; align-items:center; gap:12px; }
+    .demo-metric{ flex-direction:row; align-items:center; gap:4px; margin-bottom:0; }
+    .demo-metric .m-label{ font-size:9px; margin-bottom:0; }
+    .demo-metric .m-value{ font-size:16px; margin-top:0; }
+    .demo-content{ padding:0 20px 20px; }
   }
   .demo-metric .m-value.updating{ transform:scale(1.05); }
   #chartSvg{ width:100%; height:auto; }
-  .demo-caption{ font-size:12.5px; color:#000; margin-top:10px; }
+  .demo-caption{ font-size:12.5px; color:#000; margin-top:10px; background:var(--beige); padding:8px 12px; border-radius:4px; display:inline-block; }
 
   @media (max-width:880px){
     .demo-panel{ grid-template-columns:1fr; }
@@ -1595,8 +1599,8 @@
         </div>
         <div class="demo-content">
           <div class="demo-metrics">
-            <div class="demo-metric"><div class="m-label">VIRTUAL BALANCE</div><div class="m-value num">$10,000</div></div>
-            <div class="demo-metric"><div class="m-label">LEARNING MODE</div><div class="m-value num">ACTIVE</div></div>
+            <div class="demo-metric"><div class="m-label">VIRTUAL BALANCE </div><div class="m-value num">$10,000</div></div>
+            <div class="demo-metric"><div class="m-label">· LEARNING MODE </div><div class="m-value num">ACTIVE</div></div>
           </div>
           <p class="demo-caption">Practice mode · no real money involved · educational purpose only.</p>
         </div>
