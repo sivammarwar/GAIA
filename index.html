@@ -693,6 +693,11 @@
     .form-row{ grid-template-columns:1fr; gap:16px; }
     .form-group label{ font-size:12px; }
     .form-group input, .form-group select, .form-group textarea{ font-size:14px; padding:10px 12px; }
+    .biz-info-panel{ padding:24px 20px; }
+    .biz-benefits h4{ font-size:16px; }
+    .benefit-item{ margin-bottom:16px; }
+    .benefit-content h5{ font-size:14px; }
+    .benefit-content p{ font-size:12px; }
   }
   
   .biz-info-panel{ background:#F8FDFF; border-radius:var(--radius-lg); padding:36px; border:1px solid var(--line); }
@@ -1941,6 +1946,115 @@
           </div>
         </form>
       </div>
+      
+      <div class="biz-info-panel" id="waitlist-info">
+        <div class="biz-benefits">
+          <h4>Why companies choose GAIA</h4>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"/>
+                <path d="M18 17V9"/>
+                <path d="M13 17V5"/>
+                <path d="M8 17v-3"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Automated Compliance Reports</h5>
+              <p>Gender Pay Gap Report, Equality Action Plan, and Carer's Leave Register generated automatically.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Financial Wellness Programs</h5>
+              <p>Company-wide workshops and talks that build real financial literacy.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Employee Retention</h5>
+              <p>Financial wellness as a benefit that reduces stress-driven attrition.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Gender-Calibrated Planning</h5>
+              <p>Tools designed for women's financial patterns and life stages.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="biz-contact">
+          <h4>Questions? Contact us directly</h4>
+          <div class="contact-item">
+            <span class="contact-label">Email:</span>
+            <a href="mailto:business@gaia.app">business@gaia.app</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Phone:</span>
+            <a href="tel:+18001234567">+1 (800) 123-4567</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Hours:</span>
+            <span>Mon-Fri, 9am-6pm EST</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="biz-form-wrapper" id="contact-content" style="display:none;">
+        <div class="biz-form-header">
+          <h3>Contact us</h3>
+          <p>Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+        </div>
+        
+        <form class="biz-form" id="contactForm">
+          <div class="form-group">
+            <label for="contactFormName">Your Name *</label>
+            <input type="text" id="contactFormName" name="contactFormName" required placeholder="Your full name">
+          </div>
+          
+          <div class="form-group">
+            <label for="contactFormEmail">Email Address *</label>
+            <input type="email" id="contactFormEmail" name="contactFormEmail" required placeholder="you@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="contactFormSubject">Subject *</label>
+            <input type="text" id="contactFormSubject" name="contactFormSubject" required placeholder="How can we help?">
+          </div>
+          
+          <div class="form-group">
+            <label for="contactFormMessage">Message *</label>
+            <textarea id="contactFormMessage" name="contactFormMessage" required placeholder="Tell us about your specific needs or questions..."></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary biz-submit-btn">Send Message</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="biz-info-panel" id="contact-info">
         <div class="biz-benefits">
           <h4>Why companies choose GAIA</h4>
           <div class="benefit-item">
@@ -2299,6 +2413,8 @@
     contact: document.getElementById('contact-content')
   };
   const businessInfo = document.getElementById('business-info');
+  const waitlistInfo = document.getElementById('waitlist-info');
+  const contactInfo = document.getElementById('contact-info');
 
   businessTabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -2309,9 +2425,9 @@
         if(content) content.style.display = 'none';
       });
       
-      if(businessInfo) {
-        businessInfo.style.display = 'none';
-      }
+      if(businessInfo) businessInfo.style.display = 'none';
+      if(waitlistInfo) waitlistInfo.style.display = 'none';
+      if(contactInfo) contactInfo.style.display = 'none';
       
       const tabName = tab.getAttribute('data-tab');
       if(businessContents[tabName]) {
@@ -2320,6 +2436,12 @@
       
       if(tabName === 'business' && businessInfo) {
         businessInfo.style.display = 'block';
+      }
+      if(tabName === 'waitlist' && waitlistInfo) {
+        waitlistInfo.style.display = 'block';
+      }
+      if(tabName === 'contact' && contactInfo) {
+        contactInfo.style.display = 'block';
       }
     });
   });
@@ -2481,62 +2603,71 @@
 
   /* Business Form Handler */
   (function(){
-    const form = document.getElementById('businessInquiryForm');
-    if(!form) return;
+    const businessForm = document.getElementById('businessInquiryForm');
+    const waitlistForm = document.getElementById('waitlistForm');
+    const contactForm = document.getElementById('contactForm');
+    
+    function handleFormSubmit(form, successMessage) {
+      if(!form) return;
 
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      
-      // Get form data
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-      
-      // Validate required fields
-      const required = ['companyName', 'companySize', 'contactName', 'contactRole', 'contactEmail', 'interestArea'];
-      let isValid = true;
-      required.forEach(field => {
-        if(!data[field] || data[field].trim() === '') {
-          isValid = false;
-          const input = form.querySelector(`[name="${field}"]`);
-          if(input) input.style.borderColor = 'var(--coral)';
-        }
-      });
-      
-      if(!isValid) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-      
-      // Simulate form submission
-      const submitBtn = form.querySelector('.biz-submit-btn');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Submitting...';
-      submitBtn.disabled = true;
-      
-      setTimeout(() => {
-        submitBtn.textContent = 'Request Submitted!';
-        submitBtn.style.background = 'var(--teal)';
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+         
+        // Validate required fields
+        const required = Array.from(form.querySelectorAll('[required]')).map(input => input.name);
+        let isValid = true;
+        required.forEach(field => {
+          if(!data[field] || data[field].trim() === '') {
+            isValid = false;
+            const input = form.querySelector(`[name="${field}"]`);
+            if(input) input.style.borderColor = 'var(--coral)';
+          }
+        });
+        
+        if(!isValid) {
+          alert('Please fill in all required fields.');
+          return;
+         }
+         
+        // Simulate form submission
+        const submitBtn = form.querySelector('.biz-submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.disabled = true;
         
         setTimeout(() => {
-          submitBtn.textContent = originalText;
-          submitBtn.style.background = '';
-          submitBtn.disabled = false;
-          form.reset();
+          submitBtn.textContent = successMessage;
+          submitBtn.style.background = 'var(--teal)';
           
-          // Reset border colors
-          form.querySelectorAll('input, select').forEach(input => {
-            input.style.borderColor = '';
-          });
-        }, 2000);
-      }, 1500);
-    });
-    
-    // Reset border colors on input
-    form.querySelectorAll('input, select, textarea').forEach(input => {
-      input.addEventListener('input', function(){
-        this.style.borderColor = '';
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+            form.reset();
+            
+            // Reset border colors
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+              input.style.borderColor = '';
+            });
+          }, 2000);
+        }, 1500);
       });
-    });
+      
+      // Reset border colors on input
+      form.querySelectorAll('input, select, textarea').forEach(input => {
+        input.addEventListener('input', function(){
+          this.style.borderColor = '';
+        });
+      });
+    }
+    
+    handleFormSubmit(businessForm, 'Request Submitted!');
+    handleFormSubmit(waitlistForm, 'Joined Waitlist!');
+    handleFormSubmit(contactForm, 'Message Sent!');
   })();
 
   /* Lenis Smooth Scroll Initialization */
