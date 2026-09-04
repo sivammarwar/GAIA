@@ -7,14 +7,16 @@
 <meta name="description" content="GAIA is a financial-life simulator built for women — model your income, goals and life events into a real roadmap, not a generic calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&family=Sen:wght@400..800&family=Sen:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
 <style>
   :root{
-    --ink:#0F1D33;
+    --ink:#36454F;
     --ink-2:#1C3155;
     --ink-soft:#55637C;
-    --paper:#F8F6F0;
-    --paper-deep:#EFEADD;
+    --bg-color:#a0d9ef;
+    --paper:#F8FDFF;
+    --paper-deep:#F8FDFF;
     --gold:#C08A3E;
     --gold-deep:#9C6D2B;
     --teal:#2F6F62;
@@ -29,72 +31,92 @@
     --ease-out-quad: cubic-bezier(0.25,0.46,0.45,0.94);
     --ease-out-cubic: cubic-bezier(0.215,0.61,0.355,1);
     --ease-in-out-circ: cubic-bezier(0.785,0.135,0.15,0.86);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
-  body{ font-family:'Inter', sans-serif; color:var(--ink); background:var(--paper); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  body{ font-family:'Sen', sans-serif; color:var(--ink); background:var(--bg-color); -webkit-font-smoothing:antialiased; overflow-x:hidden; position: relative; }
   ::selection{ background:var(--gold); color:#fff; }
-  h1,h2,h3,.display{ font-family:'Newsreader', serif; font-weight:500; letter-spacing:-0.01em; line-height:1.06; }
-  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); }
-  .num{ font-family:'IBM Plex Mono', monospace; }
+  h1,h2,h3,.display{ font-family:'Passion One', sans-serif; font-weight:700; letter-spacing:-0.01em; line-height:1.06; }
+  .eyebrow{ font-family:'Sen', sans-serif; font-size:11.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-deep); }
+  .num{ font-family:'Sen', sans-serif; }
   a{ color:inherit; text-decoration:none; }
   img{max-width:100%; display:block; loading:lazy;}
   .wrap{ max-width:1220px; margin:0 auto; padding:0 32px; }
+  @media (max-width:640px){ .wrap{ padding:0 20px; } }
+  html{ scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
   }
+  
+  /* Smooth scroll performance optimizations */
+  * {
+    will-change: auto;
+  }
+  .reveal, .testi-slide, .app-showcase-inner, .assistant-feature, .pricing-card {
+    will-change: transform, opacity;
+  }
+  .phone-frame, .mobile-frame {
+    will-change: transform;
+  }
 
   /* Buttons */
-  .btn{ display:inline-flex; align-items:center; gap:9px; font-family:'Inter', sans-serif; font-weight:600; font-size:15px; padding:14px 28px; border-radius:999px; border:1px solid transparent; cursor:pointer; transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease; }
+  .btn{ display:inline-flex; align-items:center; gap:9px; font-family:'Sen', sans-serif; font-weight:600; font-size:17px; padding:14px 28px; border-radius:999px; border:1px solid transparent; cursor:pointer; transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1), background .3s cubic-bezier(.22,1,.36,1), color .3s cubic-bezier(.22,1,.36,1); }
   .btn-primary{ background:var(--ink); color:#fff; }
   .btn-primary:hover{ background:var(--coral-deep); transform:translateY(-2px); box-shadow:0 12px 26px rgba(178,74,44,0.3); }
   .btn-ghost{ background:transparent; color:var(--ink); border-color:rgba(15,29,51,0.22); }
   .btn-ghost:hover{ border-color:var(--ink); background:var(--ink); color:#fff; transform:translateY(-2px); }
-  .btn-on-dark{ background:#fff; color:var(--ink); }
-  .btn-on-dark:hover{ background:var(--gold); color:#fff; transform:translateY(-2px); }
+  .btn-ghost-green{ background:rgba(54,69,79,0.8); color:#fff; border-color:#D4A574; }
+  .btn-ghost-green:hover{ border-color:#fff; background:rgba(54,69,79,0.9); transform:translateY(-2px); }
+  .btn-on-dark{ background:#D4A574; color:#fff; }
+  .btn-on-dark:hover{ background:#C49464; transform:translateY(-2px); box-shadow:0 12px 26px rgba(212,165,116,0.4); }
   .btn:focus-visible{ outline:2px solid var(--coral); outline-offset:3px; }
 
   /* Nav */
-  header{ position:sticky; top:0; z-index:100; background:rgba(248,246,240,0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:transform .35s var(--ease-out-quad), box-shadow .35s ease; animation:navReveal .8s .1s var(--ease-out-cubic) both; }
+  header{ position:sticky; top:0; z-index:100; background:rgba(160,217,239,0.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1), background .35s ease; animation:navReveal .8s .1s var(--ease-out-cubic) both; }
   header.is-hidden{ transform:translateY(-100%); box-shadow:0 10px 24px rgba(15,29,51,0.08); }
+  header.is-scrolled{ background:rgba(160,217,239,0.4); }
   @keyframes navReveal{ 0%{opacity:.001; transform:translateY(-100%);} to{opacity:1; transform:translateY(0);} }
   nav{ display:flex; align-items:center; justify-content:space-between; padding:19px 32px; max-width:1220px; margin:0 auto; }
-  .logo{ font-family:'Newsreader', serif; font-weight:600; font-size:24px; letter-spacing:0.01em; display:flex; align-items:center; gap:9px; }
+  .logo{ font-family:'Passion One', sans-serif; font-weight:700; font-size:28px; letter-spacing:0.01em; display:flex; align-items:center; gap:9px; }
   .logo-mark{ width:16px; height:16px; border-radius:3px; background:linear-gradient(135deg, var(--gold), var(--coral)); display:inline-block; transform:rotate(8deg); }
-  .nav-links{ display:flex; gap:32px; font-size:14.5px; font-weight:500; }
-  .nav-links a{ color:var(--ink-soft); transition:color .2s; position:relative; }
-  .nav-links a:after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--coral-deep); transition:width .25s var(--ease-out-quad); }
+  .nav-links{ display:flex; gap:32px; font-size:17px; font-weight:500; }
+  .nav-links a{ color:var(--ink-soft); transition:color .3s cubic-bezier(.22,1,.36,1); position:relative; }
+  .nav-links a:after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--coral-deep); transition:width .3s cubic-bezier(.22,1,.36,1); }
   .nav-links a:hover{ color:var(--ink); }
   .nav-links a:hover:after{ width:100%; }
   .nav-cta{ display:flex; align-items:center; gap:20px; }
-  .nav-signin{ font-size:14.5px; font-weight:600; color:var(--ink-soft); }
-  @media (max-width:940px){ .nav-links{ display:none; } }
+  .nav-signin{ font-size:17px; font-weight:600; color:var(--ink-soft); }
+  @media (max-width:940px){ .nav-links{ display:none; } .nav-cta{ display:none; } .logo{ font-size:24px; } nav{ padding:19px 20px; } }
 
-  /* ===== HERO — financial topography ===== */
-  .hero{ position:relative; padding:72px 32px 0; background:var(--ink); color:#fff; overflow:hidden; }
-  .hero-contours{ position:absolute; inset:0; z-index:0; opacity:0.5; pointer-events:none; }
+  /* ===== HERO ===== */
+  .hero{ position:relative; padding:0 32px 0; background:var(--ink); color:#fff; overflow:hidden; }
+  .hero-background{ position:absolute; inset:0; z-index:0; }
+  .hero-background img{ width:100%; height:100%; object-fit:cover; }
+  .hero-contours{ position:absolute; inset:0; z-index:1; opacity:0.5; pointer-events:none; }
   .hero-contours svg{ width:100%; height:100%; }
   .contour{ fill:none; stroke:rgba(255,255,255,0.09); stroke-width:1; }
   .contour-hi{ fill:none; stroke:var(--gold); stroke-width:1.4; stroke-dasharray:2600; stroke-dashoffset:2600; transition:stroke-dashoffset 2.4s var(--ease-in-out-circ); opacity:.75; }
   .hero-contours.in .contour-hi{ stroke-dashoffset:0; }
-  .hero-inner{ max-width:1220px; margin:0 auto; position:relative; z-index:1; }
+  .hero-inner{ max-width:1220px; margin:0 auto; position:relative; z-index:2; }
+  .hero-content-wrapper{ display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:center; position:relative; height:600px; }
   .hero-eyebrow{ display:flex; align-items:center; gap:10px; margin-bottom:24px; opacity:0; animation:fadeUp .7s .05s var(--ease-out-cubic) forwards; }
-  .hero-eyebrow .rule{ width:34px; height:1px; background:var(--gold); }
-  .hero-eyebrow span.eyebrow{ color:#E9C77E; }
-  .hero-copy{ max-width:660px; }
-  .hero h1{ font-size:clamp(38px, 5.4vw, 68px); color:#fff; opacity:0; animation:fadeUp .8s .15s var(--ease-out-cubic) forwards; }
-  .hero h1 em{ font-style:italic; color:#E9C77E; }
-  .hero-sub{ max-width:520px; margin:24px 0 0; font-size:18px; line-height:1.65; color:rgba(255,255,255,0.68); opacity:0; animation:fadeUp .8s .3s var(--ease-out-cubic) forwards; }
-  .hero-actions{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:34px; opacity:0; animation:fadeUp .8s .42s var(--ease-out-cubic) forwards; }
+  .hero-eyebrow .rule{ width:34px; height:1px; background:#D4A574; }
+  .hero-eyebrow span.eyebrow{ color:#000; font-size:12px; }
+  .hero-copy{ max-width:480px; position:relative; z-index:4; padding-left:0; margin-left:-32px; }
+  .hero h1{ font-size:clamp(32px, 4.5vw, 52px); color:#000; opacity:0; animation:fadeUp .8s .15s var(--ease-out-cubic) forwards; }
+  .hero h1 em{ font-style:italic; color:#000; }
+  .hero-sub{ max-width:420px; margin:24px 0 0; font-size:15px; line-height:1.65; color:#000; opacity:0; animation:fadeUp .8s .3s var(--ease-out-cubic) forwards; }
+  .hero-actions{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:28px; opacity:0; animation:fadeUp .8s .42s var(--ease-out-cubic) forwards; }
   @keyframes fadeUp{ 0%{opacity:.001; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
 
-  .hero-panel{ position:relative; z-index:1; max-width:1080px; margin:64px auto 0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-lg); padding:8px; opacity:0; animation:fadeUp .9s .5s var(--ease-out-cubic) forwards; box-shadow:0 60px 120px -40px rgba(0,0,0,0.55); }
-  .hero-panel-inner{ background:#0C1728; border-radius:22px; padding:32px 34px 26px; }
+  .hero-panel{ position:relative; z-index:3; max-width:1080px; margin:64px auto 0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-lg); padding:8px; opacity:0; animation:fadeUp .9s .5s var(--ease-out-cubic) forwards; box-shadow:0 60px 120px -40px rgba(0,0,0,0.55); position: absolute; top: 160px; left: 65%; width: 40%; }
+  .hero-panel-inner{ background:#4A90E2; border-radius:22px; padding:32px 34px 26px; }
   .hp-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
   .hp-head h3{ font-size:19px; font-weight:500; color:#fff; }
-  .hp-head p{ font-size:12.5px; color:rgba(255,255,255,0.5); margin-top:6px; max-width:320px; }
+  .hp-head p{ font-size:12.5px; color:#fff; margin-top:6px; max-width:320px; }
   .hp-legend{ display:flex; gap:16px; flex-wrap:wrap; }
-  .hp-legend span{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:rgba(255,255,255,0.55); display:flex; align-items:center; gap:6px; }
+  .hp-legend span{ font-family:'Sen', sans-serif; font-size:10.5px; color:#fff; display:flex; align-items:center; gap:6px; }
   .hp-legend i{ width:12px; height:3px; border-radius:2px; display:inline-block; }
   #pathSvg{ width:100%; height:auto; display:block; margin-top:6px; }
   .line-draw{ stroke-dasharray:1600; stroke-dashoffset:1600; transition:stroke-dashoffset 1.8s var(--ease-in-out-circ); }
@@ -104,22 +126,110 @@
   .line-draw.d3{ transition-delay:.9s; }
   .hp-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:10px; }
   .hp-stat{ display:flex; gap:26px; }
-  .hp-stat div .l{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.06em; color:rgba(255,255,255,0.45); text-transform:uppercase; }
-  .hp-stat div .v{ font-family:'Newsreader', serif; font-size:22px; color:#E9C77E; margin-top:4px; }
-  .hp-tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:rgba(255,255,255,0.4); }
+  .hp-stat div .l{ font-family:'Sen', sans-serif; font-size:10px; letter-spacing:.06em; color:#fff; text-transform:uppercase; }
+  .hp-stat div .v{ font-family:'Passion One', sans-serif; font-size:22px; color:#fff; margin-top:4px; }
+  .hp-tag{ font-family:'Sen', sans-serif; font-size:10.5px; color:#fff; }
+
+  @media (max-width:940px){
+    .hero-content-wrapper{ grid-template-columns:1fr; height:auto; }
+    .hero-copy{ max-width:100%; margin-left:0; padding:0 32px; padding-top:80px; order:1; }
+    .hero h1{ font-size:clamp(28px,6vw,42px); }
+    .hero-sub{ max-width:100%; }
+    .hero-panel{ position:static; width:100%; max-width:100%; margin:40px auto 0; order:2; }
+    .hero-panel-inner{ padding:24px 20px; }
+    .hp-head{ flex-direction:column; gap:8px; }
+    .hp-head h3{ font-size:16px; }
+    .hp-head p{ font-size:11px; max-width:100%; }
+    .hp-legend{ gap:12px; }
+    .hp-legend span{ font-size:9px; }
+    .hp-stat{ gap:16px; }
+    .hp-stat div .v{ font-size:18px; }
+  }
+  @media (max-width:640px){
+    .hero{ padding:0 20px 0; }
+    .hero-copy{ padding:0 20px; padding-top:60px; }
+    .hero h1{ font-size:clamp(24px,7vw,36px); }
+    .hero-sub{ font-size:14px; }
+    .hero-actions{ gap:12px; }
+    .hero-panel{ margin:30px auto 0; }
+    .hero-panel-inner{ padding:20px 16px; }
+    .hp-head h3{ font-size:14px; }
+    .hp-head p{ font-size:10px; }
+    .hp-legend span{ font-size:8px; }
+    .hp-stat div .l{ font-size:8px; }
+    .hp-stat div .v{ font-size:16px; }
+    .hp-tag{ font-size:9px; }
+    .hp-foot{ flex-direction:column; align-items:flex-start; gap:12px; }
+    .hp-stat{ flex-direction:column; gap:8px; }
+  }
 
   section{ padding:120px 0; }
   .section-head{ max-width:640px; margin-bottom:56px; }
+  @media (max-width:640px){
+    section{ padding:80px 0; }
+    .section-head{ margin-bottom:40px; }
+    .section-head h2{ font-size:clamp(24px,5vw,32px); }
+    .section-head p{ font-size:14px; }
+  }
   .section-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
   .section-head .eyebrow{ margin-bottom:16px; display:block; }
   .section-head h2{ font-size:clamp(30px, 4vw, 46px); }
   .section-head p{ margin-top:18px; font-size:16.5px; line-height:1.65; color:var(--ink-soft); }
-  .section-paper-deep{ background:var(--paper-deep); }
+  .section-paper-deep{ background:url('image1.jpg'); background-size:cover; background-position:center; background-attachment:fixed; }
+  .section-paper-deep .section-head{ background:transparent; }
+  .section-paper-deep .wrap{ background:transparent; }
+  .section-white{ background:#fff; }
+  .journey-white-bg{ background:#fff !important; }
+  .business-white-bg{ background:#fff !important; }
   .section-ink{ background:var(--ink); color:#fff; }
   .section-ink .section-head p{ color:rgba(255,255,255,0.65); }
   .section-ink .eyebrow{ color:#E9C77E; }
 
-  /* Problem statement w/ side rule */
+  /* Trust strip */
+  .trust-strip{ background:#F8FDFF; border-bottom:1px solid var(--line); padding:22px 0; }
+  .trust-strip-inner{ display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; text-align:center; }
+  .trust-strip-inner .divider{ color:var(--line); }
+  .trust-strip-item{ font-family:'Sen', sans-serif; font-size:12.5px; letter-spacing:0.03em; color:var(--ink-soft); animation:fadeInSlide .8s .1s var(--ease-out-cubic) forwards; opacity:0; }
+  .trust-strip-item:nth-child(1){ animation-delay:.1s; }
+  .trust-strip-item:nth-child(3){ animation-delay:.2s; }
+  .trust-strip-item:nth-child(5){ animation-delay:.3s; }
+  @keyframes fadeInSlide{ 0%{opacity:0; transform:translateX(-12px);} to{opacity:1; transform:translateX(0);} }
+
+  /* FAQ accordion */
+  .why-gaia-container{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+  .why-gaia-left{ position:sticky; top:120px; }
+  .why-gaia-content .eyebrow{ display:block; margin-bottom:18px; }
+  .why-gaia-content h2{ font-size:clamp(28px,3.5vw,42px); margin-bottom:16px; line-height:1.1; }
+  .why-gaia-content p{ font-size:16px; color:var(--ink-soft); line-height:1.6; margin-bottom:24px; }
+  .why-gaia-image{ border-radius:var(--radius-md); overflow:hidden; margin-top:24px; width:100%; }
+  .why-gaia-image img{ width:100%; height:auto; object-fit:cover; filter:grayscale(0.15); transition:filter .4s ease; }
+  .why-gaia-image:hover img{ filter:grayscale(0); }
+  
+  .faq-list{ display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-question{ width:100%; text-align:left; background:none; border:none; padding:24px 4px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-family:'Passion One', sans-serif; font-size:23px; font-weight:500; color:var(--ink); gap:20px; transition:color .3s cubic-bezier(.22,1,.36,1); }
+  .faq-question:hover{ color:var(--coral-deep); }
+  .faq-question .plus{ flex-shrink:0; width:26px; height:26px; border-radius:50%; border:1px solid var(--line); position:relative; transition:transform .3s cubic-bezier(.22,1,.36,1), background .3s cubic-bezier(.22,1,.36,1), border-color .3s cubic-bezier(.22,1,.36,1); }
+  .faq-question .plus:before, .faq-question .plus:after{ content:""; position:absolute; top:50%; left:50%; background:var(--ink); transition:transform .3s cubic-bezier(.22,1,.36,1); }
+  .faq-question .plus:before{ width:10px; height:1.4px; transform:translate(-50%,-50%); }
+  .faq-question .plus:after{ width:1.4px; height:10px; transform:translate(-50%,-50%); }
+  .faq-item.open .faq-question{ color:var(--coral-deep); }
+  .faq-item.open .faq-question .plus{ background:var(--ink); border-color:var(--ink); transform:rotate(180deg); }
+  .faq-item.open .faq-question .plus:before, .faq-item.open .faq-question .plus:after{ background:#fff; }
+  .faq-item.open .faq-question .plus:after{ transform:translate(-50%,-50%) scaleY(0); }
+  .faq-answer{ max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.22,1,.36,1); }
+  .faq-answer-inner{ padding:0 4px 24px; font-size:15px; line-height:1.65; color:var(--ink-soft); max-width:640px; }
+  
+  @media (max-width:900px){
+    .why-gaia-container{ grid-template-columns:1fr; gap:40px; }
+    .why-gaia-left{ position:static; }
+  }
+  @media (max-width:640px){ .faq-question{ font-size:15px; padding:18px 4px; } }
+  
+  /* Section separator */
+  .section-separator{ height:60px; background:#F8FDFF; }
+  
+  /* Statement */
   .statement{ padding:0; }
   .statement-inner{ display:grid; grid-template-columns:1.15fr 0.85fr; align-items:center; gap:0; }
   .statement-text{ padding:110px 60px; }
@@ -135,13 +245,18 @@
     .statement-text{ padding:70px 32px 40px; }
     .statement-photo{ min-height:300px; }
   }
+  @media (max-width:640px){
+    .statement-text{ padding:50px 20px 30px; }
+    .statement-text h2{ font-size:clamp(24px,5vw,36px); }
+    .statement-text p.lede{ font-size:15px; }
+  }
 
   /* Journey feature rows */
   .feature-row{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:64px; align-items:center; margin-bottom:120px; }
   .feature-row:last-child{ margin-bottom:0; }
   .feature-row.reverse .feature-photo{ order:2; }
   .feature-row.reverse .feature-copy{ order:1; }
-  .feature-index{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--coral-deep); letter-spacing:0.1em; margin-bottom:18px; display:block; }
+  .feature-index{ font-family:'Sen', sans-serif; font-size:12px; color:var(--coral-deep); letter-spacing:0.1em; margin-bottom:18px; display:block; }
   .feature-copy h3{ font-size:clamp(24px,3vw,34px); margin-bottom:16px; }
   .feature-copy p{ font-size:16px; line-height:1.65; color:var(--ink-soft); margin-bottom:20px; max-width:420px; }
   .feature-copy a.link-arrow{ font-weight:600; font-size:14.5px; border-bottom:1px solid var(--ink); padding-bottom:2px; transition:color .2s, border-color .2s; }
@@ -149,95 +264,302 @@
   .feature-photo{ position:relative; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3.3; box-shadow:0 30px 60px -30px rgba(15,29,51,0.35); }
   .feature-photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out-quad); filter:grayscale(0.1); }
   .feature-photo:hover img{ transform:scale(1.06); }
-  .feature-photo .chip{ position:absolute; left:18px; bottom:18px; background:#fff; padding:9px 15px; border-radius:11px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink); box-shadow:0 12px 24px rgba(0,0,0,0.18); }
+  .feature-photo .chip{ position:absolute; left:18px; bottom:18px; background:#fff; padding:9px 15px; border-radius:11px; font-family:'Sen', sans-serif; font-size:11px; color:var(--ink); box-shadow:0 12px 24px rgba(0,0,0,0.18); animation:slideInRight .6s .4s var(--ease-out-cubic) forwards; opacity:0; }
+  @keyframes slideInRight{ 0%{opacity:0; transform:translateX(-16px);} to{opacity:1; transform:translateX(0);} }
   @media (max-width:880px){
     .feature-row, .feature-row.reverse{ grid-template-columns:1fr; gap:28px; }
     .feature-row.reverse .feature-photo, .feature-row.reverse .feature-copy{ order:initial; }
   }
+  @media (max-width:640px){
+    .feature-row{ margin-bottom:80px; }
+    .feature-copy h3{ font-size:clamp(20px,5vw,28px); }
+    .feature-copy p{ font-size:15px; }
+    .feature-photo{ aspect-ratio:16/9; }
+  }
 
-  /* Demo slider */
-  .demo-panel{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:0; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 30px 70px -35px rgba(15,29,51,0.22); }
-  .demo-left{ padding:52px 46px; background:var(--ink); color:#fff; display:flex; flex-direction:column; justify-content:center; }
-  .demo-left .eyebrow{ color:#E9C77E; margin-bottom:18px; }
+  /* Demo / simulator */
+  .demo-panel{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:0; background:linear-gradient(135deg, rgba(54,69,79,0.5), rgba(74,90,106,0.5)), url('woman-desk.jpg'); background-size:cover; background-position:center; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 30px 70px -35px rgba(15,29,51,0.22); position:relative; }
+  .demo-left{ position:relative; padding:52px 46px; background:#E6F3FF; color:#000; display:flex; flex-direction:column; justify-content:center; z-index:1; }
+  .demo-right{ padding:0; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1; overflow:hidden; min-height:400px; background:transparent; }
+  .demo-left .eyebrow{ color:#000; margin-bottom:18px; }
   .demo-left h3{ font-size:27px; font-weight:500; margin-bottom:16px; }
-  .demo-left p{ color:rgba(255,255,255,0.62); font-size:15px; line-height:1.6; margin-bottom:32px; }
-  .slider-row label{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em; color:rgba(255,255,255,0.55); display:flex; justify-content:space-between; margin-bottom:10px; }
-  .slider-row label span{ color:#fff; font-size:14px; }
-  input[type="range"]{ -webkit-appearance:none; width:100%; height:3px; border-radius:3px; background:rgba(255,255,255,0.22); outline:none; }
-  input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--gold); border:3px solid #fff; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.35); }
-  input[type="range"]::-moz-range-thumb{ width:20px; height:20px; border-radius:50%; background:var(--gold); border:3px solid #fff; cursor:pointer; }
-  .demo-right{ padding:46px; display:flex; flex-direction:column; justify-content:space-between; }
+  .demo-left p{ color:#000; font-size:15px; line-height:1.6; margin-bottom:32px; }
+  .sim-ribbon{ position:absolute; top:0; right:0; background:#000; color:#fff; font-family:'Sen', sans-serif; font-size:10.5px; font-weight:600; letter-spacing:0.04em; padding:9px 18px; border-radius:0 22px 0 16px; animation:slideInDown .5s .2s var(--ease-spring) forwards; opacity:0; }
+  @keyframes slideInDown{ 0%{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);} }
+  .sim-balance{ display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.1); padding:8px 14px; border-radius:999px; font-family:'Sen', sans-serif; font-size:12px; color:#000; margin-bottom:22px; width:fit-content; animation:slideInLeft .5s .3s var(--ease-spring) forwards; opacity:0; }
+  .sim-balance svg{ flex-shrink:0; }
+  @keyframes slideInLeft{ 0%{opacity:0; transform:translateX(-20px);} to{opacity:1; transform:translateX(0);} }
+  .trading-features{ display:flex; flex-direction:column; gap:12px; margin-top:16px; }
+  .trading-feature{ background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.1); padding:12px 16px; border-radius:8px; font-family:'Sen', sans-serif; font-size:13px; color:#000; display:flex; align-items:center; gap:10px; }
+  .trading-feature svg{ flex-shrink:0; color:#000; }
+  .slider-row label{ font-family:'Sen', sans-serif; font-size:12px; letter-spacing:0.06em; color:#000; display:flex; justify-content:space-between; margin-bottom:10px; }
+  .slider-row label span{ color:#000; font-size:14px; }
+  input[type="range"]{ -webkit-appearance:none; width:100%; height:3px; border-radius:3px; background:rgba(0,0,0,0.1); outline:none; transition:background .3s ease; }
+  input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#000; border:3px solid #fff; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.35); transition:box-shadow .3s ease, transform .2s ease; }
+  input[type="range"]::-webkit-slider-thumb:hover{ transform:scale(1.1); box-shadow:0 6px 14px rgba(0,0,0,0.45); }
+  input[type="range"]::-moz-range-thumb{ width:20px; height:20px; border-radius:50%; background:#000; border:3px solid #fff; cursor:pointer; transition:box-shadow .3s ease, transform .2s ease; }
+  .demo-right{ padding:0; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1; overflow:hidden; min-height:400px; }
+  .chart-image{ position:absolute; inset:0; z-index:0; }
+  .chart-image img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .demo-content{ position:relative; z-index:2; padding:12px 46px 46px; display:flex; flex-direction:column; justify-content:flex-start; height:100%; }
+  .demo-metrics{ margin-top:0; }
   .demo-metrics{ display:flex; gap:36px; margin-bottom:18px; flex-wrap:wrap; }
-  .demo-metric .m-label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.05em; }
-  .demo-metric .m-value{ font-family:'Newsreader', serif; font-size:32px; font-weight:500; color:var(--coral-deep); margin-top:6px; }
+  .demo-metric{ animation:popIn .6s var(--ease-spring) forwards; opacity:0; }
+  .demo-metric:nth-child(1){ animation-delay:.2s; }
+  .demo-metric:nth-child(2){ animation-delay:.35s; }
+  @keyframes popIn{ 0%{opacity:0; transform:scale(0.85);} to{opacity:1; transform:scale(1);} }
+  .demo-caption{ margin-top:auto; }
+  .demo-metric .m-label{ font-family:'Sen', sans-serif; font-size:11.5px; color:#000; letter-spacing:0.05em; }
+  .demo-metric .m-value{ font-family:'Passion One', sans-serif; font-size:32px; font-weight:500; color:#000; margin-top:6px; transition:transform .3s ease; }
+  @media (max-width:640px){
+    .demo-metric .m-label{ font-size:9px; }
+    .demo-metric .m-value{ font-size:20px; }
+  }
+  .demo-metric .m-value.updating{ transform:scale(1.05); }
   #chartSvg{ width:100%; height:auto; }
-  .demo-caption{ font-size:12.5px; color:var(--ink-soft); margin-top:10px; }
+  .demo-caption{ font-size:12.5px; color:#000; margin-top:10px; }
 
-  /* Life event grid */
+  @media (max-width:880px){
+    .demo-panel{ grid-template-columns:1fr; }
+    .demo-left{ padding:32px 24px; }
+    .demo-left h3{ font-size:22px; }
+    .demo-left p{ font-size:14px; }
+    .demo-right{ min-height:300px; }
+    .trading-features{ gap:8px; }
+    .trading-feature{ padding:10px 12px; font-size:12px; }
+  }
+  @media (max-width:640px){
+    .demo-left{ padding:24px 20px; }
+    .demo-left h3{ font-size:18px; }
+    .demo-left p{ font-size:13px; }
+    .sim-balance{ font-size:11px; padding:6px 10px; }
+    .trading-features{ gap:6px; }
+    .trading-feature{ padding:8px 10px; font-size:11px; }
+    .demo-metric .m-value{ font-size:24px; }
+  }
+
+  /* Life events grid */
   .events-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; }
-  .event-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:26px 22px; transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
-  .event-card:hover{ transform:translateY(-6px); box-shadow:0 24px 50px -28px rgba(15,29,51,0.28); border-color:var(--gold); }
-  .event-thumb{ width:44px; height:44px; border-radius:12px; object-fit:cover; margin-bottom:18px; }
-  .event-glyph{ width:44px; height:44px; border-radius:12px; background:var(--paper-deep); display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:19px; }
-  .event-card h4{ font-family:'Newsreader', serif; font-size:17px; font-weight:500; margin-bottom:8px; }
-  .event-card p{ font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+  .event-card{ background:rgba(255,255,255,0.85); border:none; border-radius:var(--radius-md); padding:26px 22px; backdrop-filter:blur(5px); }
+  .event-thumb{ width:100%; height:120px; border-radius:12px; object-fit:cover; margin-bottom:18px; }
+  .event-glyph{ width:44px; height:44px; border-radius:12px; background:#F8FDFF; display:flex; align-items:center; justify-content:center; margin-bottom:18px; font-size:19px; }
+  .event-card h4{ font-family:'Passion One', sans-serif; font-size:34px; font-weight:500; margin-bottom:12px; }
+  .event-card p{ font-size:20px; color:var(--ink-soft); line-height:1.5; }
   @media (max-width:900px){ .events-grid{ grid-template-columns:repeat(2, 1fr); } }
   @media (max-width:560px){ .events-grid{ grid-template-columns:1fr; } }
+  @media (max-width:640px){
+    .event-card{ padding:20px 16px; }
+    .event-card h4{ font-size:28px; }
+    .event-card p{ font-size:16px; }
+    .event-thumb{ height:100px; }
+  }
 
   /* Sticky card stack */
-  .stack-section{ background:var(--paper-deep); padding-bottom:0; }
+  .stack-section{ background:#F8FDFF; padding-bottom:0; }
   .stack-head{ text-align:center; padding-bottom:40px; }
   .stack-container{ position:relative; }
   .stack-card{ position:sticky; top:110px; padding-bottom:32px; }
-  .stack-card-inner{ background:#fff; border-radius:30px; box-shadow:0 26px 60px -24px rgba(15,29,51,0.26); padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; min-height:380px; }
-  .stack-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--coral-deep); margin-bottom:18px; display:block; }
+  .stack-card-inner{ background:#fff; border-radius:30px; box-shadow:0 26px 60px -24px rgba(15,29,51,0.26); padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; min-height:380px; transition:box-shadow .3s ease; }
+  .stack-card-inner:hover{ box-shadow:0 32px 70px -24px rgba(15,29,51,0.35); }
+  .stack-num{ font-family:'Sen', sans-serif; font-size:13px; color:var(--coral-deep); margin-bottom:18px; display:block; }
   .stack-card-inner h3{ font-size:clamp(24px,3vw,34px); margin-bottom:16px; }
   .stack-card-inner p{ font-size:15.5px; line-height:1.65; color:var(--ink-soft); max-width:420px; }
-  .stack-visual{ border-radius:20px; overflow:hidden; aspect-ratio:4/3; background:var(--paper-deep); }
-  .stack-visual img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.1); }
+  .stack-visual{ border-radius:20px; overflow:hidden; aspect-ratio:4/3; background:#F8FDFF; }
+  .stack-visual img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.1); transition:filter .4s ease; }
+  .stack-card-inner:hover .stack-visual img{ filter:grayscale(0); }
   @media (max-width:860px){
     .stack-card{ top:80px; }
     .stack-card-inner{ grid-template-columns:1fr; padding:32px; gap:24px; }
   }
+  @media (max-width:640px){
+    .stack-card-inner{ padding:24px 20px; }
+    .stack-card-inner h3{ font-size:clamp(20px,5vw,28px); }
+    .stack-card-inner p{ font-size:14px; }
+  }
 
   /* Chat / assistant */
-  .chat-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-  .chat-window{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:8px; box-shadow:0 30px 70px -35px rgba(15,29,51,0.2); }
-  .chat-header{ display:flex; align-items:center; gap:10px; padding:16px 18px; border-bottom:1px solid var(--line); }
-  .chat-header .dot{ width:8px; height:8px; border-radius:50%; background:var(--teal); }
-  .chat-header span{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); }
-  .chat-body{ padding:26px 22px 22px; }
-  .bubble{ max-width:82%; padding:14px 18px; border-radius:16px; font-size:14.5px; line-height:1.55; margin-bottom:14px; }
-  .bubble.user{ background:var(--paper-deep); color:var(--ink); margin-left:auto; border-bottom-right-radius:4px; }
-  .bubble.gaia{ background:var(--ink); color:#fff; border-bottom-left-radius:4px; }
-  .bubble.gaia .g-label{ display:block; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#E9C77E; margin-bottom:8px; letter-spacing:0.06em; }
-  .bubble ul{ margin:10px 0 0 18px; }
-  .bubble li{ margin-bottom:4px; }
-  .chat-copy .eyebrow{ margin-bottom:18px; display:block; }
-  .chat-copy h2{ font-size:clamp(28px,3.6vw,42px); margin-bottom:20px; }
-  .chat-copy p{ font-size:16px; color:var(--ink-soft); line-height:1.65; margin-bottom:26px; }
-  .chat-copy .fine{ font-size:12.5px; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:18px; }
-  @media (max-width:900px){ .chat-wrap{ grid-template-columns:1fr; } }
+  .assistant-container{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; margin-top:32px; }
+  
+  /* Mobile preview */
+  .assistant-mobile-preview{ display:flex; justify-content:center; }
+  .mobile-frame{
+    width:280px; height:550px;
+    background:#0b0b0d;
+    border-radius:32px;
+    padding:10px;
+    box-shadow:0 40px 80px -20px rgba(15,29,51,0.4);
+    position:relative;
+  }
+  .mobile-header{
+    position:relative; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:6px;
+  }
+  .mobile-status{
+    position:absolute; top:0; left:0; right:0; height:40px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 16px;
+    font-family:'Sen', sans-serif; font-weight:600; font-size:11px; color:#fff;
+  }
+  .mobile-time{ font-size:11px; }
+  .mobile-icons{ display:flex; align-items:center; gap:5px; }
+  .mobile-icons svg{ width:12px; height:9px; }
+  .mobile-notch{
+    position:absolute; top:6px; left:50%; transform:translateX(-50%);
+    width:90px; height:24px; background:#0b0b0d; border-radius:14px;
+  }
+  
+  .mobile-chat-body{
+    background:#fff;
+    border-radius:20px;
+    height:calc(100% - 100px);
+    padding:12px 12px;
+    overflow-y:auto;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .mobile-bubble{
+    max-width:85%; padding:10px 12px; border-radius:14px;
+    font-size:12px; line-height:1.3; position:relative;
+  }
+  .mobile-bubble.user{
+    background:#F8FDFF; margin-left:auto; border-bottom-right-radius:4px;
+    color:var(--ink);
+  }
+  .mobile-bubble.gaia{
+    background:var(--ink); color:#fff; border-bottom-left-radius:4px;
+  }
+  .mobile-bubble-time{
+    font-family:'Sen', sans-serif; font-size:9px; color:rgba(255,255,255,0.5);
+    margin-bottom:3px;
+  }
+  .mobile-bubble.user .mobile-bubble-time{ color:var(--ink-soft); }
+  .mobile-bubble-label{
+    font-family:'Sen', sans-serif; font-size:8px; color:#E9C77E;
+    letter-spacing:0.04em; text-transform:uppercase; margin-bottom:4px;
+    display:block;
+  }
+  .mobile-bubble-stats{
+    background:rgba(255,255,255,0.1); border-radius:6px; padding:8px; margin-top:6px;
+  }
+  .mobile-stat{
+    display:flex; justify-content:space-between; margin-bottom:4px;
+  }
+  .mobile-stat:last-child{ margin-bottom:0; }
+  .mobile-stat-label{ font-size:10px; color:rgba(255,255,255,0.7); }
+  .mobile-stat-value{ font-family:'Passion One', sans-serif; font-size:13px; color:#fff; }
+  
+  .mobile-typing{
+    display:flex; justify-content:center; padding:6px 0;
+  }
+  .typing-indicator{
+    display:flex; gap:3px;
+  }
+  .typing-indicator span{
+    width:5px; height:5px; border-radius:50%; background:#E9C77E;
+    animation:typing 1.4s infinite;
+  }
+  .typing-indicator span:nth-child(2){ animation-delay:0.2s; }
+  .typing-indicator span:nth-child(3){ animation-delay:0.4s; }
+  @keyframes typing{
+    0%, 60%, 100%{ transform:translateY(0); }
+    30%{ transform:translateY(-4px); }
+  }
+  
+  .mobile-input-area{
+    background:#F8FDFF; border-radius:16px;
+    padding:6px 10px; margin-top:6px;
+  }
+  .mobile-input-field{
+    display:flex; align-items:center; gap:6px;
+    background:#fff; border-radius:10px; padding:6px 10px;
+    border:1px solid var(--line);
+  }
+  .mobile-input-field input{
+    flex:1; border:none; background:none; font-family:'Sen', sans-serif;
+    font-size:12px; color:var(--ink); outline:none;
+  }
+  .mobile-input-field input::placeholder{ color:var(--ink-soft); }
+  .mobile-send-btn{
+    width:28px; height:28px; border-radius:6px; background:var(--gold);
+    border:none; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:#fff; transition:background .2s;
+  }
+  .mobile-send-btn:hover{ background:var(--coral); }
+  .mobile-send-btn svg{ width:14px; height:14px; }
+  
+  /* Assistant features */
+  .assistant-features{ display:grid; grid-template-columns:1fr; gap:18px; }
+  .assistant-feature{
+    display:flex; gap:14px; align-items:start;
+    background:#F8FDFF; border:1px solid var(--line);
+    border-radius:var(--radius-md); padding:18px;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .assistant-feature:hover{ transform:translateY(-4px); box-shadow:0 16px 32px -16px rgba(15,29,51,0.12); }
+  .feature-icon{
+    width:40px; height:40px; background:var(--gold); border-radius:10px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .feature-icon svg{ width:20px; height:20px; stroke:#fff; }
+  .feature-content h4{ font-family:'Passion One', sans-serif; font-size:16px; color:var(--ink); margin-bottom:6px; }
+  .feature-content p{ font-size:13px; color:var(--ink-soft); line-height:1.4; }
+  
+  .assistant-disclaimer{
+    text-align:center; margin-top:24px; padding:16px;
+    background:#F8FDFF; border-radius:var(--radius-md);
+    border:1px solid var(--line);
+  }
+  .assistant-disclaimer p{ font-size:12px; color:var(--ink-soft); line-height:1.4; }
+  @media (max-width:900px){
+    .assistant-container{ grid-template-columns:1fr; gap:32px; }
+    .assistant-mobile-preview{ max-width:320px; margin:0 auto; }
+  }
+  @media (max-width:640px){
+    .assistant-features{ gap:12px; }
+    .assistant-feature{ padding:14px; }
+    .assistant-feature h4{ font-size:14px; }
+    .assistant-feature p{ font-size:12px; }
+  }
+  
+  @media (max-width:900px){
+    .assistant-container{ grid-template-columns:1fr; }
+    .assistant-mobile-preview{ order:2; }
+    .assistant-features{ order:1; }
+  }
 
-  /* Testimonial carousel */
-  .testi-root{ position:relative; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:56px; box-shadow:0 30px 70px -35px rgba(15,29,51,0.16); overflow:hidden; }
+  /* Testimonials */
+  .testi-root{ position:relative; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; box-shadow:0 30px 70px -35px rgba(15,29,51,0.16); overflow:hidden; max-width:900px; margin:0 auto; }
   .testi-track{ display:grid; }
-  .testi-slide{ grid-area:1/1; display:grid; grid-template-columns:0.8fr 1.2fr; gap:48px; align-items:center; opacity:0; pointer-events:none; transition:opacity .5s ease; }
+  .testi-slide{ grid-area:1/1; display:grid; grid-template-columns:0.6fr 1.4fr; gap:12px; align-items:center; opacity:0; pointer-events:none; transition:opacity .5s ease; }
   .testi-slide.active{ opacity:1; pointer-events:auto; }
-  .testi-photo{ border-radius:20px; overflow:hidden; aspect-ratio:3/4; background:var(--paper-deep); }
+  .testi-photo{ border-radius:16px; overflow:hidden; aspect-ratio:3/4; background:#F8FDFF; max-width:220px; }
   .testi-photo img{ width:100%; height:100%; object-fit:cover; filter:grayscale(0.1); }
-  .testi-quote{ font-family:'Newsreader', serif; font-size:clamp(20px,2.4vw,28px); font-weight:400; font-style:italic; line-height:1.4; color:var(--ink); margin-bottom:22px; }
+  .testi-quote{ font-family:'Passion One', sans-serif; font-size:clamp(20px,2.4vw,28px); font-weight:400; font-style:italic; line-height:1.4; color:var(--ink); margin-bottom:10px; }
   .testi-name{ font-weight:600; font-size:15px; }
   .testi-role{ font-size:13px; color:var(--ink-soft); margin-top:2px; }
-  .testi-stats{ display:flex; gap:32px; margin-top:26px; }
-  .testi-stat-value{ font-family:'Newsreader', serif; font-size:26px; color:var(--coral-deep); }
-  .testi-stat-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--ink-soft); margin-top:4px; }
-  .testi-nav{ display:flex; justify-content:center; gap:12px; margin-top:40px; }
+  .testi-stats{ display:flex; gap:20px; margin-top:12px; }
+  .testi-stat-value{ font-family:'Passion One', sans-serif; font-size:26px; color:var(--coral-deep); }
+  .testi-stat-label{ font-family:'Sen', sans-serif; font-size:10.5px; color:var(--ink-soft); margin-top:4px; }
+  .testi-nav{ display:flex; justify-content:center; gap:12px; margin-top:16px; }
+  .testi-progress-bar{ height:3px; background:#F8FDFF; border-radius:2px; overflow:hidden; margin-top:16px; }
+  .testi-progress-fill{ height:100%; background:var(--coral); width:0%; }
+  .testi-progress-bar.run .testi-progress-fill{ animation:progressFill 2s linear; }
+  @keyframes progressFill{ 0%{width:0%;} to{width:100%;} }
   .testi-nav-btn{ width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s, transform .2s, border-color .2s; }
-  .testi-nav-btn:hover{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .testi-nav-btn:hover{ background:var(--ink); border-color:var(--ink); color:#fff; transform:scale(1.08); }
+  @media (max-width:900px){
+    .testi-slide{ grid-template-columns:1fr; gap:16px; }
+    .testi-photo{ max-width:180px; margin:0 auto; }
+    .testi-quote{ font-size:clamp(18px,3vw,24px); }
+  }
+  @media (max-width:640px){
+    .testi-root{ padding:16px; }
+    .testi-nav-btn{ width:36px; height:36px; }
+    .testi-stat-value{ font-size:20px; }
+  }
   .testi-nav-btn:hover svg{ stroke:#fff; }
   .testi-nav-btn.prev svg{ transform:scaleX(-1); }
-  .testi-nav-btn svg{ width:14px; height:14px; stroke:var(--ink); fill:none; stroke-width:2; }
+  .testi-nav-btn svg{ width:14px; height:14px; stroke:var(--ink); fill:none; stroke-width:2; transition:stroke .2s; }
   .testi-dots{ display:flex; align-items:center; gap:8px; margin:0 8px; }
   .testi-dot{ width:6px; height:6px; border-radius:50%; background:var(--line); cursor:pointer; transition:background .2s, width .2s; }
   .testi-dot.active{ background:var(--coral); width:20px; border-radius:4px; }
@@ -247,17 +569,90 @@
     .testi-photo{ max-width:200px; }
   }
 
-  /* Roadmap on ink */
+  /* Challenge Section */
+  .challenge-panel{ display:grid; grid-template-columns:1fr 1fr; gap:0; background:url('image2.jpg'); background-size:cover; background-position:center; color:#000; border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 30px 70px -35px rgba(15,29,51,0.3); }
+  .challenge-copy{ padding:52px 48px; background:transparent; }
+  .challenge-copy .eyebrow{ color:#000; margin-bottom:18px; display:block; }
+  .challenge-copy h3{ font-size:clamp(24px,3vw,32px); margin-bottom:16px; }
+  .challenge-copy p{ color:#000; font-size:15.5px; line-height:1.65; margin-bottom:24px; max-width:420px; }
+  .challenge-cohort{ display:flex; align-items:center; gap:10px; font-family:'Sen', sans-serif; font-size:12.5px; color:#000; margin-bottom:28px; }
+  .challenge-cohort .dot{ width:7px; height:7px; border-radius:50%; background:#000; flex-shrink:0; animation:pulse 2s ease-in-out infinite; }
+  .challenge-cta-btn{ border-color:#000; color:#000; transition:transform .2s ease, box-shadow .2s ease; }
+  .challenge-cta-btn:hover{ transform:translateY(-3px); background:#000; color:#fff; }
+  .challenge-weeks{ padding:52px 48px; background:transparent; border-left:1px solid rgba(0,0,0,0.1); display:flex; flex-direction:column; justify-content:center; }
+  .challenge-week{ display:flex; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid rgba(0,0,0,0.1); animation:slideInRight .5s var(--ease-out-cubic) forwards; opacity:0; }
+  .challenge-week:last-child{ border-bottom:none; }
+  .challenge-week:nth-child(1){ animation-delay:.1s; }
+  .challenge-week:nth-child(2){ animation-delay:.2s; }
+  .challenge-week:nth-child(3){ animation-delay:.3s; }
+  .challenge-week:nth-child(4){ animation-delay:.4s; }
+  .challenge-week .wk-check{ width:24px; height:24px; border-radius:50%; border:1.5px solid #000; display:flex; align-items:center; justify-content:center; font-size:11px; color:#000; flex-shrink:0; }
+  .challenge-week .wk-text strong{ display:block; font-size:14.5px; font-weight:600; }
+  .challenge-week .wk-text span{ font-family:'Sen', sans-serif; font-size:11.5px; color:#000; }
+  @media (max-width:860px){ .challenge-panel{ grid-template-columns:1fr; } .challenge-weeks{ border-left:none; border-top:1px solid rgba(0,0,0,0.1); } }
+  @media (max-width:640px){
+    .challenge-copy{ padding:32px 24px; }
+    .challenge-copy h3{ font-size:clamp(20px,5vw,28px); }
+    .challenge-copy p{ font-size:14px; }
+    .challenge-weeks{ padding:32px 24px; }
+    .challenge-week{ padding:12px 0; }
+  }
+
+  /* Pricing */
+  .pricing-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; align-items:stretch; }
+  @media (max-width:900px){ .pricing-grid{ grid-template-columns:1fr; gap:32px; } }
+  @media (max-width:640px){
+    .pricing-card{ padding:28px 24px; }
+    .pricing-card h3{ font-size:20px; }
+    .pricing-price{ font-size:28px; }
+  }
+  .pricing-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:38px 32px; display:flex; flex-direction:column; transition:transform .3s var(--ease-out-quad), box-shadow .3s ease, border-color .3s ease; position:relative; animation:scaleUp .6s var(--ease-spring) forwards; opacity:0; }
+  .pricing-card:nth-child(1){ animation-delay:.1s; }
+  .pricing-card:nth-child(2){ animation-delay:.2s; }
+  .pricing-card:nth-child(3){ animation-delay:.3s; }
+  @keyframes scaleUp{ 0%{opacity:0; transform:scale(0.9) translateY(20px);} to{opacity:1; transform:scale(1) translateY(0);} }
+  .pricing-card:hover{ transform:translateY(-8px); box-shadow:0 30px 60px -30px rgba(15,29,51,0.28); }
+  .pricing-card.popular{ border-color:var(--gold); background:var(--ink); color:#fff; }
+  .pricing-card.popular .pricing-list li{ color:rgba(255,255,255,0.75); }
+  .pricing-card.popular .pricing-price, .pricing-card.popular .pricing-name{ color:#fff; }
+  .pricing-badge{ position:absolute; top:-13px; left:32px; background:var(--gold); color:#fff; font-family:'Sen', sans-serif; font-size:11px; font-weight:600; letter-spacing:0.04em; padding:6px 14px; border-radius:999px; animation:bounceIn .6s var(--ease-spring) .5s forwards; opacity:0; }
+  @keyframes bounceIn{ 0%{opacity:0; transform:scale(0.5);} 70%{transform:scale(1.1);} 100%{opacity:1; transform:scale(1);} }
+  .pricing-name{ font-family:'Passion One', sans-serif; font-size:19px; font-weight:500; margin-bottom:8px; }
+  .pricing-price{ font-family:'Passion One', sans-serif; font-size:34px; margin-bottom:4px; transition:transform .3s ease; }
+  .pricing-card:hover .pricing-price{ transform:scale(1.05); }
+  .pricing-price span{ font-family:'Sen', sans-serif; font-size:14px; color:var(--ink-soft); font-weight:400; }
+  .pricing-card.popular .pricing-price span{ color:rgba(255,255,255,0.5); }
+  .pricing-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:26px; }
+  .pricing-card.popular .pricing-sub{ color:rgba(255,255,255,0.55); }
+  .pricing-list{ list-style:none; margin-bottom:30px; flex-grow:1; }
+  .pricing-list li{ font-size:14px; color:var(--ink-soft); line-height:1.6; padding-left:22px; position:relative; margin-bottom:12px; transition:transform .2s ease, color .2s ease; }
+  .pricing-list li:before{ content:"✓"; position:absolute; left:0; color:var(--teal); font-weight:600; transition:transform .2s ease; }
+  .pricing-list li:hover:before{ transform:scale(1.2); }
+  .pricing-card.popular .pricing-list li:before{ color:#E9C77E; }
+  .pricing-cta{ text-align:center; }
+  @media (max-width:900px){ .pricing-grid{ grid-template-columns:1fr; } .pricing-card.popular{ order:-1; } }
+
+  /* Roadmap */
   .roadmap-list{ display:flex; flex-direction:column; }
-  .roadmap-item{ display:flex; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid var(--line-dark); }
+  .roadmap-item{ display:flex; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid var(--line-dark); animation:slideInLeft .5s var(--ease-out-cubic) forwards; opacity:0; }
+  .roadmap-item:nth-child(1){ animation-delay:.05s; }
+  .roadmap-item:nth-child(2){ animation-delay:.1s; }
+  .roadmap-item:nth-child(3){ animation-delay:.15s; }
+  .roadmap-item:nth-child(4){ animation-delay:.2s; }
+  .roadmap-item:nth-child(5){ animation-delay:.25s; }
   .roadmap-item:first-child{ border-top:1px solid var(--line-dark); }
   .roadmap-check{ width:26px; height:26px; border-radius:50%; border:1.5px solid #E9C77E; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:13px; color:#E9C77E; }
   .roadmap-item p{ font-size:16px; font-weight:500; }
-  .roadmap-item span{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:rgba(255,255,255,0.5); margin-left:auto; flex-shrink:0; }
+  .roadmap-item span{ font-family:'Sen', sans-serif; font-size:12px; color:rgba(255,255,255,0.5); margin-left:auto; flex-shrink:0; }
 
   /* Trust flip */
   .trust-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; }
-  .trust-cell{ background:#fff; padding:38px 32px; perspective:160rem; }
+  .trust-grid.trust-grid-4{ grid-template-columns:repeat(4, 1fr); }
+  .trust-cell{ background:#fff; padding:38px 32px; perspective:160rem; animation:fadeUp .6s var(--ease-out-cubic) forwards; opacity:0; }
+  .trust-cell:nth-child(1){ animation-delay:.1s; }
+  .trust-cell:nth-child(2){ animation-delay:.2s; }
+  .trust-cell:nth-child(3){ animation-delay:.3s; }
+  .trust-cell:nth-child(4){ animation-delay:.4s; }
   .trust-flipper{ position:relative; transition:transform .5s var(--ease-out-quad); transform-style:preserve-3d; min-height:150px; }
   .trust-cell:hover .trust-flipper{ transform:rotateY(180deg); }
   .trust-face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
@@ -265,38 +660,140 @@
   .trust-cell .num{ font-size:15px; color:var(--coral-deep); display:block; margin-bottom:14px; }
   .trust-cell p{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; }
   .trust-face.back p{ color:var(--ink); }
-  @media (max-width:800px){ .trust-grid{ grid-template-columns:1fr; } }
+  @media (max-width:900px){ .trust-grid{ grid-template-columns:1fr; } .trust-grid.trust-grid-4{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:560px){ .trust-grid.trust-grid-4{ grid-template-columns:1fr; } }
+
+  /* Business */
+  .biz-form-container{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:48px; align-items:start; }
+  .biz-form-wrapper{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:40px; box-shadow:0 20px 60px -30px rgba(15,29,51,0.15); }
+  .biz-form-header{ margin-bottom:32px; }
+  .biz-form-header h3{ font-family:'Passion One', sans-serif; font-size:24px; color:var(--ink); margin-bottom:12px; }
+  .biz-form-header p{ font-size:15px; color:var(--ink-soft); line-height:1.6; }
+  
+  .biz-form{ display:flex; flex-direction:column; gap:20px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .form-group{ display:flex; flex-direction:column; gap:8px; }
+  .form-group label{ font-family:'Sen', sans-serif; font-size:13px; font-weight:600; color:var(--ink); letter-spacing:0.02em; }
+  .form-group input, .form-group select, .form-group textarea{
+    width:100%; padding:12px 16px; border:1px solid var(--line); border-radius:8px; font-family:'Sen', sans-serif; font-size:14px; color:var(--ink); background:#fff; transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(192,138,62,0.1); }
+  .form-group textarea{ resize:vertical; min-height:100px; }
+  
+  .checkbox-group{ margin-top:16px; padding:16px; background:#F8FDFF; border-radius:8px; border:1px solid var(--line); }
+  .checkbox-label{ display:flex; align-items:start; gap:12px; cursor:pointer; font-size:13px; color:var(--ink-soft); line-height:1.5; }
+  .checkbox-label input{ margin-top:2px; flex-shrink:0; width:18px; height:18px; accent-color:var(--coral); }
+  
+  .form-actions{ margin-top:24px; }
+  .biz-submit-btn{ width:100%; justify-content:center; padding:16px 32px; font-size:16px; }
+  @media (max-width:900px){ .biz-form-container{ grid-template-columns:1fr; gap:32px; } }
+  @media (max-width:640px){
+    .biz-form-wrapper{ padding:28px 20px; }
+    .biz-form-header h3{ font-size:20px; }
+    .form-row{ grid-template-columns:1fr; gap:16px; }
+    .form-group label{ font-size:12px; }
+    .form-group input, .form-group select, .form-group textarea{ font-size:14px; padding:10px 12px; }
+  }
+  
+  .biz-info-panel{ background:#F8FDFF; border-radius:var(--radius-lg); padding:36px; border:1px solid var(--line); }
+  .business-tabs{ display:flex; justify-content:center; gap:8px; margin-bottom:40px; }
+  .business-tab{ padding:12px 24px; border:1px solid var(--line); border-radius:999px; background:transparent; font-family:'Sen', sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all .3s ease; color:var(--ink-soft); }
+  .business-tab:hover{ border-color:var(--ink); color:var(--ink); }
+  .business-tab.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  @media (max-width:640px){
+    .business-tabs{ flex-wrap:wrap; gap:6px; }
+    .business-tab{ padding:10px 16px; font-size:12px; }
+  }
+  .biz-benefits{ margin-bottom:36px; }
+  .biz-benefits h4{ font-family:'Passion One', sans-serif; font-size:18px; color:var(--ink); margin-bottom:24px; }
+  .benefit-item{ display:flex; gap:16px; margin-bottom:20px; }
+  .benefit-icon{ width:40px; height:40px; background:#F8FDFF; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid var(--line); }
+  .benefit-icon svg{ width:20px; height:20px; stroke:var(--coral-deep); }
+  .benefit-content h5{ font-family:'Passion One', sans-serif; font-size:15px; color:var(--ink); margin-bottom:6px; }
+  .benefit-content p{ font-size:13px; color:var(--ink-soft); line-height:1.5; }
+  
+  .biz-contact{ padding-top:24px; border-top:1px solid var(--line); }
+  .biz-contact h4{ font-family:'Passion One', sans-serif; font-size:16px; color:var(--ink); margin-bottom:16px; }
+  .contact-item{ display:flex; margin-bottom:12px; font-size:14px; }
+  .contact-label{ font-weight:600; color:var(--ink); margin-right:8px; flex-shrink:0; }
+  .contact-item a{ color:var(--coral-deep); text-decoration:none; transition:color .2s; }
+  .contact-item a:hover{ color:var(--coral); }
+  
+  @media (max-width:900px){
+    .biz-form-container{ grid-template-columns:1fr; }
+    .form-row{ grid-template-columns:1fr; }
+  }
 
   /* Marquee */
-  .marquee-section{ padding:64px 0; background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-  .marquee-label{ text-align:center; font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:32px; }
+  .marquee-section{ padding:32px 0; background:#F8FDFF; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .marquee-label{ text-align:center; font-family:'Sen', sans-serif; font-size:11.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:24px; }
   .marquee-viewport{ overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
   .marquee-track{ display:flex; width:max-content; gap:72px; animation:marquee 28s linear infinite; align-items:center; }
-  .marquee-track span{ font-family:'Newsreader', serif; font-size:22px; color:var(--ink-soft); white-space:nowrap; opacity:.7; }
+  @media (max-width:640px){
+    .marquee-section{ padding:24px 0; }
+    .marquee-track{ gap:40px; }
+  }
+  .marquee-track span{ font-family:'Passion One', sans-serif; font-size:22px; color:var(--ink-soft); white-space:nowrap; opacity:.7; }
+  .marquee-viewport:hover .marquee-track{ animation-play-state: paused; }
   @keyframes marquee{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
 
-  .photo-strip{ display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; margin-top:60px; }
-  .photo-strip img{ width:100%; height:130px; object-fit:cover; border-radius:14px; filter:grayscale(0.1); }
+  .photo-strip{ display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; margin-top:0; }
+  .photo-strip div{ overflow:hidden; border-radius:14px; }
+  .photo-strip img{ width:100%; height:130px; object-fit:cover; filter:grayscale(0.1); transition:transform .4s ease; }
+  .photo-strip div:hover img{ transform:scale(1.08); }
   .photo-strip div:nth-child(2){ transform:translateY(16px); }
   .photo-strip div:nth-child(4){ transform:translateY(-10px); }
   .photo-strip div:nth-child(5){ transform:translateY(10px); }
   @media (max-width:800px){ .photo-strip{ grid-template-columns:repeat(3, 1fr); } .photo-strip div{ transform:none !important; } }
 
-  .final-cta{ text-align:center; background:var(--ink); color:#fff; position:relative; overflow:hidden; }
+  .final-cta{ text-align:center; background:#36454F; color:#fff; position:relative; overflow:hidden; }
   .final-cta .hero-contours{ opacity:0.4; }
   .final-cta-inner{ position:relative; z-index:1; }
   .final-cta h2{ font-size:clamp(34px,5vw,58px); max-width:760px; margin:0 auto 26px; color:#fff; }
   .final-cta p{ max-width:460px; margin:0 auto 40px; color:rgba(255,255,255,0.66); font-size:16px; }
+  .final-cta-actions{ display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+  .final-cta-actions .btn{ animation:slideUp .6s var(--ease-out-cubic) forwards; opacity:0; }
+  .final-cta-actions .btn:nth-child(1){ animation-delay:.1s; }
+  .final-cta-actions .btn:nth-child(2){ animation-delay:.2s; }
+  .final-cta-actions .btn:nth-child(3){ animation-delay:.3s; }
+  .app-badges{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:28px; }
+  .app-badge{ display:flex; align-items:center; gap:9px; border:1px solid rgba(255,255,255,0.25); border-radius:11px; padding:9px 16px; font-family:'Sen', sans-serif; font-size:12.5px; color:#fff; transition:border-color .2s, background .2s, transform .2s; animation:slideUp .6s var(--ease-out-cubic) forwards; opacity:0; }
+  .app-badge:nth-child(1){ animation-delay:.35s; }
+  .app-badge:nth-child(2){ animation-delay:.4s; }
+  .app-badge:hover{ border-color:#fff; background:rgba(255,255,255,0.06); transform:translateY(-2px); }
 
-  footer{ background:var(--ink); color:rgba(255,255,255,0.55); padding:60px 0 34px; font-size:13.5px; border-top:1px solid var(--line-dark); }
+  footer{ background:#36454F; color:#fff; padding:60px 0 34px; font-size:16px; border-top:1px solid var(--line-dark); }
   .footer-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px; padding-bottom:44px; border-bottom:1px solid rgba(255,255,255,0.12); }
   .footer-brand .logo{ color:#fff; margin-bottom:14px; }
-  .footer-brand p{ max-width:280px; line-height:1.6; color:rgba(255,255,255,0.4); }
+  .footer-brand p{ max-width:280px; line-height:1.6; color:#fff; }
+  .footer-app-badges{ display:flex; gap:16px; margin-top:20px; }
+  .footer-app-badge{ display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:16px 24px; transition:background .3s ease, border-color .3s ease, transform .3s ease; text-decoration:none; }
+  .footer-app-badge:hover{ background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.25); transform:translateY(-3px); }
+  .footer-app-badge svg{ width:40px; height:40px; }
+  .footer-app-badge-text{ display:flex; flex-direction:column; }
+  .footer-app-badge-text span:first-child{ font-size:11px; color:#fff; letter-spacing:0.5px; }
+  .footer-app-badge-text span:last-child{ font-size:18px; font-weight:600; color:#fff; margin-top:2px; }
   .footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
-  .footer-col h5{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:16px; }
-  .footer-col a{ display:block; margin-bottom:10px; color:rgba(255,255,255,0.68); transition:color .2s; }
+  .footer-col h5{ font-family:'Sen', sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#fff; margin-bottom:16px; }
+  .footer-col a{ display:block; margin-bottom:10px; color:#fff; transition:color .2s; }
   .footer-col a:hover{ color:#E9C77E; }
-  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:26px; color:rgba(255,255,255,0.35); }
+  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:26px; color:#fff; }
+  .footer-legal{ margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.08); text-align:center; font-size:12px; color:#fff; line-height:1.8; }
+  @media (max-width:900px){
+    .footer-top{ flex-direction:column; gap:32px; }
+    .footer-cols{ gap:32px; justify-content:center; }
+    .footer-bottom{ flex-direction:column; text-align:center; }
+  }
+  @media (max-width:640px){
+    footer{ padding:40px 0 24px; }
+    .footer-brand p{ font-size:14px; }
+    .footer-app-badges{ flex-direction:column; gap:12px; }
+    .footer-app-badge{ padding:12px 16px; }
+    .footer-app-badge svg{ width:32px; height:32px; }
+    .footer-cols{ grid-template-columns:1fr; text-align:center; }
+    .footer-bottom{ font-size:14px; }
+    .footer-legal{ font-size:11px; }
+  }
 
   .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease-out-cubic), transform .8s var(--ease-out-cubic); }
   .reveal.in{ opacity:1; transform:translateY(0); }
@@ -310,6 +807,158 @@
   .reveal-stagger.in > *:nth-child(7){ animation-delay:.59s; }
   .reveal-stagger.in > *:nth-child(8){ animation-delay:.68s; }
   .reveal-stagger > *{ opacity:0; }
+
+  /* App Showcase */
+  .app-showcase{ position:relative; background:#F8FDFF; overflow:hidden; padding:60px 0; }
+  .app-showcase-inner{ display:grid; grid-template-columns:0.95fr 1.05fr; gap:32px; align-items:center; }
+
+  .app-showcase-copy .eyebrow{ margin-bottom:18px; display:block; }
+  .app-showcase-copy h2{ font-family:'Passion One', sans-serif; font-size:clamp(30px,4vw,46px); line-height:1.08; color:var(--ink); margin-bottom:22px; }
+  .app-showcase-copy p{ font-size:20px; line-height:1.7; color:var(--ink-soft); max-width:440px; margin-bottom:34px; }
+
+  /* Phone mockup */
+  .app-showcase-phone{ position:relative; display:flex; justify-content:center; }
+  .app-showcase-phone:before{
+    content:""; position:absolute; width:680px; height:680px; border-radius:50%;
+    background:radial-gradient(circle, rgba(192,138,62,0.18), transparent 65%);
+    top:50%; left:50%; transform:translate(-50%,-50%); z-index:0; pointer-events:none;
+  }
+  .phone-frame{
+    position:relative; z-index:1;
+    width:340px; height:680px;
+    background:#0b0b0d;
+    border-radius:52px;
+    padding:10px;
+    box-shadow:
+      0 60px 120px -30px rgba(15,29,51,0.45),
+      0 0 0 2px rgba(255,255,255,0.06) inset;
+  }
+  .phone-frame:before{
+    content:""; position:absolute; left:-3px; top:150px; width:3px; height:36px; background:#0b0b0d; border-radius:3px 0 0 3px; box-shadow:0 60px 0 0 #0b0b0d, 0 100px 0 0 #0b0b0d;
+  }
+  .phone-frame:after{
+    content:""; position:absolute; right:-3px; top:220px; width:3px; height:80px; background:#0b0b0d; border-radius:0 3px 3px 0;
+  }
+  .phone-screen{
+    position:relative; width:100%; height:100%;
+    background:#fff; border-radius:42px; overflow:hidden;
+    box-shadow:0 0 0 2px rgba(255,255,255,0.04) inset;
+  }
+
+  .phone-statusbar{
+    position:absolute; top:0; left:0; right:0; height:46px; z-index:6;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 30px; pointer-events:none;
+    font-family:'Sen', sans-serif; font-weight:600; font-size:13px; color:#fff;
+    mix-blend-mode:difference;
+  }
+  .phone-statusbar .icons{ display:flex; align-items:center; gap:5px; }
+  .phone-statusbar svg{ width:16px; height:11px; }
+
+  .phone-notch{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:126px; height:32px; background:#0b0b0d; border-radius:20px; z-index:7;
+  }
+  .phone-notch:before{
+    content:""; position:absolute; right:24px; top:50%; transform:translateY(-50%);
+    width:8px; height:8px; border-radius:50%; background:#1a1a1a; box-shadow:0 0 0 2px #000;
+  }
+
+  .phone-home-indicator{
+    position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+    width:120px; height:4px; border-radius:3px; background:rgba(0,0,0,0.25); z-index:6;
+  }
+
+  .phone-frame-caption{
+    text-align:center; margin-top:22px; font-family:'Sen', sans-serif; font-size:12.5px; color:var(--ink-soft);
+  }
+
+  @media (max-width:980px){
+    .app-showcase-inner{ grid-template-columns:1fr; text-align:center; }
+    .app-showcase-copy p{ margin-left:auto; margin-right:auto; }
+  }
+  @media (max-width:520px){
+    .phone-frame{ width:260px; height:500px; padding:8px; border-radius:38px; }
+    .phone-screen{ border-radius:30px; }
+  }
+
+  /* Showcase Tabs */
+  .showcase-tabs{ display:flex; justify-content:center; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+  .showcase-tab{
+    position:relative; display:flex; align-items:center; gap:10px;
+    background:#fff; border:1px solid var(--line); border-radius:999px;
+    padding:12px 22px 12px 14px; cursor:pointer; overflow:hidden;
+    font-family:'Sen', sans-serif; font-weight:600; font-size:14.5px; color:var(--ink-soft);
+    transition:color .25s ease, border-color .25s ease, background .25s ease, transform .25s ease;
+  }
+  .showcase-tab:hover{ transform:translateY(-2px); border-color:var(--gold); color:var(--ink); }
+  .showcase-tab .tab-icon{ width:26px; height:26px; border-radius:50%; background:#F8FDFF; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .25s ease; }
+  .showcase-tab .tab-icon svg{ width:13px; height:13px; stroke:var(--ink-soft); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:stroke .25s ease; }
+  .showcase-tab .tab-price{ font-size:11.5px; color:var(--ink-soft); opacity:.7; font-weight:400; }
+  @media (max-width:900px){
+    .app-showcase-inner{ grid-template-columns:1fr; gap:32px; }
+    .app-showcase-copy{ max-width:100%; }
+  }
+  @media (max-width:640px){
+    .showcase-tabs{ grid-template-columns:1fr; gap:8px; }
+    .showcase-tab{ padding:12px 16px; }
+    .showcase-tab .tab-price{ font-size:10px; }
+  }
+  .showcase-tab.active{ color:#fff; background:var(--ink); border-color:var(--ink); }
+  .showcase-tab.active .tab-icon{ background:var(--gold); }
+  .showcase-tab.active .tab-icon svg{ stroke:#fff; }
+  .showcase-tab.active .tab-price{ color:#E9C77E; opacity:1; }
+  .showcase-tab-progress{ position:absolute; bottom:0; left:0; height:2.5px; width:0%; background:var(--gold); }
+  .showcase-tab-progress.run{ animation:tabProgress 3s linear forwards; }
+  @keyframes tabProgress{ from{width:0%;} to{width:100%;} }
+  @media (max-width:640px){ .showcase-tab{ padding:10px 16px 10px 10px; font-size:13px; } .showcase-tab .tab-price{ display:none; } }
+
+  .showcase-panels{ position:relative; }
+  .showcase-panel{ display:none; }
+  .showcase-panel.active{ display:block; animation:panelFade .5s var(--ease-out-cubic); }
+  @keyframes panelFade{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  .showcase-feature-list{ list-style:none; margin:18px 0 24px; }
+  .showcase-feature-list li{ display:flex; gap:10px; align-items:flex-start; font-size:16px; color:var(--ink-soft); line-height:1.5; margin-bottom:12px; }
+  .showcase-feature-list li:before{ content:"✓"; flex-shrink:0; width:18px; height:18px; border-radius:50%; background:#F8FDFF; color:var(--teal); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+  .showcase-feature-list li strong{ color:var(--ink); font-weight:600; }
+
+  .showcase-price-tag{ display:inline-flex; align-items:baseline; gap:5px; font-family:'Passion One', sans-serif; font-size:22px; color:var(--ink); margin-top:4px; }
+  .showcase-price-tag span{ font-family:'Sen', sans-serif; font-size:12px; color:var(--ink-soft); font-weight:400; }
+
+  /* Phone mock content, per tab */
+  .pm-screen{ height:100%; padding:42px 12px 18px; overflow-y:auto; }
+  .pm-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .pm-greet{ font-family:'Passion One', sans-serif; font-size:16px; color:var(--ink); }
+  .pm-badge{ font-family:'Sen', sans-serif; font-size:8px; font-weight:700; letter-spacing:.04em; padding:3px 8px; border-radius:999px; white-space:nowrap; }
+  .pm-badge.free{ background:#F8FDFF; color:var(--ink-soft); }
+  .pm-badge.paid{ background:var(--ink); color:#E9C77E; }
+  .pm-badge.biz{ background:var(--teal); color:#fff; }
+  .pm-card{ background:#F8FDFF; border-radius:12px; padding:10px 12px; margin-bottom:8px; }
+  .pm-card.dark{ background:var(--ink); color:#fff; }
+  .pm-label{ font-family:'Sen', sans-serif; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px; }
+  .pm-card.dark .pm-label{ color:rgba(255,255,255,.5); }
+  .pm-stat-big{ font-family:'Passion One', sans-serif; font-size:20px; color:var(--coral-deep); }
+  .pm-card.dark .pm-stat-big{ color:#E9C77E; }
+  .pm-stat-sub{ font-family:'Sen', sans-serif; font-size:10px; color:var(--ink-soft); margin-top:2px; }
+  .pm-card.dark .pm-stat-sub{ color:rgba(255,255,255,.5); }
+  .pm-progress-track{ height:4px; border-radius:4px; background:#fff; overflow:hidden; margin-top:8px; }
+  .pm-progress-fill{ height:100%; background:var(--coral); border-radius:4px; }
+  .pm-row{ display:flex; align-items:center; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(0,0,0,.06); font-size:11px; }
+  .pm-card.dark .pm-row{ border-bottom-color:rgba(255,255,255,.1); }
+  .pm-row:last-child{ border-bottom:none; }
+  .pm-row .n{ display:flex; align-items:center; gap:6px; color:var(--ink); font-weight:600; }
+  .pm-card.dark .pm-row .n{ color:#fff; }
+  .pm-row .n i{ width:18px; height:18px; border-radius:5px; background:#fff; display:flex; align-items:center; justify-content:center; font-size:9px; font-style:normal; font-weight:700; color:var(--ink); flex-shrink:0; }
+  .pm-row .v{ color:var(--ink-soft); font-family:'Sen', sans-serif; }
+  .pm-card.dark .pm-row .v{ color:rgba(255,255,255,.6); }
+  .pm-chat-bubble{ font-size:11px; line-height:1.3; padding:8px 10px; border-radius:10px; margin-bottom:6px; max-width:88%; }
+  .pm-chat-bubble.u{ background:#F8FDFF; margin-left:auto; border-bottom-right-radius:3px; color:var(--ink); }
+  .pm-chat-bubble.g{ background:var(--ink); color:#fff; border-bottom-left-radius:3px; }
+  .pm-btn{ display:block; text-align:center; background:var(--gold); color:#fff; font-family:'Sen', sans-serif; font-weight:600; font-size:11px; padding:8px; border-radius:8px; margin-top:4px; cursor:pointer; transition:transform .2s ease; }
+  .pm-btn:hover{ transform:translateY(-2px); }
+  .pm-mini-bars{ display:flex; align-items:flex-end; gap:3px; height:28px; margin-top:8px; }
+  .pm-mini-bars i{ flex:1; background:var(--gold); border-radius:2px 2px 0 0; display:block; }
 
   a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--coral-deep); outline-offset:2px; }
 
@@ -331,6 +980,7 @@
       <a href="#events">Life events</a>
       <a href="#stack">Why GAIA</a>
       <a href="#stories">Stories</a>
+      <a href="#pricing">Pricing</a>
       <a href="#trust">Trust</a>
     </div>
     <div class="nav-cta">
@@ -341,6 +991,9 @@
 </header>
 
 <section class="hero">
+  <div class="hero-background">
+    <img src="woman-desk.jpg" alt="Professional woman with financial planning materials" loading="eager">
+  </div>
   <div class="hero-contours" id="heroContours">
     <svg viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <path class="contour" d="M-40,120 C 260,60 420,180 720,110 S 1180,220 1260,90"/>
@@ -351,13 +1004,15 @@
     </svg>
   </div>
   <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="hero-eyebrow"><span class="rule"></span><span class="eyebrow">A financial-life simulator, built for women</span></div>
-      <h1>See your financial future <em>before</em> you live it.</h1>
-      <p class="hero-sub">Tell GAIA where you are today, where you want to go, and what life events you expect along the way. We turn it into a roadmap — grounded in your numbers, not a generic calculator.</p>
-      <div class="hero-actions">
-        <a href="#" class="btn btn-on-dark">Build my future</a>
-        <a href="#journey" class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3);">See how it works</a>
+    <div class="hero-content-wrapper">
+      <div class="hero-copy">
+        <div class="hero-eyebrow"><span class="rule"></span><span class="eyebrow">A financial-life simulator, built for women</span></div>
+        <h1>See your financial future before you live it.</h1>
+        <p class="hero-sub">Tell GAIA where you are today, where you want to go, and what life events you expect along the way. We turn it into a roadmap — grounded in your numbers, not a generic calculator.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-on-dark">Build my future</a>
+          <a href="#journey" class="btn btn-ghost-green">See how it works</a>
+        </div>
       </div>
     </div>
 
@@ -381,7 +1036,7 @@
           <path class="line-draw d1" pathLength="1600" d="M20,260 C 220,225 320,145 420,115 S 700,55 1050,30" stroke="#4A5B78" stroke-width="2.5" stroke-linecap="round"/>
           <path class="line-draw d2" pathLength="1600" d="M20,260 C 220,225 320,145 420,115 C 480,145 520,200 560,210 C 700,230 850,145 1050,90" stroke="#E9C77E" stroke-width="3" stroke-linecap="round"/>
           <path class="line-draw d3" pathLength="1600" d="M420,115 C 480,145 520,200 560,210 C 640,220 700,170 780,135 C 880,92 970,66 1050,52" stroke="#D6603E" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
-          <circle cx="420" cy="115" r="6" fill="#0C1728" stroke="#fff" stroke-width="2"/>
+          <circle cx="420" cy="115" r="6" fill="#4a9c6d" stroke="#fff" stroke-width="2"/>
           <line x1="420" y1="115" x2="420" y2="290" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="3 5"/>
           <circle cx="20" cy="260" r="5" fill="#fff"/>
           <circle cx="1050" cy="30" r="5" fill="#4A5B78"/>
@@ -401,30 +1056,407 @@
   </div>
 </section>
 
-<section id="problem">
+<section class="marquee-section">
+  <div class="marquee-label">As featured in</div>
+  <div class="marquee-viewport">
+    <div class="marquee-track">
+      <span>The Ledger</span><span>Her Wealth Weekly</span><span>Fintech Digest</span><span>MoneyWise</span><span>The Compound</span><span>Founders &amp; Finance</span>
+      <span>The Ledger</span><span>Her Wealth Weekly</span><span>Fintech Digest</span><span>MoneyWise</span><span>The Compound</span><span>Founders &amp; Finance</span>
+    </div>
+  </div>
+</section>
+
+<section class="app-showcase" id="app">
   <div class="wrap">
     <div class="section-head center reveal">
-      <span class="eyebrow">The problem</span>
-      <h2>Life doesn't follow a spreadsheet.</h2>
-      <p>Most financial tools calculate a straight line. Your actual life bends, pauses, and changes direction — a promotion, a leave, a move — and every one of those moments changes the math. GAIA is built to show you how, before you make it.</p>
+      <span class="eyebrow">Take GAIA with you</span>
+      <h2>One plan. Three ways to live with it.</h2>
+      <p>GAIA isn't something you open once a year and forget. Whichever plan you're on, your roadmap becomes part of your day — a two-minute check-in, a quick "what if," a nudge right when it matters.</p>
+    </div>
+
+    <div class="showcase-tabs" id="showcaseTabs" role="tablist">
+      <button class="showcase-tab active" data-tab="0" role="tab" aria-selected="true">
+        <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 3c-4.5 0-8 3.6-8 8 0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10 0-4.4-3.5-8-8-8z"/></svg></span>
+        <span>Free <span class="tab-price">· $0/mo</span></span>
+        <span class="showcase-tab-progress run"></span>
+      </button>
+      <button class="showcase-tab" data-tab="1" role="tab" aria-selected="false">
+        <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></span>
+        <span>Paid <span class="tab-price">· $8.99/mo</span></span>
+        <span class="showcase-tab-progress"></span>
+      </button>
+      <button class="showcase-tab" data-tab="2" role="tab" aria-selected="false">
+        <span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M9 21v-6h6v6M9 12h.01M15 12h.01M9 8h.01M15 8h.01"/></svg></span>
+        <span>Business <span class="tab-price">· Custom</span></span>
+        <span class="showcase-tab-progress"></span>
+      </button>
+    </div>
+
+    <div class="showcase-panels reveal">
+
+      <!-- PANEL 1 — FREE -->
+      <div class="showcase-panel active" data-panel="0">
+        <div class="app-showcase-inner">
+          <div class="app-showcase-copy">
+            <span class="eyebrow">Start here, no card required</span>
+            <h2>Free — build your first roadmap.</h2>
+            <p>Everything you need to see where you stand today, and a taste of the tools that get you further.</p>
+            <div class="showcase-price-tag">$0<span>/mo, forever</span></div>
+            <ul class="showcase-feature-list">
+              <li><strong>Trading Simulator</strong> — 7-day free access to test strategies risk-free.</li>
+              <li><strong>Unified Financial View</strong> — connect up to 4 accounts and see it all in one place.</li>
+              <li><strong>Support</strong> — live chat, plus one free 10-minute consultation.</li>
+            </ul>
+            <a href="#pricing" class="btn btn-primary">Start for free</a>
+          </div>
+          <div class="app-showcase-phone">
+            <div>
+              <div class="phone-frame">
+                <div class="phone-screen">
+                  <div class="phone-statusbar">
+                    <span class="phone-clock">9:41</span>
+                    <div class="icons">
+                      <svg viewBox="0 0 16 11" fill="none"><path d="M1 8.5h1.6v1.6H1V8.5zm3-2.5h1.6v4.1H4V6zm3-2.5h1.6v6.6H7V3.5zm3-2h1.6v8.6H10v-8.6zm3-1.5H14.6v10.1H13V0z" fill="#fff"/></svg>
+                      <svg viewBox="0 0 16 11" fill="none"><path d="M8 2.2C10.9 2.2 13.5 3.4 15.4 5.3l-1.2 1.2C12.6 4.9 10.4 4 8 4S3.4 4.9 1.8 6.5L.6 5.3C2.5 3.4 5.1 2.2 8 2.2z" fill="#fff"/></svg>
+                      <svg viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="2.5" stroke="#fff" stroke-width="1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.3" fill="#fff"/><path d="M23 4v4c.9-.4 1.5-1.2 1.5-2s-.6-1.6-1.5-2z" fill="#fff"/></svg>
+                    </div>
+                  </div>
+                  <div class="phone-notch"></div>
+                  <div class="pm-screen">
+                    <div class="pm-top">
+                      <div class="pm-greet">Hi, Maya</div>
+                      <span class="pm-badge free">FREE PLAN</span>
+                    </div>
+                    <div class="pm-card">
+                      <div class="pm-label">Trading Simulator · Free Trial</div>
+                      <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                        <span class="pm-stat-big">Day 3</span>
+                        <span class="pm-stat-sub">of 7</span>
+                      </div>
+                      <div class="pm-progress-track"><div class="pm-progress-fill" style="width:43%;"></div></div>
+                    </div>
+                    <div class="pm-card">
+                      <div class="pm-label">Connected accounts (4 of 4)</div>
+                      <div class="pm-row"><span class="n"><i>B</i> Checking</span><span class="v">$3,214</span></div>
+                      <div class="pm-row"><span class="n"><i>S</i> Savings</span><span class="v">$9,880</span></div>
+                      <div class="pm-row"><span class="n"><i>C</i> Credit Card</span><span class="v">–$412</span></div>
+                      <div class="pm-row"><span class="n"><i>I</i> Investment</span><span class="v">$6,050</span></div>
+                    </div>
+                    <div class="pm-card dark">
+                      <div class="pm-label">Need to talk it through?</div>
+                      <p style="font-size:12.5px; color:rgba(255,255,255,.72); line-height:1.5; margin-bottom:12px;">One free 10-minute consultation is included with your plan.</p>
+                      <div class="pm-btn">Book my free call</div>
+                    </div>
+                  </div>
+                  <div class="phone-home-indicator"></div>
+                </div>
+              </div>
+              <p class="phone-frame-caption">The Free plan — enough to see where you actually stand.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2 — PAID -->
+      <div class="showcase-panel" data-panel="1">
+        <div class="app-showcase-inner">
+          <div class="app-showcase-copy">
+            <span class="eyebrow">Most popular</span>
+            <h2>Paid — the full Lifecycle Engine.</h2>
+            <p>Gender-calibrated AI that understands the moments generic tools ignore, plus room for every account you have.</p>
+            <div class="showcase-price-tag">$8.99<span>/mo</span></div>
+            <ul class="showcase-feature-list">
+              <li><strong>Lifecycle Engine, Gender-Calibrated AI</strong> — understands career breaks, menopause, fertility, parenthood, and longevity.</li>
+              <li><strong>Trading Simulator</strong> — learn with $10,000 in virtual cash.</li>
+              <li><strong>On-demand Financial Therapy</strong> — connect with experts to understand your relationship with money.</li>
+              <li><strong>Unified Financial View</strong> — unlimited bank, credit card, and BNPL accounts (Klarna, Clearpay, and more).</li>
+            </ul>
+            <a href="#pricing" class="btn btn-primary">Build my future</a>
+          </div>
+          <div class="app-showcase-phone">
+            <div>
+              <div class="phone-frame">
+                <div class="phone-screen">
+                  <div class="phone-statusbar">
+                    <span class="phone-clock">9:41</span>
+                    <div class="icons">
+                      <svg viewBox="0 0 16 11" fill="none"><path d="M1 8.5h1.6v1.6H1V8.5zm3-2.5h1.6v4.1H4V6zm3-2.5h1.6v6.6H7V3.5zm3-2h1.6v8.6H10v-8.6zm3-1.5H14.6v10.1H13V0z" fill="#fff"/></svg>
+                      <svg viewBox="0 0 16 11" fill="none"><path d="M8 2.2C10.9 2.2 13.5 3.4 15.4 5.3l-1.2 1.2C12.6 4.9 10.4 4 8 4S3.4 4.9 1.8 6.5L.6 5.3C2.5 3.4 5.1 2.2 8 2.2z" fill="#fff"/></svg>
+                      <svg viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="2.5" stroke="#fff" stroke-width="1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.3" fill="#fff"/><path d="M23 4v4c.9-.4 1.5-1.2 1.5-2s-.6-1.6-1.5-2z" fill="#fff"/></svg>
+                    </div>
+                  </div>
+                  <div class="phone-notch"></div>
+                  <div class="pm-screen">
+                    <div class="pm-top">
+                      <div class="pm-greet">Hi, Maya</div>
+                      <span class="pm-badge paid">LIFECYCLE ENGINE</span>
+                    </div>
+                    <div class="pm-chat-bubble u">Is now a good time to ask for a raise before my career break?</div>
+                    <div class="pm-chat-bubble g">Your Lifecycle Engine factors in career breaks, menopause &amp; longevity — here's what the numbers say before you ask.</div>
+                    <div class="pm-card dark">
+                      <div class="pm-label">Trading Simulator</div>
+                      <div class="pm-stat-big">$10,000</div>
+                      <div class="pm-stat-sub">virtual balance to practice with</div>
+                      <div class="pm-mini-bars">
+                        <i style="height:40%;"></i><i style="height:55%;"></i><i style="height:35%;"></i><i style="height:70%;"></i><i style="height:60%;"></i><i style="height:85%;"></i>
+                      </div>
+                    </div>
+                    <div class="pm-card">
+                      <div class="pm-label">Accounts (unlimited)</div>
+                      <div class="pm-row"><span class="n"><i>B</i> Bank &amp; Credit Card</span><span class="v">Linked</span></div>
+                      <div class="pm-row"><span class="n"><i>K</i> Klarna</span><span class="v">Linked</span></div>
+                      <div class="pm-row"><span class="n"><i>C</i> Clearpay</span><span class="v">Linked</span></div>
+                    </div>
+                    <div class="pm-btn" style="background:var(--teal);">Book Financial Therapy</div>
+                  </div>
+                  <div class="phone-home-indicator"></div>
+                </div>
+              </div>
+              <p class="phone-frame-caption">The Paid plan — GAIA that actually knows your life stage.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 3 — BUSINESS -->
+      <div class="showcase-panel" data-panel="2">
+        <div class="app-showcase-inner">
+          <div class="app-showcase-copy">
+            <span class="eyebrow">For teams of 100+</span>
+            <h2>Business — GAIA for your whole company.</h2>
+            <p>Give your people the same roadmap tool, and give HR the reports that used to take a consultant to produce.</p>
+            <div class="showcase-price-tag">Custom<span>, contact for a quote</span></div>
+            <ul class="showcase-feature-list">
+              <li><strong>Discounted annual pricing</strong> — for a full-year subscription across 100+ employees.</li>
+              <li><strong>Talks, workshops &amp; bespoke programmes</strong> — run by GAIA's team, tailored to yours.</li>
+              <li><strong>Easy, accessible reports</strong> — Gender Pay Gap Report, Equality Action Plan, and Carer's Leave Register, generated automatically.</li>
+            </ul>
+            <a href="#business" class="btn btn-primary">Request Demo</a>
+          </div>
+          <div class="app-showcase-phone">
+            <div>
+              <div class="phone-frame">
+                <div class="phone-screen">
+                  <div class="phone-statusbar">
+                    <span class="phone-clock">9:41</span>
+                    <div class="icons">
+                      <svg viewBox="0 0 16 11" fill="none"><path d="M1 8.5h1.6v1.6H1V8.5zm3-2.5h1.6v4.1H4V6zm3-2.5h1.6v6.6H7V3.5zm3-2h1.6v8.6H10v-8.6zm3-1.5H14.6v10.1H13V0z" fill="#fff"/></svg>
+                      <svg viewBox="0 0 16 11" fill="none"><path d="M8 2.2C10.9 2.2 13.5 3.4 15.4 5.3l-1.2 1.2C12.6 4.9 10.4 4 8 4S3.4 4.9 1.8 6.5L.6 5.3C2.5 3.4 5.1 2.2 8 2.2z" fill="#fff"/></svg>
+                      <svg viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="2.5" stroke="#fff" stroke-width="1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.3" fill="#fff"/><path d="M23 4v4c.9-.4 1.5-1.2 1.5-2s-.6-1.6-1.5-2z" fill="#fff"/></svg>
+                    </div>
+                  </div>
+                  <div class="phone-notch"></div>
+                  <div class="pm-screen">
+                    <div class="pm-top">
+                      <div class="pm-greet">Business Demo</div>
+                      <span class="pm-badge biz">REQUEST DEMO</span>
+                    </div>
+                    <div class="pm-card dark">
+                      <div class="pm-label">Fill out the form below</div>
+                      <p style="font-size:12.5px; color:rgba(255,255,255,.72); line-height:1.5; margin-bottom:12px;">Tell us about your company and needs. Our team will contact you within 24 hours.</p>
+                    </div>
+                    <div class="pm-card">
+                      <div class="pm-label">What you'll get</div>
+                      <div class="pm-row"><span class="n"><i>📊</i> Compliance Reports</span><span class="v">Auto-generated</span></div>
+                      <div class="pm-row"><span class="n"><i>🎯</i> Workshops</span><span class="v">Custom programs</span></div>
+                      <div class="pm-row"><span class="n"><i>💼</i> Wellness</span><span class="v">Employee benefits</span></div>
+                    </div>
+                    <div class="pm-btn">Fill out the form</div>
+                  </div>
+                  <div class="phone-home-indicator"></div>
+                </div>
+              </div>
+              <p class="phone-frame-caption">Fill out our business inquiry form below.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<section class="statement">
-  <div class="statement-inner">
-    <div class="statement-text reveal">
-      <span class="eyebrow">One profile, a living model</span>
-      <h2>Your money, your career, your family — modeled as one future, not three spreadsheets.</h2>
-      <p class="lede">Update your income, add a goal, drop in a life event — GAIA recalculates the entire timeline instantly, every time.</p>
+<section id="pricing" class="section-paper-deep">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Membership</span>
+      <h2>Choose how you want to plan.</h2>
+      <p>Start free, upgrade when you want the full Lifecycle Engine — or bring GAIA to your whole team.</p>
     </div>
-    <div class="statement-photo">
-      <img src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?auto=format&fit=crop&w=1200&q=80" alt="Woman working confidently on a laptop" loading="eager">
+    <div class="pricing-grid reveal reveal-stagger">
+      <div class="pricing-card">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-price">$0<span> /mo</span></div>
+        <div class="pricing-sub">Get your first roadmap, no card required.</div>
+        <ul class="pricing-list">
+          <li>7-day Trading Simulator access</li>
+          <li>Unified Financial View — connect up to 4 accounts</li>
+          <li>Chat support + one free 10-minute consultation</li>
+        </ul>
+        <div class="pricing-cta"><a href="#" class="btn btn-ghost" style="width:100%; justify-content:center;">Start for free</a></div>
+      </div>
+      <div class="pricing-card popular">
+        <div class="pricing-badge">Most popular</div>
+        <div class="pricing-name">Paid</div>
+        <div class="pricing-price">$8.99<span> /mo</span></div>
+        <div class="pricing-sub">The full Lifecycle Engine, built around you.</div>
+        <ul class="pricing-list">
+          <li>Lifecycle Engine — Gender-Calibrated AI</li>
+          <li>Trading Simulator with $10,000 virtual cash</li>
+          <li>On-demand Financial Therapy</li>
+          <li>Unlimited account connections</li>
+        </ul>
+        <div class="pricing-cta"><a href="#" class="btn btn-on-dark" style="width:100%; justify-content:center;">Build my future</a></div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Business</div>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-sub">For teams of 100+ employees.</div>
+        <ul class="pricing-list">
+          <li>Discounted annual pricing</li>
+          <li>Workshops & training programmes</li>
+          <li>Gender Pay Gap Report</li>
+          <li>Equality Action Plan</li>
+        </ul>
+        <div class="pricing-cta"><a href="#" class="btn btn-ghost" style="width:100%; justify-content:center;">Book a call</a></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="journey" class="section-paper-deep">
+<section id="assistant">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Your personal AI guide</span>
+      <h2>Ask it anything. It already knows your numbers.</h2>
+      <p>GAIA's assistant explains your plan — it doesn't calculate it. Every answer is grounded in your actual profile and validated by a deterministic financial engine underneath, never invented by the model.</p>
+    </div>
+    
+    <div class="assistant-container reveal">
+      <div class="assistant-mobile-preview">
+        <div class="mobile-frame">
+          <div class="mobile-header">
+            <div class="mobile-status">
+              <span class="mobile-time">9:41</span>
+              <div class="mobile-icons">
+                <svg viewBox="0 0 16 11" fill="none"><path d="M1 8.5h1.6v1.6H1V8.5zm3-2.5h1.6v4.1H4V6zm3-2.5h1.6v6.6H7V3.5zm3-2h1.6v8.6H10v-8.6zm3-1.5H14.6v10.1H13V0z" fill="#fff"/></svg>
+                <svg viewBox="0 0 16 11" fill="none"><path d="M8 2.2C10.9 2.2 13.5 3.4 15.4 5.3l-1.2 1.2C12.6 4.9 10.4 4 8 4S3.4 4.9 1.8 6.5L.6 5.3C2.5 3.4 5.1 2.2 8 2.2z" fill="#fff"/></svg>
+                <svg viewBox="0 0 25 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="2.5" stroke="#fff" stroke-width="1"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.3" fill="#fff"/><path d="M23 4v4c.9-.4 1.5-1.2 1.5-2s-.6-1.6-1.5-2z" fill="#fff"/></svg>
+              </div>
+            </div>
+            <div class="mobile-notch"></div>
+          </div>
+          <div class="mobile-chat-body">
+            <div class="mobile-bubble user">
+              <div class="mobile-bubble-time">9:38 AM</div>
+              <div class="mobile-bubble-text">Can I afford to take six months off when I have my baby?</div>
+            </div>
+            <div class="mobile-bubble gaia">
+              <div class="mobile-bubble-label">SHORT ANSWER</div>
+              <div class="mobile-bubble-text">Yes — but your current plan creates a cash-flow gap.</div>
+              <div class="mobile-bubble-stats">
+                <div class="mobile-stat">
+                  <span class="mobile-stat-label">Income reduction</span>
+                  <span class="mobile-stat-value">~$21,000</span>
+                </div>
+                <div class="mobile-stat">
+                  <span class="mobile-stat-label">Additional expenses</span>
+                  <span class="mobile-stat-value">~$4,500</span>
+                </div>
+                <div class="mobile-stat">
+                  <span class="mobile-stat-label">Lost contributions</span>
+                  <span class="mobile-stat-value">~$8,000</span>
+                </div>
+              </div>
+            </div>
+            <div class="mobile-bubble user">
+              <div class="mobile-bubble-time">9:40 AM</div>
+              <div class="mobile-bubble-text">What would close that gap?</div>
+            </div>
+            <div class="mobile-bubble gaia">
+              <div class="mobile-bubble-label">SUGGESTED ACTION</div>
+              <div class="mobile-bubble-text">Build an additional $18,000 reserve over the next 18 months. Want me to compare 3, 6, and 9-month leave scenarios?</div>
+            </div>
+            <div class="mobile-typing">
+              <div class="typing-indicator">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-input-area">
+            <div class="mobile-input-field">
+              <input type="text" placeholder="Ask GAIA anything about your plan..." readonly>
+              <div class="mobile-send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="assistant-features">
+        <div class="assistant-feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h2"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h4>Knows your profile</h4>
+            <p>Every answer is grounded in your actual financial data and life situation.</p>
+          </div>
+        </div>
+        <div class="assistant-feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 1-3 3H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h3a3 3 0 0 1 3 3V3a2 2 0 0 1 2-2z"/>
+              <path d="M8 21h8"/>
+              <path d="M12 17v4"/>
+              <path d="M16 5l-4 4-4-4"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h4>Deterministic engine</h4>
+            <p>Validated by a financial engine, never invented by the AI model.</p>
+          </div>
+        </div>
+        <div class="assistant-feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </div>
+          <div class="feature-content">
+            <h4>Scenario-based</h4>
+            <p>Every projection is clearly labeled with its assumptions shown.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="assistant-disclaimer reveal">
+      <p>GAIA never guarantees outcomes or predicts market performance. Every projection is a scenario, clearly labeled, with its assumptions shown.</p>
+    </div>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="wrap trust-strip-inner reveal">
+    <span class="trust-strip-item">85,000+ women modeling their future</span>
+    <span class="divider">·</span>
+    <span class="trust-strip-item">IP &amp; platform fully owned by GAIA</span>
+    <span class="divider">·</span>
+    <span class="trust-strip-item">Bank-level encryption</span>
+  </div>
+</section>
+
+<section id="journey" class="section-paper-deep journey-white-bg">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">The GAIA journey</span>
@@ -434,7 +1466,7 @@
 
     <div class="feature-row reveal">
       <div class="feature-photo">
-        <img src="https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?auto=format&fit=crop&w=900&q=80" alt="Woman working from home on a laptop" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?w=900&q=80&auto=format" alt="Woman working from home on a laptop" loading="lazy">
         <div class="chip">STEP 01 · PROFILE</div>
       </div>
       <div class="feature-copy">
@@ -447,7 +1479,7 @@
 
     <div class="feature-row reverse reveal">
       <div class="feature-photo">
-        <img src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?auto=format&fit=crop&w=900&q=80" alt="Mother holding her baby by the ocean" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?w=900&q=80&auto=format" alt="Mother holding her baby by the ocean" loading="lazy">
         <div class="chip">STEP 02 · SIMULATE</div>
       </div>
       <div class="feature-copy">
@@ -460,7 +1492,7 @@
 
     <div class="feature-row reveal">
       <div class="feature-photo">
-        <img src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?auto=format&fit=crop&w=900&q=80" alt="Woman holding the keys to a new home" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?w=900&q=80&auto=format" alt="Woman holding the keys to a new home" loading="lazy">
         <div class="chip">STEP 03 · ACT</div>
       </div>
       <div class="feature-copy">
@@ -476,33 +1508,50 @@
 <section id="demo">
   <div class="wrap">
     <div class="section-head center reveal">
-      <span class="eyebrow">Try it</span>
-      <h2>Move one number. Watch your future move.</h2>
-      <p>This is the core of GAIA — every assumption you touch recalculates your whole timeline instantly.</p>
+      <span class="eyebrow">Try GAIA's Trading Simulator</span>
+      <h2>Master Real Trading with Zero Risk</h2>
+      <p>Learn technical analysis, practice trading strategies, and understand market dynamics — with a virtual $10,000 starting balance to simulate real-world trading without losing your money.</p>
     </div>
     <div class="demo-panel reveal">
       <div class="demo-left">
-        <span class="eyebrow">What if?</span>
-        <h3>Increase your monthly investment</h3>
-        <p>Drag the slider to see what $500 more a month could mean by the time you're 60 — same income, same goals, one changed habit.</p>
-        <div class="slider-row">
-          <label>Monthly investment <span id="sliderVal">$500 / mo</span></label>
-          <input type="range" id="investSlider" min="500" max="2000" step="50" value="500">
+        <div class="sim-ribbon">FREE PREVIEW · 7 DAYS FULL ACCESS</div>
+        <span class="eyebrow">What you'll learn</span>
+        <div class="sim-balance">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+          <span>Virtual balance: $10,000 starting cash</span>
+        </div>
+        <h3>Build Your Trading Skills</h3>
+        <p>Practice real market trading with virtual cash. Learn to read candlestick patterns, understand support and resistance levels, and develop profitable trading strategies. Our AI guides you through every trade.</p>
+        <div class="trading-features">
+          <div class="trading-feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            Technical Analysis Training
+          </div>
+          <div class="trading-feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            Real-time Market Data
+          </div>
+          <div class="trading-feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+            AI-Powered Trade Guidance
+          </div>
+          <div class="trading-feature">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            Risk Management Lessons
+          </div>
         </div>
       </div>
       <div class="demo-right">
-        <div class="demo-metrics">
-          <div class="demo-metric"><div class="m-label">PROJECTED AT 60</div><div class="m-value num" id="projValue">$1.64M</div></div>
-          <div class="demo-metric"><div class="m-label">GOAL PROBABILITY</div><div class="m-value num" id="goalProb">74%</div></div>
+        <div class="chart-image">
+          <img src="chart.jpg" alt="Trading chart showing market analysis" loading="eager">
         </div>
-        <svg id="chartSvg" viewBox="0 0 480 190" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0" y1="40" x2="480" y2="40" stroke="#E2DCCB"/>
-          <line x1="0" y1="90" x2="480" y2="90" stroke="#E2DCCB"/>
-          <line x1="0" y1="140" x2="480" y2="140" stroke="#E2DCCB"/>
-          <path id="chartPath" d="" stroke="#D6603E" stroke-width="3" stroke-linecap="round"/>
-          <circle id="chartDot" cx="470" cy="30" r="5" fill="#D6603E"/>
-        </svg>
-        <p class="demo-caption">Scenario estimate · base case assumptions · not a guarantee.</p>
+        <div class="demo-content">
+          <div class="demo-metrics">
+            <div class="demo-metric"><div class="m-label">VIRTUAL BALANCE</div><div class="m-value num">$10,000</div></div>
+            <div class="demo-metric"><div class="m-label">LEARNING MODE</div><div class="m-value num">ACTIVE</div></div>
+          </div>
+          <p class="demo-caption">Practice mode · no real money involved · educational purpose only.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -517,36 +1566,452 @@
     </div>
     <div class="events-grid reveal reveal-stagger">
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?auto=format&fit=crop&w=120&q=80" alt="Maternity leave" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?w=120&q=80&auto=format" alt="Maternity leave" loading="lazy">
         <h4>Maternity leave</h4><p>Income during leave, employer policy, and the compounding cost of missed contributions.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?auto=format&fit=crop&w=120&q=80" alt="Buy a home" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?w=120&q=80&auto=format" alt="Buy a home" loading="lazy">
         <h4>Buy a home</h4><p>Down payment timing, mortgage impact, and post-purchase cash-flow resilience.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?auto=format&fit=crop&w=120&q=80" alt="Career change" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?w=120&q=80&auto=format" alt="Career change" loading="lazy">
         <h4>Career change</h4><p>New salary curve, benefits shift, and how a raise changes your retirement date.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1653566031568-71626c8247f5?auto=format&fit=crop&w=120&q=80" alt="Marriage" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1653566031568-71626c8247f5?w=120&q=80&auto=format" alt="Marriage" loading="lazy">
         <h4>Marriage</h4><p>Combined finances, shared goals, and how two plans become one.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=120&q=80" alt="Education" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=120&q=80&auto=format" alt="Education" loading="lazy">
         <h4>Education</h4><p>Tuition, loans, and the long-run return on a degree or certification.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=120&q=80" alt="Career break" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=120&q=80&auto=format" alt="Career break" loading="lazy">
         <h4>Career break</h4><p>Lost contributions, lost match, lost compounding — quantified, not guessed.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1644945586733-73c3cb9cb648?auto=format&fit=crop&w=120&q=80" alt="Early retirement" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1644945586733-73c3cb9cb648?w=120&q=80&auto=format" alt="Early retirement" loading="lazy">
         <h4>Early retirement</h4><p>Withdrawal rate, longevity risk, and what "enough" actually looks like for you.</p>
       </div>
       <div class="event-card">
-        <img class="event-thumb" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=120&q=80" alt="Add your own" loading="lazy">
+        <img class="event-thumb" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=120&q=80&auto=format" alt="Add your own" loading="lazy">
         <h4>Add your own</h4><p>Every event follows the same model — GAIA grows with whatever comes next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stories" class="section-paper-deep">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Real plans, real women</span>
+      <h2>Stories from the GAIA community.</h2>
+    </div>
+    <div class="testi-root reveal">
+      <div class="testi-track" id="testiTrack">
+        <div class="testi-slide active">
+          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80&auto=format" alt="Priya, GAIA member" loading="lazy"></div>
+          <div>
+            <p class="testi-quote">"I finally saw what a six-month leave would actually cost — down to the dollar. That number changed how I negotiated my return-to-work date."</p>
+            <div class="testi-name">Priya M.</div>
+            <div class="testi-role">Product manager, first-time mom</div>
+            <div class="testi-stats">
+              <div><div class="testi-stat-value num">$18K</div><div class="testi-stat-label">RESERVE BUILT</div></div>
+              <div><div class="testi-stat-value num">4 mo</div><div class="testi-stat-label">PLANNING WINDOW</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80&auto=format" alt="Dana, GAIA member" loading="lazy"></div>
+          <div>
+            <p class="testi-quote">"GAIA modeled my career break and my partner's income together. Seeing it as one plan instead of two spreadsheets was the whole point."</p>
+            <div class="testi-name">Dana R.</div>
+            <div class="testi-role">Freelance designer, newly married</div>
+            <div class="testi-stats">
+              <div><div class="testi-stat-value num">+12%</div><div class="testi-stat-label">GOAL PROBABILITY</div></div>
+              <div><div class="testi-stat-value num">2 goals</div><div class="testi-stat-label">MERGED</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80&auto=format" alt="Elena, GAIA member" loading="lazy"></div>
+          <div>
+            <p class="testi-quote">"I'm 58 and planning for 35 more years, not 20. GAIA was the first tool that didn't quietly assume I'd need less."</p>
+            <div class="testi-name">Elena T.</div>
+            <div class="testi-role">Nonprofit director, pre-retirement</div>
+            <div class="testi-stats">
+              <div><div class="testi-stat-value num">35 yr</div><div class="testi-stat-label">HORIZON MODELED</div></div>
+              <div><div class="testi-stat-value num">3.1%</div><div class="testi-stat-label">SAFE WITHDRAWAL</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-progress-bar" id="testiProgress">
+        <div class="testi-progress-fill"></div>
+      </div>
+      <div class="testi-nav">
+        <button class="testi-nav-btn prev" id="testiPrev" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <div class="testi-dots" id="testiDots"></div>
+        <button class="testi-nav-btn next" id="testiNext" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="challenge">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">The 25-Day Money Reset</span>
+      <h2>Build the habits your plan depends on.</h2>
+      <p>A 25-day guided challenge — one small action a day, tracked inside GAIA.</p>
+    </div>
+    <div class="challenge-panel reveal">
+      <div class="challenge-copy">
+        <span class="eyebrow">JOIN THIS MONTH'S COHORT</span>
+        <h3>25 days. One habit at a time.</h3>
+        <p>Short, guided actions that turn your plan into a routine — from your first budget check to reviewing your full roadmap.</p>
+        <div class="challenge-cohort"><span class="dot"></span>1,200 women already in this month's cohort</div>
+        <a href="#" class="btn btn-on-dark challenge-cta-btn">Join the next cohort</a>
+      </div>
+      <div class="challenge-weeks">
+        <div class="challenge-week"><span class="wk-check">✓</span><div class="wk-text"><strong>Foundations</strong><span>Days 1–5</span></div></div>
+        <div class="challenge-week"><span class="wk-check">✓</span><div class="wk-text"><strong>Spending Awareness</strong><span>Days 6–12</span></div></div>
+        <div class="challenge-week"><span class="wk-check">✓</span><div class="wk-text"><strong>Investing Basics</strong><span>Days 13–19</span></div></div>
+        <div class="challenge-week"><span class="wk-check">✓</span><div class="wk-text"><strong>Your Roadmap Review</strong><span>Days 20–25</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="business" class="section-paper-deep business-white-bg">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">For employers</span>
+      <h2>Three ways to connect with GAIA</h2>
+      <p>Help your people earn more, spend less, and grow their wealth with gender-calibrated financial planning.</p>
+    </div>
+    
+    <div class="business-tabs reveal">
+      <button class="business-tab active" data-tab="business">FOR BUSINESS</button>
+      <button class="business-tab" data-tab="waitlist">JOIN WAITING LIST</button>
+      <button class="business-tab" data-tab="contact">CONTACT US</button>
+    </div>
+    
+    <div class="biz-form-container reveal">
+      <div class="biz-form-wrapper" id="business-content">
+        <div class="biz-form-header">
+          <h3>Request a demo for your team</h3>
+          <p>Fill out this form and our team will contact you within 24 hours to discuss how GAIA can benefit your organization.</p>
+        </div>
+        
+        <form class="biz-form" id="businessInquiryForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="companyName">Company Name *</label>
+              <input type="text" id="companyName" name="companyName" required placeholder="Your company name">
+            </div>
+            <div class="form-group">
+              <label for="companySize">Company Size *</label>
+              <select id="companySize" name="companySize" required>
+                <option value="">Select company size</option>
+                <option value="1-50">1-50 employees</option>
+                <option value="51-100">51-100 employees</option>
+                <option value="101-250">101-250 employees</option>
+                <option value="251-500">251-500 employees</option>
+                <option value="501-1000">501-1000 employees</option>
+                <option value="1000+">1000+ employees</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contactName">Your Name *</label>
+              <input type="text" id="contactName" name="contactName" required placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label for="contactRole">Your Role *</label>
+              <select id="contactRole" name="contactRole" required>
+                <option value="">Select your role</option>
+                <option value="HR">HR / People Operations</option>
+                <option value="Leadership">Leadership / Executive</option>
+                <option value="Finance">Finance / CFO</option>
+                <option value="Benefits">Benefits / Compensation</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contactEmail">Work Email *</label>
+              <input type="email" id="contactEmail" name="contactEmail" required placeholder="you@company.com">
+            </div>
+            <div class="form-group">
+              <label for="contactPhone">Phone Number</label>
+              <input type="tel" id="contactPhone" name="contactPhone" placeholder="+1 (555) 123-4567">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="interestArea">What interests you most? *</label>
+            <select id="interestArea" name="interestArea" required>
+              <option value="">Select your primary interest</option>
+              <option value="compliance">Compliance & Reporting (Gender Pay Gap, Equality Action Plan)</option>
+              <option value="wellness">Employee Financial Wellness Programs</option>
+              <option value="retention">Employee Retention & Engagement</option>
+              <option value="education">Financial Education Workshops</option>
+              <option value="all">All of the above</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="timeline">Timeline for implementation</label>
+            <select id="timeline" name="timeline">
+              <option value="">Select timeline</option>
+              <option value="immediate">Immediate (within 1 month)</option>
+              <option value="quarter">Next quarter (1-3 months)</option>
+              <option value="half">Next 6 months</option>
+              <option value="exploring">Just exploring, no timeline yet</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Additional Details</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell us about your specific needs or questions..."></textarea>
+          </div>
+          
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="consent" name="consent" required>
+              <span>I consent to GAIA contacting me about business solutions and understand my data will be processed according to the privacy policy.</span>
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary biz-submit-btn">Request Demo</button>
+        </form>
+      </div>
+      
+      <div class="biz-info-panel" id="business-info">
+        <div class="biz-benefits">
+          <h4>Why companies choose GAIA</h4>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"/>
+                <path d="M18 17V9"/>
+                <path d="M13 17V5"/>
+                <path d="M8 17v-3"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Automated Compliance Reports</h5>
+              <p>Gender Pay Gap Report, Equality Action Plan, and Carer's Leave Register generated automatically.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Financial Wellness Programs</h5>
+              <p>Company-wide workshops and talks that build real financial literacy.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Employee Retention</h5>
+              <p>Financial wellness as a benefit that reduces stress-driven attrition.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Gender-Calibrated Planning</h5>
+              <p>Tools designed for women's financial patterns and life stages.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="biz-contact">
+          <h4>Questions? Contact us directly</h4>
+          <div class="contact-item">
+            <span class="contact-label">Email:</span>
+            <a href="mailto:business@gaia.app">business@gaia.app</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Phone:</span>
+            <a href="tel:+18001234567">+1 (800) 123-4567</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Hours:</span>
+            <span>Mon-Fri, 9am-6pm EST</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="biz-form-wrapper" id="waitlist-content" style="display:none;">
+        <div class="biz-form-header">
+          <h3>Join the waitlist</h3>
+          <p>Be the first to know when GAIA launches for individuals. Get early access and exclusive benefits.</p>
+        </div>
+        
+        <form class="biz-form" id="waitlistForm">
+          <div class="form-group">
+            <label for="waitlistName">Your Name *</label>
+            <input type="text" id="waitlistName" name="waitlistName" required placeholder="Your full name">
+          </div>
+          
+          <div class="form-group">
+            <label for="waitlistEmail">Email Address *</label>
+            <input type="email" id="waitlistEmail" name="waitlistEmail" required placeholder="you@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="waitlistInterest">What interests you most?</label>
+            <select id="waitlistInterest" name="waitlistInterest">
+              <option value="">Select your primary interest</option>
+              <option value="planning">Financial planning</option>
+              <option value="investing">Investment guidance</option>
+              <option value="retirement">Retirement planning</option>
+              <option value="education">Financial education</option>
+            </select>
+          </div>
+          
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="waitlistConsent" required>
+              I consent to GAIA contacting me about product updates and understand my data will be processed according to the privacy policy.
+            </label>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary biz-submit-btn">Join Waitlist</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="biz-form-wrapper" id="contact-content" style="display:none;">
+        <div class="biz-form-header">
+          <h3>Contact us</h3>
+          <p>Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+        </div>
+        
+        <form class="biz-form" id="contactForm">
+          <div class="form-group">
+            <label for="contactFormName">Your Name *</label>
+            <input type="text" id="contactFormName" name="contactFormName" required placeholder="Your full name">
+          </div>
+          
+          <div class="form-group">
+            <label for="contactFormEmail">Email Address *</label>
+            <input type="email" id="contactFormEmail" name="contactFormEmail" required placeholder="you@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="contactFormSubject">Subject *</label>
+            <input type="text" id="contactFormSubject" name="contactFormSubject" required placeholder="How can we help?">
+          </div>
+          
+          <div class="form-group">
+            <label for="contactFormMessage">Message *</label>
+            <textarea id="contactFormMessage" name="contactFormMessage" required placeholder="Tell us about your specific needs or questions..."></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary biz-submit-btn">Send Message</button>
+          </div>
+        </form>
+      </div>
+        <div class="biz-benefits">
+          <h4>Why companies choose GAIA</h4>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"/>
+                <path d="M18 17V9"/>
+                <path d="M13 17V5"/>
+                <path d="M8 17v-3"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Automated Compliance Reports</h5>
+              <p>Gender Pay Gap Report, Equality Action Plan, and Carer's Leave Register generated automatically.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Financial Wellness Programs</h5>
+              <p>Company-wide workshops and talks that build real financial literacy.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Employee Retention</h5>
+              <p>Financial wellness as a benefit that reduces stress-driven attrition.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="benefit-content">
+              <h5>Gender-Calibrated Planning</h5>
+              <p>Tools designed for women's financial patterns and life stages.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="biz-contact">
+          <h4>Questions? Contact us directly</h4>
+          <div class="contact-item">
+            <span class="contact-label">Email:</span>
+            <a href="mailto:business@gaia.app">business@gaia.app</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Phone:</span>
+            <a href="tel:+18001234567">+1 (800) 123-4567</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Hours:</span>
+            <span>Mon-Fri, 9am-6pm EST</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -567,7 +2032,7 @@
           <h3>We don't pretend the gap doesn't exist.</h3>
           <p>GAIA lets you model income interruptions and unequal pay growth explicitly, so your plan accounts for the real curve of a career — not the idealized one.</p>
         </div>
-        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80" alt="Woman reviewing financial charts" loading="lazy"></div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=80&auto=format" alt="Woman reviewing financial charts" loading="lazy"></div>
       </div>
     </div>
     <div class="stack-card" style="top:132px; z-index:2;">
@@ -577,7 +2042,7 @@
           <h3>Time off is a number, not a footnote.</h3>
           <p>Every pause — parental leave, elder care, a sabbatical — gets its own line item: lost income, lost match, lost compounding. See it before you take it.</p>
         </div>
-        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=900&q=80" alt="Mother and daughter at home" loading="lazy"></div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=900&q=80&auto=format" alt="Mother and daughter at home" loading="lazy"></div>
       </div>
     </div>
     <div class="stack-card" style="top:164px; z-index:3;">
@@ -587,7 +2052,7 @@
           <h3>Your money needs to last longer. We plan for it.</h3>
           <p>Women retirees live longer on average — GAIA's withdrawal models default to longer time horizons instead of quietly underestimating them.</p>
         </div>
-        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80" alt="Older woman smiling outdoors" loading="lazy"></div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=900&q=80&auto=format" alt="Older woman smiling outdoors" loading="lazy"></div>
       </div>
     </div>
     <div class="stack-card" style="top:196px; z-index:4;">
@@ -597,149 +2062,103 @@
           <h3>Anonymized benchmarks, not empty averages.</h3>
           <p>Compare your trajectory to other women at your stage — same income band, same goals — without ever sharing your actual data with anyone.</p>
         </div>
-        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=900&q=80" alt="Group of women collaborating" loading="lazy"></div>
+        <div class="stack-visual"><img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=900&q=80&auto=format" alt="Group of women collaborating" loading="lazy"></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="assistant">
-  <div class="wrap chat-wrap">
-    <div class="chat-window reveal">
-      <div class="chat-header"><span class="dot"></span><span>GAIA · grounded in your profile</span></div>
-      <div class="chat-body">
-        <div class="bubble user">Can I afford to take six months off when I have my baby?</div>
-        <div class="bubble gaia">
-          <span class="g-label">SHORT ANSWER</span>
-          Yes — but your current plan creates a cash-flow gap.
-          <ul>
-            <li>~$21,000 estimated income reduction</li>
-            <li>~$4,500 estimated additional expenses</li>
-            <li>~$8,000 reduction in investment contributions</li>
-          </ul>
-        </div>
-        <div class="bubble user">What would close that gap?</div>
-        <div class="bubble gaia">
-          <span class="g-label">SUGGESTED ACTION</span>
-          Build an additional $18,000 reserve over the next 18 months. Want me to compare 3, 6, and 9-month leave scenarios?
-        </div>
-      </div>
-    </div>
-    <div class="chat-copy reveal">
-      <span class="eyebrow">Your personal AI guide</span>
-      <h2>Ask it anything. It already knows your numbers.</h2>
-      <p>GAIA's assistant explains your plan — it doesn't calculate it. Every answer is grounded in your actual profile and validated by a deterministic financial engine underneath, never invented by the model.</p>
-      <p class="fine">GAIA never guarantees outcomes or predicts market performance. Every projection is a scenario, clearly labeled, with its assumptions shown.</p>
-    </div>
-  </div>
-</section>
-
-<section id="stories" class="section-paper-deep">
+<section id="why-gaia" class="section-paper-deep">
   <div class="wrap">
-    <div class="section-head center reveal">
-      <span class="eyebrow">Real plans, real women</span>
-      <h2>Stories from the GAIA community.</h2>
-    </div>
-    <div class="testi-root reveal">
-      <div class="testi-track" id="testiTrack">
-        <div class="testi-slide active">
-          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80" alt="Priya, GAIA member" loading="lazy"></div>
-          <div>
-            <p class="testi-quote">"I finally saw what a six-month leave would actually cost — down to the dollar. That number changed how I negotiated my return-to-work date."</p>
-            <div class="testi-name">Priya M.</div>
-            <div class="testi-role">Product manager, first-time mom</div>
-            <div class="testi-stats">
-              <div><div class="testi-stat-value num">$18K</div><div class="testi-stat-label">RESERVE BUILT</div></div>
-              <div><div class="testi-stat-value num">4 mo</div><div class="testi-stat-label">PLANNING WINDOW</div></div>
-            </div>
+    <div class="why-gaia-container reveal">
+      <div class="why-gaia-left">
+        <div class="why-gaia-content">
+          <span class="eyebrow">Why a gender-calibrated platform</span>
+          <h2>Generic tools model a generic career. Yours isn't one.</h2>
+          <p>Here's exactly what that means, and why it changes the math.</p>
+        </div>
+      </div>
+      <div class="why-gaia-right">
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Why does GAIA need to be different for women at all?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">Because the underlying financial patterns differ — pay grows unevenly, careers pause more often for caregiving, and retirement needs to stretch across a longer life. A model built on averages quietly absorbs those gaps instead of accounting for them.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>What is the gender pay and pension gap, and how does GAIA account for it?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">Women are typically paid less over a career and accumulate smaller pensions as a result. GAIA lets you model uneven pay growth and interrupted contributions explicitly, so your projections reflect your actual trajectory rather than a flat growth assumption.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Does GAIA model career breaks, menopause, or fertility costs by default?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes. The Lifecycle Engine includes these as built-in life-event categories, not optional add-ons — each carries its own cost, income, and compounding impact that flows straight into your plan.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Is this only for women, or built with women's financial patterns in mind?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">GAIA is built around the financial patterns that disproportionately affect women — but the engine underneath works for anyone whose life doesn't follow a straight line.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>How accurate are GAIA's financial projections?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">GAIA uses the same deterministic financial engine for every calculation — no AI-generated numbers. We source tax rules, contribution limits, and benefit formulas directly from IRS, SEC, CFPB, and Department of Labor databases. Projections are scenarios, not guarantees, but the math underneath is transparent and validated.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Is my financial data secure and private?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes. Your data is encrypted at rest and in transit using bank-level security. We never sell your data to third parties, and you can delete your entire profile and all associated data at any time. Benchmarks are computed only on anonymized, aggregated cohorts — no individual profile is ever visible to another member.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>What makes GAIA different from traditional financial planning tools?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">Traditional tools model a generic career trajectory with steady income growth and ignore gender-specific life events. GAIA explicitly models career breaks, caregiving periods, menopause costs, and longer life expectancy. Instead of one spreadsheet, you get a living model that updates whenever your life or your plans change.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Can employers use GAIA for their workforce?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes. GAIA offers a Business plan for teams of 100+ employees that includes discounted annual pricing, automated compliance reports (Gender Pay Gap Report, Equality Action Plan, Carer's Leave Register), financial wellness workshops, and employee engagement programs to support retention and financial confidence.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>How does the AI assistant work without making up numbers?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">The AI explains your plan — it doesn't calculate it. Every financial number comes from our deterministic engine that uses real tax rules, contribution limits, and market assumptions. The AI simply translates those calculations into natural language, showing you the "why" behind every recommendation.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>What life events can I model in GAIA?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">GAIA includes built-in categories for parental leave, career breaks, sabbaticals, elder care, menopause costs, fertility treatments, divorce settlements, home purchases, and major career transitions. Each event carries its own income, expense, and compounding impact that flows through your entire financial model.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>What happens if my actual life doesn't match my GAIA plan?</span>
+              <span class="plus"></span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner">That's exactly what GAIA is designed for. Update your income, add a new goal, or drop in an unexpected life event — GAIA recalculates your entire timeline instantly. Your plan is a living model, not a static document. You can compare different scenarios side-by-side to make informed decisions as life changes.</div></div>
           </div>
         </div>
-        <div class="testi-slide">
-          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=600&q=80" alt="Dana, GAIA member" loading="lazy"></div>
-          <div>
-            <p class="testi-quote">"GAIA modeled my career break and my partner's income together. Seeing it as one plan instead of two spreadsheets was the whole point."</p>
-            <div class="testi-name">Dana R.</div>
-            <div class="testi-role">Freelance designer, newly married</div>
-            <div class="testi-stats">
-              <div><div class="testi-stat-value num">+12%</div><div class="testi-stat-label">GOAL PROBABILITY</div></div>
-              <div><div class="testi-stat-value num">2 goals</div><div class="testi-stat-label">MERGED</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="testi-slide">
-          <div class="testi-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Elena, GAIA member" loading="lazy"></div>
-          <div>
-            <p class="testi-quote">"I'm 58 and planning for 35 more years, not 20. GAIA was the first tool that didn't quietly assume I'd need less."</p>
-            <div class="testi-name">Elena T.</div>
-            <div class="testi-role">Nonprofit director, pre-retirement</div>
-            <div class="testi-stats">
-              <div><div class="testi-stat-value num">35 yr</div><div class="testi-stat-label">HORIZON MODELED</div></div>
-              <div><div class="testi-stat-value num">3.1%</div><div class="testi-stat-label">SAFE WITHDRAWAL</div></div>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="testi-nav">
-        <button class="testi-nav-btn prev" id="testiPrev" aria-label="Previous story"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-        <div class="testi-dots" id="testiDots"></div>
-        <button class="testi-nav-btn next" id="testiNext" aria-label="Next story"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-ink">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Your next 12 months</span>
-      <h2>A roadmap, not a lecture.</h2>
-    </div>
-    <div class="roadmap-list reveal">
-      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Build a $15,000 emergency fund</p><span>PRIORITY · HIGH</span></div>
-      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Increase your 401(k) contribution to 10%</p><span>+$180K BY 60</span></div>
-      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Pay down your $4,000 credit card balance</p><span>PRIORITY · HIGH</span></div>
-      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Save $12,000 toward your maternity reserve</p><span>18 MONTHS</span></div>
-      <div class="roadmap-item"><span class="roadmap-check">✓</span><p>Review your insurance coverage</p><span>THIS QUARTER</span></div>
-    </div>
-  </div>
-</section>
-
-<section id="trust">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Why trust the numbers</span>
-      <h2>Transparent by design.</h2>
-      <p>GAIA never tells you what your future will be. It shows you what it could look like — and exactly why. Hover a card for the detail.</p>
-    </div>
-    <div class="trust-grid reveal">
-      <div class="trust-cell">
-        <div class="trust-flipper">
-          <div class="trust-face front"><span class="num">01 / ENGINE</span><p>A deterministic financial engine does every calculation. The AI explains it — it never invents a number.</p></div>
-          <div class="trust-face back"><span class="num">01 / ENGINE</span><p>Every projection runs through the same open-methodology engine used across GAIA — same formulas whether you're 24 or 64, so nothing is quietly softened for engagement.</p></div>
-        </div>
-      </div>
-      <div class="trust-cell">
-        <div class="trust-flipper">
-          <div class="trust-face front"><span class="num">02 / SOURCES</span><p>Tax and benefit rules are retrieved from the IRS, SEC, CFPB, and Department of Labor — never from model memory.</p></div>
-          <div class="trust-face back"><span class="num">02 / SOURCES</span><p>Rule updates are dated and versioned. If a contribution limit or bracket changes, your plan re-runs automatically with the new figure.</p></div>
-        </div>
-      </div>
-      <div class="trust-cell">
-        <div class="trust-flipper">
-          <div class="trust-face front"><span class="num">03 / PRIVACY</span><p>Your data is encrypted, never sold, and deletable in full — profile, goals, and conversations included.</p></div>
-          <div class="trust-face back"><span class="num">03 / PRIVACY</span><p>Benchmarks are computed on anonymized, aggregated cohorts only. No individual profile is ever visible to another member or advertiser.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="marquee-section">
-  <div class="marquee-label">As featured in</div>
-  <div class="marquee-viewport">
-    <div class="marquee-track">
-      <span>The Ledger</span><span>Her Wealth Weekly</span><span>Fintech Digest</span><span>MoneyWise</span><span>The Compound</span><span>Founders &amp; Finance</span>
-      <span>The Ledger</span><span>Her Wealth Weekly</span><span>Fintech Digest</span><span>MoneyWise</span><span>The Compound</span><span>Founders &amp; Finance</span>
     </div>
   </div>
 </section>
@@ -756,15 +2175,19 @@
     <span class="eyebrow reveal" style="color:#E9C77E;">Ready when you are</span>
     <h2 class="reveal">What if you could see your financial future before you lived it?</h2>
     <p class="reveal">Five minutes to build your profile. A lifetime of decisions made a little clearer.</p>
-    <div class="reveal"><a href="#" class="btn btn-on-dark">Build my future</a></div>
+    <div class="reveal final-cta-actions">
+      <a href="#" class="btn btn-on-dark">Build my future</a>
+      <a href="#business" class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3);">Book a call</a>
+      <a href="#" class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3);">Join the waitlist</a>
+    </div>
 
     <div class="photo-strip reveal reveal-stagger">
-      <div><img src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
-      <div><img src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
-      <div><img src="https://images.unsplash.com/photo-1653566031568-71626c8247f5?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
-      <div><img src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
-      <div><img src="https://images.unsplash.com/photo-1644945586733-73c3cb9cb648?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
-      <div><img src="https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?auto=format&fit=crop&w=300&q=80" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1573495612522-d994e72e5f56?w=300&q=80&auto=format" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1699217394881-d7761c05d51a?w=300&q=80&auto=format" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1653566031568-71626c8247f5?w=300&q=80&auto=format" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1735547876935-7be80eae1c88?w=300&q=80&auto=format" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1644945586733-73c3cb9cb648?w=300&q=80&auto=format" alt="GAIA community member" loading="lazy"></div>
+      <div><img src="https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?w=300&q=80&auto=format" alt="GAIA community member" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -775,6 +2198,26 @@
       <div class="footer-brand">
         <div class="logo"><span class="logo-mark"></span>GAIA</div>
         <p>A financial-life simulator for women — built to show you what your choices could mean, never what they will.</p>
+        <div class="footer-app-badges">
+          <a href="#" class="footer-app-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <div class="footer-app-badge-text">
+              <span>Download on the</span>
+              <span>App Store</span>
+            </div>
+          </a>
+          <a href="#" class="footer-app-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+            </svg>
+            <div class="footer-app-badge-text">
+              <span>GET IT ON</span>
+              <span>Google Play</span>
+            </div>
+          </a>
+        </div>
       </div>
       <div class="footer-cols">
         <div class="footer-col">
@@ -783,12 +2226,14 @@
           <a href="#events">Life events</a>
           <a href="#assistant">AI guide</a>
           <a href="#demo">Try the demo</a>
+          <a href="#pricing">Pricing</a>
         </div>
         <div class="footer-col">
           <h5>Company</h5>
           <a href="#">About</a>
           <a href="#">Careers</a>
-          <a href="#trust">Trust &amp; privacy</a>
+          <a href="#business">Business</a>
+          <a href="#">Contact</a>
         </div>
         <div class="footer-col">
           <h5>Support</h5>
@@ -799,18 +2244,26 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 GAIA. Financial planning, education, and scenario analysis — not investment advice. Photography via Unsplash (placeholder).</span>
+      <span>© 2026 GAIA. Financial planning, education, and scenario analysis — not investment advice.</span>
       <span>Made for the futures we haven't lived yet.</span>
+    </div>
+    <div class="footer-legal">
+      GAIA — trademark registration in progress. All platform IP owned by GAIA.<br>
+      Powered by Cyber Thistle Ltd
     </div>
   </div>
 </footer>
 
 <script>
-  /* Scroll reveal */
+  /* Enhanced Scroll reveal with smooth animations */
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
-  }, {threshold:0.12});
+    entries.forEach(e=>{ 
+      if(e.isIntersecting){ 
+        e.target.classList.add('in');
+      }
+    });
+  }, {threshold:0.1, rootMargin: '0px 0px -50px 0px'});
   reveals.forEach(el=>io.observe(el));
 
   /* Hero contour + panel draw-in */
@@ -821,46 +2274,55 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
   }, {threshold:0.2});
   panelIO.observe(heroPanel);
-  setTimeout(()=> heroPanel.classList.add('in'), 550); /* also trigger on load since hero is above the fold */
+  setTimeout(()=> heroPanel.classList.add('in'), 550);
 
-  /* Header hide-on-scroll-down / show-on-scroll-up */
+  /* Header hide-on-scroll */
   const header = document.getElementById('siteHeader');
   let lastY = window.scrollY;
   window.addEventListener('scroll', ()=>{
     const y = window.scrollY;
     if(y > lastY && y > 160){ header.classList.add('is-hidden'); }
     else { header.classList.remove('is-hidden'); }
+    
+    // Add translucent effect on scroll
+    if(y > 100){ header.classList.add('is-scrolled'); }
+    else { header.classList.remove('is-scrolled'); }
+    
     lastY = y;
   }, {passive:true});
 
-  /* Investment slider demo */
-  const slider = document.getElementById('investSlider');
-  const sliderVal = document.getElementById('sliderVal');
-  const projValue = document.getElementById('projValue');
-  const goalProb = document.getElementById('goalProb');
-  const chartPath = document.getElementById('chartPath');
-  const chartDot = document.getElementById('chartDot');
+  /* Business tabs */
+  const businessTabs = document.querySelectorAll('.business-tab');
+  const businessContents = {
+    business: document.getElementById('business-content'),
+    waitlist: document.getElementById('waitlist-content'),
+    contact: document.getElementById('contact-content')
+  };
+  const businessInfo = document.getElementById('business-info');
 
-  function buildPath(monthly){
-    const t = (monthly - 500) / (2000 - 500);
-    const endY = 170 - t*140;
-    const midY = 170 - t*95;
-    return { path: `M10,170 C 140,${160 - t*40} 260,${midY} 470,${endY}`, endY };
-  }
-  function update(monthly){
-    sliderVal.textContent = '$' + monthly.toLocaleString() + ' / mo';
-    const base = 1_640_000;
-    const perDollar = 620;
-    const projected = base + (monthly - 500) * perDollar;
-    projValue.textContent = '$' + (projected/1_000_000).toFixed(2) + 'M';
-    const prob = Math.min(96, Math.round(74 + (monthly-500)/1500*22));
-    goalProb.textContent = prob + '%';
-    const {path, endY} = buildPath(monthly);
-    chartPath.setAttribute('d', path);
-    chartDot.setAttribute('cy', endY);
-  }
-  slider.addEventListener('input', (e)=> update(parseInt(e.target.value,10)) );
-  update(500);
+  businessTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      businessTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      Object.values(businessContents).forEach(content => {
+        if(content) content.style.display = 'none';
+      });
+      
+      if(businessInfo) {
+        businessInfo.style.display = 'none';
+      }
+      
+      const tabName = tab.getAttribute('data-tab');
+      if(businessContents[tabName]) {
+        businessContents[tabName].style.display = 'block';
+      }
+      
+      if(tabName === 'business' && businessInfo) {
+        businessInfo.style.display = 'block';
+      }
+    });
+  });
 
   /* Testimonial carousel */
   const testiSlides = Array.from(document.querySelectorAll('.testi-slide'));
@@ -879,14 +2341,31 @@
     testiIndex = (i + testiSlides.length) % testiSlides.length;
     testiSlides[testiIndex].classList.add('active');
     testiDots[testiIndex].classList.add('active');
+    
+    // Restart progress bar animation
+    const progressBar = document.getElementById('testiProgress');
+    progressBar.classList.remove('run');
+    void progressBar.offsetWidth; // Trigger reflow
+    progressBar.classList.add('run');
   }
   document.getElementById('testiNext').addEventListener('click', ()=> goToTesti(testiIndex+1));
   document.getElementById('testiPrev').addEventListener('click', ()=> goToTesti(testiIndex-1));
-  let testiTimer = setInterval(()=> goToTesti(testiIndex+1), 7000);
-  document.getElementById('testiTrack').addEventListener('mouseenter', ()=> clearInterval(testiTimer));
-  document.getElementById('testiTrack').addEventListener('mouseleave', ()=> testiTimer = setInterval(()=> goToTesti(testiIndex+1), 7000));
+  let testiTimer = setInterval(()=> goToTesti(testiIndex+1), 2000);
+  const progressBar = document.getElementById('testiProgress');
+  progressBar.classList.add('run');
+  
+  document.getElementById('testiTrack').addEventListener('mouseenter', ()=> {
+    clearInterval(testiTimer);
+    progressBar.classList.remove('run');
+  });
+  document.getElementById('testiTrack').addEventListener('mouseleave', ()=> {
+    testiTimer = setInterval(()=> goToTesti(testiIndex+1), 2000);
+    progressBar.classList.remove('run');
+    void progressBar.offsetWidth; // Trigger reflow
+    progressBar.classList.add('run');
+  });
 
-  /* Sticky card stack scale-down effect */
+  /* Sticky card stack */
   const stackCards = Array.from(document.querySelectorAll('.stack-card-inner'));
   function updateStack(){
     stackCards.forEach((card)=>{
@@ -901,35 +2380,191 @@
   window.addEventListener('scroll', updateStack, {passive:true});
   updateStack();
 
-  /* Image error handling with fallbacks */
+  /* FAQ Accordion */
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const btn = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    btn.addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(openItem=>{
+        if(openItem !== item){
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-question').setAttribute('aria-expanded','false');
+          openItem.querySelector('.faq-answer').style.maxHeight = null;
+        }
+      });
+      if(isOpen){
+        item.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+        answer.style.maxHeight = null;
+      } else {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* Image error handling */
   const fallbackImages = {
-    'women': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
-    'finance': 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80',
-    'career': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80',
-    'family': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=900&q=80',
-    'home': 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=900&q=80'
+    'women': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=80&auto=format',
+    'finance': 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=900&q=80&auto=format',
+    'family': 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=900&q=80&auto=format',
+    'home': 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80&auto=format'
   };
 
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('error', function() {
-      console.log('Image failed to load, using fallback:', this.src);
-      // Determine appropriate fallback based on context
       const alt = this.alt.toLowerCase();
       let fallbackUrl = fallbackImages.women;
-      
-      if (alt.includes('home') || alt.includes('house')) {
-        fallbackUrl = fallbackImages.home;
-      } else if (alt.includes('career') || alt.includes('work')) {
-        fallbackUrl = fallbackImages.career;
-      } else if (alt.includes('family') || alt.includes('mother') || alt.includes('baby')) {
-        fallbackUrl = fallbackImages.family;
-      } else if (alt.includes('finance') || alt.includes('financial') || alt.includes('chart')) {
-        fallbackUrl = fallbackImages.finance;
-      }
-      
+      if (alt.includes('home')) fallbackUrl = fallbackImages.home;
+      else if (alt.includes('family') || alt.includes('mother') || alt.includes('baby')) fallbackUrl = fallbackImages.family;
+      else if (alt.includes('finance') || alt.includes('chart')) fallbackUrl = fallbackImages.finance;
       this.src = fallbackUrl;
     });
   });
+
+  /* App Showcase - Tab Switcher */
+  (function(){
+    const tabs = Array.from(document.querySelectorAll('.showcase-tab'));
+    const panels = Array.from(document.querySelectorAll('.showcase-panel'));
+    if(!tabs.length || !panels.length) return;
+
+    const INTERVAL = 3000;
+    let idx = 0;
+    let timer = null;
+
+    document.querySelectorAll('.phone-clock').forEach(c=>{
+      c.textContent = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    });
+
+    function goTo(i, userTriggered){
+      idx = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, n)=>{
+        const isActive = n === idx;
+        t.classList.toggle('active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        const prog = t.querySelector('.showcase-tab-progress');
+        prog.classList.remove('run');
+        void prog.offsetWidth; // restart the CSS animation
+        if(isActive) prog.classList.add('run');
+      });
+      panels.forEach((p, n)=> p.classList.toggle('active', n === idx));
+      if(userTriggered) resetTimer();
+    }
+
+    function resetTimer(){
+      clearInterval(timer);
+      timer = setInterval(()=> {
+        goTo(idx + 1, false);
+      }, INTERVAL);
+    }
+
+    tabs.forEach(t=>{
+      t.addEventListener('click', ()=> goTo(parseInt(t.dataset.tab, 10), true));
+    });
+
+    const showcaseTabs = document.getElementById('showcaseTabs');
+    const showcasePanels = document.querySelector('.showcase-panels');
+    [showcaseTabs, showcasePanels].forEach(el=>{
+      if(!el) return;
+      el.addEventListener('mouseenter', ()=> clearInterval(timer));
+      el.addEventListener('mouseleave', ()=> resetTimer());
+    });
+
+    // Initialize after a short delay to ensure DOM is ready
+    setTimeout(() => {
+      goTo(0, false);
+      resetTimer();
+    }, 100);
+  })();
+
+  /* Business Form Handler */
+  (function(){
+    const form = document.getElementById('businessInquiryForm');
+    if(!form) return;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      // Validate required fields
+      const required = ['companyName', 'companySize', 'contactName', 'contactRole', 'contactEmail', 'interestArea'];
+      let isValid = true;
+      required.forEach(field => {
+        if(!data[field] || data[field].trim() === '') {
+          isValid = false;
+          const input = form.querySelector(`[name="${field}"]`);
+          if(input) input.style.borderColor = 'var(--coral)';
+        }
+      });
+      
+      if(!isValid) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      
+      // Simulate form submission
+      const submitBtn = form.querySelector('.biz-submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+      
+      setTimeout(() => {
+        submitBtn.textContent = 'Request Submitted!';
+        submitBtn.style.background = 'var(--teal)';
+        
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+          submitBtn.style.background = '';
+          submitBtn.disabled = false;
+          form.reset();
+          
+          // Reset border colors
+          form.querySelectorAll('input, select').forEach(input => {
+            input.style.borderColor = '';
+          });
+        }, 2000);
+      }, 1500);
+    });
+    
+    // Reset border colors on input
+    form.querySelectorAll('input, select, textarea').forEach(input => {
+      input.addEventListener('input', function(){
+        this.style.borderColor = '';
+      });
+    });
+  })();
+
+  /* Lenis Smooth Scroll Initialization */
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // Integration with existing scroll events
+    lenis.on('scroll', (e) => {
+      // Trigger existing scroll-based animations
+      window.dispatchEvent(new CustomEvent('lenis-scroll', { detail: e }));
+    });
+  }
 </script>
 
 </body>
