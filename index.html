@@ -19,6 +19,7 @@
     --paper-deep:#F8FDFF;
     --gold:#C08A3E;
     --gold-deep:#9C6D2B;
+    --gold-bright:#E9C77E;
     --teal:#2F6F62;
     --teal-deep:#204E44;
     --coral:#D6603E;
@@ -29,7 +30,6 @@
     --forest: #12271F;
     --forest-deep: #0B1712;
     --ivory: #F7F3EA;
-    --gold-bright: #D9AF74;
     --sage: #7FA487;
     --text-dark: #2A2A28;
     --border-light: #ECEAE3;
@@ -109,8 +109,10 @@
   .btn-ghost:hover{ border-color:var(--ink); background:var(--ink); color:#fff; transform:translateY(-2px); }
   .btn-ghost-green{ background:rgba(54,69,79,0.8); color:#fff; border-color:#D4A574; }
   .btn-ghost-green:hover{ border-color:#fff; background:rgba(54,69,79,0.9); transform:translateY(-2px); }
-  .btn-on-dark{ background:#D4A574; color:#fff; }
-  .btn-on-dark:hover{ background:#C49464; transform:translateY(-2px); box-shadow:0 12px 26px rgba(212,165,116,0.4); }
+  .btn-on-dark{ background:var(--bg-color); color:var(--ink); }
+  .btn-on-dark:hover{ background:#88c5e8; transform:translateY(-2px); box-shadow:0 12px 26px rgba(160,217,239,0.4); }
+  .btn-ghost-on-dark{ background:rgba(0,0,0,0.04); color:var(--ink); border-color:rgba(0,0,0,0.15); }
+  .btn-ghost-on-dark:hover{ border-color:var(--ink); background:rgba(0,0,0,0.08); transform:translateY(-2px); }
   .btn:focus-visible{ outline:2px solid var(--coral); outline-offset:3px; }
 
   /* Nav */
@@ -180,34 +182,36 @@
   .hero-inner{ max-width:1220px; margin:0 auto; position:relative; z-index:2; }
   .hero-content-wrapper{ display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:center; position:relative; height:600px; }
   .hero-eyebrow{ display:flex; align-items:center; gap:10px; margin-bottom:24px; opacity:0; animation:fadeUp .7s .05s var(--ease-out-cubic) forwards; }
-  .hero-eyebrow .rule{ width:34px; height:1px; background:#D4A574; }
-  .hero-eyebrow span.eyebrow{ color:#000; font-size:12px; }
+  .hero-eyebrow .rule{ width:34px; height:1px; background:var(--gold-bright); }
+  .hero-eyebrow span.eyebrow{ color:var(--gold-bright); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; }
   .hero-copy{ max-width:480px; position:relative; z-index:4; padding-left:0; margin-left:-32px; }
-  .hero h1{ font-size:clamp(32px, 4.5vw, 52px); color:#000; opacity:0; animation:fadeUp .8s .15s var(--ease-out-cubic) forwards; }
-  .hero h1 em{ font-style:italic; color:#000; }
-  .hero-sub{ max-width:420px; margin:24px 0 0; font-size:15px; line-height:1.65; color:#000; opacity:0; animation:fadeUp .8s .3s var(--ease-out-cubic) forwards; }
-  .hero-actions{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:28px; opacity:0; animation:fadeUp .8s .42s var(--ease-out-cubic) forwards; }
+  .hero h1{ font-size:clamp(32px, 4.5vw, 52px); color:var(--ink); opacity:0; animation:fadeUp .8s .15s var(--ease-out-cubic) forwards; }
+  .hero h1 em{ font-style:italic; color:var(--ink); }
+  .hero-sub{ max-width:420px; margin:24px 0 0; font-size:15.5px; line-height:1.7; color:var(--ink-soft); opacity:0; animation:fadeUp .8s .3s var(--ease-out-cubic) forwards; }
+  .hero-actions{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:32px; opacity:0; animation:fadeUp .8s .42s var(--ease-out-cubic) forwards; }
   @keyframes fadeUp{ 0%{opacity:.001; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
 
-  .hero-panel{ position:relative; z-index:3; max-width:1080px; margin:64px auto 0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-lg); padding:8px; opacity:0; animation:fadeUp .9s .5s var(--ease-out-cubic) forwards; box-shadow:0 60px 120px -40px rgba(0,0,0,0.55); position: absolute; top: 160px; left: 65%; width: 40%; }
-  .hero-panel-inner{ background:#4A90E2; border-radius:22px; padding:32px 34px 26px; }
-  .hp-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
-  .hp-head h3{ font-size:19px; font-weight:500; color:#fff; }
-  .hp-head p{ font-size:12.5px; color:#fff; margin-top:6px; max-width:320px; }
-  .hp-legend{ display:flex; gap:16px; flex-wrap:wrap; }
-  .hp-legend span{ font-family:'Manrope', sans-serif; font-size:10.5px; color:#fff; display:flex; align-items:center; gap:6px; }
-  .hp-legend i{ width:12px; height:3px; border-radius:2px; display:inline-block; }
-  #pathSvg{ width:100%; height:auto; display:block; margin-top:6px; }
-  .line-draw{ stroke-dasharray:1600; stroke-dashoffset:1600; transition:stroke-dashoffset 1.8s var(--ease-in-out-circ); }
+  .hero-panel{ position:relative; z-index:3; max-width:1080px; margin:64px auto 0; background:rgba(255,255,255,0.95); border:1px solid rgba(0,0,0,0.12); border-radius:var(--radius-lg); padding:8px; opacity:0; animation:fadeUp .9s .5s var(--ease-out-cubic) forwards; box-shadow:0 50px 100px -40px rgba(0,0,0,0.55); position: absolute; top: 20px; left: 58%; width: 48%; }
+  .hero-panel-inner{ background:#fff; border-radius:22px; padding:40px 42px 36px; }
+  .hp-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:14px; }
+  .hp-head h3{ font-size:24px; font-weight:500; color:var(--ink); }
+  .hp-head p{ font-size:14px; color:var(--ink-soft); margin-top:8px; max-width:340px; font-family:'Manrope',sans-serif; }
+  .hp-legend{ display:flex; gap:18px; flex-wrap:wrap; }
+  .hp-legend span{ font-family:'Manrope',sans-serif; font-size:12px; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .hp-legend i{ width:14px; height:3px; border-radius:2px; display:inline-block; }
+  #pathSvg{ width:100%; height:auto; display:block; margin-top:14px; overflow:visible; }
+  .line-draw{ stroke-dasharray:1600; stroke-dashoffset:1600; transition:stroke-dashoffset 1.8s var(--ease-in-out-circ); stroke-linecap:round; stroke-linejoin:round; }
   .hero-panel.in .line-draw{ stroke-dashoffset:0; }
   .line-draw.d1{ transition-delay:.1s; }
   .line-draw.d2{ transition-delay:.5s; }
   .line-draw.d3{ transition-delay:.9s; }
-  .hp-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:10px; }
-  .hp-stat{ display:flex; gap:26px; }
-  .hp-stat div .l{ font-family:'Manrope', sans-serif; font-size:10px; letter-spacing:.06em; color:#fff; text-transform:uppercase; }
-  .hp-stat div .v{ font-family:'Passion One', sans-serif; font-size:22px; color:#fff; margin-top:4px; }
-  .hp-tag{ font-family:'Manrope', sans-serif; font-size:10.5px; color:#fff; }
+  .area-fill{ opacity:0; transition:opacity 1s ease .6s; }
+  .hero-panel.in .area-fill{ opacity:1; }
+  .hp-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:22px; padding-top:18px; border-top:1px solid rgba(0,0,0,0.08); flex-wrap:wrap; gap:12px; }
+  .hp-stat{ display:flex; gap:32px; }
+  .hp-stat div .l{ font-family:'Manrope',sans-serif; font-size:11px; letter-spacing:.06em; color:var(--ink-soft); text-transform:uppercase; }
+  .hp-stat div .v{ font-family:'Passion One',sans-serif; font-size:26px; color:var(--ink); margin-top:4px; }
+  .hp-tag{ font-family:'Manrope',sans-serif; font-size:11.5px; color:var(--ink-soft); }
 
   @media (max-width:940px){
     .hero-content-wrapper{ grid-template-columns:1fr; height:auto; }
@@ -215,14 +219,14 @@
     .hero h1{ font-size:clamp(28px,6vw,42px); }
     .hero-sub{ max-width:100%; }
     .hero-panel{ position:static; width:100%; max-width:100%; margin:40px auto 0; order:2; }
-    .hero-panel-inner{ padding:24px 20px; }
-    .hp-head{ flex-direction:column; gap:8px; }
-    .hp-head h3{ font-size:16px; }
-    .hp-head p{ font-size:11px; max-width:100%; }
-    .hp-legend{ gap:12px; }
-    .hp-legend span{ font-size:9px; }
-    .hp-stat{ gap:16px; }
-    .hp-stat div .v{ font-size:18px; }
+    .hero-panel-inner{ padding:32px 28px; }
+    .hp-head{ flex-direction:column; gap:10px; }
+    .hp-head h3{ font-size:20px; }
+    .hp-head p{ font-size:13px; max-width:100%; }
+    .hp-legend{ gap:14px; }
+    .hp-legend span{ font-size:11px; }
+    .hp-stat{ gap:24px; }
+    .hp-stat div .v{ font-size:22px; }
   }
   @media (max-width:640px){
     .hero{ padding:0 20px 0; }
@@ -231,13 +235,13 @@
     .hero-sub{ font-size:14px; }
     .hero-actions{ gap:12px; }
     .hero-panel{ margin:30px auto 0; }
-    .hero-panel-inner{ padding:20px 16px; }
-    .hp-head h3{ font-size:14px; }
-    .hp-head p{ font-size:10px; }
-    .hp-legend span{ font-size:8px; }
-    .hp-stat div .l{ font-size:8px; }
-    .hp-stat div .v{ font-size:16px; }
-    .hp-tag{ font-size:9px; }
+    .hero-panel-inner{ padding:28px 20px; }
+    .hp-head h3{ font-size:18px; }
+    .hp-head p{ font-size:12px; }
+    .hp-legend span{ font-size:10px; }
+    .hp-stat{ gap:20px; }
+    .hp-stat div .v{ font-size:20px; }
+    .hp-tag{ font-size:10px; }
     .hp-foot{ flex-direction:column; align-items:flex-start; gap:12px; }
     .hp-stat{ flex-direction:column; gap:8px; }
   }
@@ -735,25 +739,25 @@
   .pricing-card:nth-child(3){ animation-delay:.3s; }
   @keyframes scaleUp{ 0%{opacity:0; transform:scale(0.9) translateY(20px);} to{opacity:1; transform:scale(1) translateY(0);} }
   .pricing-card:hover{ transform:translateY(-8px); box-shadow:0 30px 60px -30px rgba(15,29,51,0.28); }
-  .pricing-card.popular{ border-color:var(--gold); background:#EBDBF5; color:#1D1B1C; }
-  .pricing-card.popular .pricing-list li{ color:#1D1B1C; }
-  .pricing-card.popular .pricing-price, .pricing-card.popular .pricing-name{ color:#1D1B1C; }
+  .pricing-card.popular{ border-color:var(--gold); background:var(--bg-color); color:var(--ink); }
+  .pricing-card.popular .pricing-list li{ color:var(--ink); }
+  .pricing-card.popular .pricing-price, .pricing-card.popular .pricing-name{ color:var(--ink); }
   .pricing-badge{ position:absolute; top:-13px; left:32px; background:var(--gold); color:#fff; font-family:'Manrope', sans-serif; font-size:11px; font-weight:600; letter-spacing:0.04em; padding:6px 14px; border-radius:999px; animation:bounceIn .6s var(--ease-spring) .5s forwards; opacity:0; }
-  .pricing-card.popular .pricing-badge{ background:#1D1B1C; }
-  .pricing-card.popular .btn-on-dark{ background:#1D1B1C; color:#fff; border-color:#1D1B1C; }
+  .pricing-card.popular .pricing-badge{ background:var(--ink); }
+  .pricing-card.popular .btn-on-dark{ background:var(--ink); color:#fff; border-color:var(--ink); }
   @keyframes bounceIn{ 0%{opacity:0; transform:scale(0.5);} 70%{transform:scale(1.1);} 100%{opacity:1; transform:scale(1);} }
   .pricing-name{ font-family:'Passion One', sans-serif; font-size:19px; font-weight:500; margin-bottom:8px; }
   .pricing-price{ font-family:'Passion One', sans-serif; font-size:34px; margin-bottom:4px; transition:transform .3s ease; }
   .pricing-card:hover .pricing-price{ transform:scale(1.05); }
   .pricing-price span{ font-family:'Manrope', sans-serif; font-size:14px; color:var(--ink-soft); font-weight:400; }
-  .pricing-card.popular .pricing-price span{ color:#1D1B1C; }
+  .pricing-card.popular .pricing-price span{ color:var(--ink); }
   .pricing-sub{ font-size:13px; color:var(--ink-soft); margin-bottom:26px; }
-  .pricing-card.popular .pricing-sub{ color:#1D1B1C; }
+  .pricing-card.popular .pricing-sub{ color:var(--ink); }
   .pricing-list{ list-style:none; margin-bottom:30px; flex-grow:1; }
   .pricing-list li{ font-size:14px; color:var(--ink-soft); line-height:1.6; padding-left:22px; position:relative; margin-bottom:12px; transition:transform .2s ease, color .2s ease; }
   .pricing-list li:before{ content:"✓"; position:absolute; left:0; color:var(--teal); font-weight:600; transition:transform .2s ease; }
   .pricing-list li:hover:before{ transform:scale(1.2); }
-  .pricing-card.popular .pricing-list li:before{ color:#1D1B1C; }
+  .pricing-card.popular .pricing-list li:before{ color:var(--ink); }
   .pricing-cta{ text-align:center; }
   @media (max-width:900px){ .pricing-grid{ grid-template-columns:1fr; } .pricing-card.popular{ order:-1; } }
 
@@ -1241,8 +1245,8 @@
         <h1>See your financial future before you live it.</h1>
         <p class="hero-sub">Tell GAIA where you are today, where you want to go, and what life events you expect along the way. We turn it into a roadmap — grounded in your numbers, not a generic calculator.</p>
         <div class="hero-actions">
-          <a href="#" class="btn btn-primary" style="background:#000; color:#fff; border-color:#000;">Build my future</a>
-          <a href="#journey" class="btn btn-ghost-green">See how it works</a>
+          <a href="#" class="btn btn-on-dark">Build my future</a>
+          <a href="#journey" class="btn btn-ghost-on-dark">See how it works</a>
         </div>
       </div>
     </div>
@@ -1255,24 +1259,37 @@
             <p>One life event, three outcomes — add a six-month leave at 32 and see exactly where the plan bends.</p>
           </div>
           <div class="hp-legend">
-            <span><i style="background:#4A5B78"></i>Current plan</span>
+            <span><i style="background:#9CB7A6"></i>Current plan</span>
             <span><i style="background:#E9C77E"></i>With leave</span>
             <span><i style="background:#D6603E"></i>Recovery plan</span>
           </div>
         </div>
-        <svg id="pathSvg" viewBox="0 0 1080 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0" y1="60" x2="1080" y2="60" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <line x1="0" y1="140" x2="1080" y2="140" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <line x1="0" y1="220" x2="1080" y2="220" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <path class="line-draw d1" pathLength="1600" d="M20,260 C 220,225 320,145 420,115 S 700,55 1050,30" stroke="#4A5B78" stroke-width="2.5" stroke-linecap="round"/>
-          <path class="line-draw d2" pathLength="1600" d="M20,260 C 220,225 320,145 420,115 C 480,145 520,200 560,210 C 700,230 850,145 1050,90" stroke="#E9C77E" stroke-width="3" stroke-linecap="round"/>
-          <path class="line-draw d3" pathLength="1600" d="M420,115 C 480,145 520,200 560,210 C 640,220 700,170 780,135 C 880,92 970,66 1050,52" stroke="#D6603E" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
-          <circle cx="420" cy="115" r="6" fill="#4a9c6d" stroke="#fff" stroke-width="2"/>
-          <line x1="420" y1="115" x2="420" y2="290" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="3 5"/>
-          <circle cx="20" cy="260" r="5" fill="#fff"/>
-          <circle cx="1050" cy="30" r="5" fill="#4A5B78"/>
-          <circle cx="1050" cy="90" r="5" fill="#E9C77E"/>
-          <circle cx="1050" cy="52" r="5" fill="#D6603E"/>
+        <svg id="pathSvg" viewBox="0 0 1080 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9CB7A6" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#9CB7A6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <line x1="0" y1="80" x2="1080" y2="80" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+          <line x1="0" y1="160" x2="1080" y2="160" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+          <line x1="0" y1="240" x2="1080" y2="240" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+
+          <!-- soft area fill under the current plan, for a calmer / more finished chart read -->
+          <path class="area-fill" d="M20,300 C220,265 320,185 420,155 S700,95 1050,70 L1050,330 L20,330 Z" fill="url(#areaGrad)"/>
+
+          <path class="line-draw d1" pathLength="1600" d="M20,300 C 220,265 320,185 420,155 S 700,95 1050,70" stroke="#9CB7A6" stroke-width="3" fill="none"/>
+          <path class="line-draw d2" pathLength="1600" d="M420,155 C 480,185 520,240 560,250 C 700,270 850,185 1050,130" stroke="#E9C77E" stroke-width="3" fill="none"/>
+          <path class="line-draw d3" pathLength="1600" d="M420,155 C 480,185 520,240 560,250 C 640,260 700,210 780,175 C 880,132 970,106 1050,92" stroke="#D6603E" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round" fill="none"/>
+
+          <circle cx="420" cy="155" r="6" fill="#E9C77E" stroke="#fff" stroke-width="2.5"/>
+          <line x1="420" y1="155" x2="420" y2="330" stroke="rgba(0,0,0,0.15)" stroke-width="1" stroke-dasharray="3 5"/>
+
+          <circle cx="20" cy="300" r="5" fill="#36454F"/>
+          <circle cx="1050" cy="70" r="5" fill="#9CB7A6"/>
+          <circle cx="1050" cy="130" r="5" fill="#E9C77E"/>
+          <circle cx="1050" cy="92" r="5" fill="#D6603E"/>
         </svg>
         <div class="hp-foot">
           <div class="hp-stat">
