@@ -7,7 +7,7 @@
 <meta name="description" content="GAIA is a financial-life simulator built for women — model your income, goals and life events into a real roadmap, not a generic calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Passion+One:wght@400;700;900&family=Sen:wght@400..800&family=Signika:wght@300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Manrope:wght@200..800&family=Passion+One:wght@400;700;900&family=Sen:wght@400..800&family=Signika:wght@300..700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
 <style>
   :root{
@@ -26,6 +26,13 @@
     --line:#E2DCCB;
     --line-dark:rgba(255,255,255,0.14);
     --beige:#F5F5DC;
+    --forest: #12271F;
+    --forest-deep: #0B1712;
+    --ivory: #F7F3EA;
+    --gold-bright: #D9AF74;
+    --sage: #7FA487;
+    --text-dark: #2A2A28;
+    --border-light: #ECEAE3;
     --radius-lg:26px;
     --radius-md:16px;
     --radius-sm:9px;
@@ -107,21 +114,59 @@
   .btn:focus-visible{ outline:2px solid var(--coral); outline-offset:3px; }
 
   /* Nav */
-  header{ position:sticky; top:0; z-index:100; background:rgba(160,217,239,0.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1), background .35s ease; animation:navReveal .8s .1s var(--ease-out-cubic) both; }
+  header{ position:sticky; top:0; z-index:100; background:#fff; border-bottom:1px solid var(--border-light); transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1), background .35s ease; animation:navReveal .8s .1s var(--ease-out-cubic) both; }
   header.is-hidden{ transform:translateY(-100%); box-shadow:0 10px 24px rgba(15,29,51,0.08); }
-  header.is-scrolled{ background:rgba(160,217,239,0.4); }
+  header.is-scrolled{ background:rgba(255,255,255,0.98); }
   @keyframes navReveal{ 0%{opacity:.001; transform:translateY(-100%);} to{opacity:1; transform:translateY(0);} }
-  nav{ display:flex; align-items:center; justify-content:space-between; padding:19px 32px; max-width:1220px; margin:0 auto; }
-  .logo{ font-family:'Passion One', sans-serif; font-weight:700; font-size:28px; letter-spacing:0.01em; display:flex; align-items:center; gap:9px; }
-  .logo-mark{ width:16px; height:16px; border-radius:3px; background:linear-gradient(135deg, var(--gold), var(--coral)); display:inline-block; transform:rotate(8deg); }
-  .nav-links{ display:flex; gap:32px; font-size:17px; font-weight:500; }
-  .nav-links a{ color:var(--ink-soft); transition:color .3s cubic-bezier(.22,1,.36,1); position:relative; }
-  .nav-links a:after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--coral-deep); transition:width .3s cubic-bezier(.22,1,.36,1); }
-  .nav-links a:hover{ color:var(--ink); }
-  .nav-links a:hover:after{ width:100%; }
-  .nav-cta{ display:flex; align-items:center; gap:20px; }
-  .nav-signin{ font-size:17px; font-weight:600; color:var(--ink-soft); }
-  @media (max-width:940px){ .nav-links{ display:none; } .nav-cta{ display:none; } .logo{ font-size:24px; } nav{ padding:19px 20px; } }
+  
+  /* Top info bar */
+  .top-bar{ background: var(--forest-deep); }
+  .top-bar .container{ display: flex; align-items: center; justify-content: space-between; height: 42px; max-width: 1220px; margin: 0 auto; padding: 0 24px; }
+  .social-links{ display: flex; align-items: center; gap: 18px; }
+  .social-links a{ color: var(--ivory); opacity: 0.75; display: flex; align-items: center; transition: opacity 0.2s ease, color 0.2s ease; }
+  .social-links a:hover{ opacity: 1; color: var(--gold-bright); }
+  .social-links svg{ width: 15px; height: 15px; fill: currentColor; }
+  .contact-info{ display: flex; align-items: center; gap: 8px; }
+  .contact-info a{ color: var(--ivory); text-decoration: none; font-size: 13px; font-weight: 500; opacity: 0.85; letter-spacing: 0.2px; transition: opacity 0.2s ease; }
+  .contact-info a:hover{ opacity: 1; }
+  
+  /* Main nav bar */
+  .main-header{ background: #fff; border-bottom: 1px solid var(--border-light); }
+  .main-header .container{ display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 24px; max-width: 1220px; margin: 0 auto; padding: 0 24px; }
+  .logo{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 24px; letter-spacing: 0.5px; color: var(--forest-deep); text-decoration: none; flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
+  .logo-mark{ width: 28px; height: 28px; flex-shrink: 0; }
+  .nav-and-actions{ display: flex; align-items: center; gap: 36px; }
+  .main-nav{ display: flex; align-items: center; gap: 30px; list-style: none; margin: 0; padding: 0; }
+  .main-nav a{ color: var(--text-dark); text-decoration: none; font-size: 15px; font-weight: 500; position: relative; padding: 4px 0; transition: color 0.2s ease; white-space: nowrap; }
+  .main-nav a::after{ content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
+  .main-nav a:hover{ color: var(--forest-deep); }
+  .main-nav a:hover::after{ transform: scaleX(1); }
+  .header-actions{ display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+  .signin-link{ color: var(--text-dark); text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap; transition: color 0.2s ease; }
+  .signin-link:hover{ color: var(--forest-deep); }
+  .cta-button{ background: var(--forest); color: var(--ivory); text-decoration: none; font-size: 15px; font-weight: 600; padding: 11px 22px; border-radius: 3px; white-space: nowrap; transition: background 0.2s ease; }
+  .cta-button:hover{ background: var(--gold); color: var(--forest-deep); }
+  
+  /* Mobile toggle */
+  .nav-toggle{ display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+  .nav-toggle span{ width: 24px; height: 2px; background: var(--forest-deep); display: block; transition: transform 0.25s ease, opacity 0.25s ease; }
+  .nav-toggle.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2){ opacity: 0; }
+  .nav-toggle.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+  
+  @media (max-width: 940px){
+    .top-bar{ display: none; }
+    .nav-and-actions{ position: fixed; top: 64px; left: 0; right: 0; bottom: 0; background: rgba(160, 217, 239, 0.95); backdrop-filter: blur(10px); flex-direction: column; align-items: flex-start; gap: 0; padding: 24px; transform: translateX(100%); transition: transform 0.3s ease; overflow-y: auto; z-index: 1000; min-height: calc(100vh - 64px); }
+    .nav-and-actions.open{ transform: translateX(0); }
+    .main-nav{ flex-direction: column; align-items: flex-start; width: 100%; gap: 0; }
+    .main-nav a{ width: 100%; padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.1); color: var(--ink); font-size: 18px; }
+    .main-nav a::after{ display: none; }
+    .header-actions{ flex-direction: column; align-items: flex-start; width: 100%; gap: 16px; margin-top: 24px; }
+    .header-actions .signin-link{ color: var(--ink); font-size: 16px; }
+    .header-actions .cta-button{ width: 100%; text-align: center; padding: 14px 22px; }
+    .nav-toggle{ display: flex; z-index: 1001; }
+    .main-header .container{ height: 64px; }
+  }
 
   /* ===== HERO ===== */
   .hero{ position:relative; padding:0 32px 0; background:var(--ink); color:#fff; overflow:hidden; margin-top:-40px; }
@@ -296,7 +341,7 @@
   .feature-copy a.link-arrow{ font-weight:600; font-size:14.5px; border-bottom:1px solid var(--ink); padding-bottom:2px; transition:color .2s, border-color .2s; }
   .feature-copy a.link-arrow:hover{ color:var(--coral-deep); border-color:var(--coral-deep); }
   .feature-photo{ position:relative; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3.3; box-shadow:0 30px 60px -30px rgba(15,29,51,0.35); }
-  .feature-photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out-quad); filter:grayscale(0.1); }
+  .feature-photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out-quad); }
   .feature-photo:hover img{ transform:scale(1.06); }
   .feature-photo .chip{ position:absolute; left:18px; bottom:18px; background:#fff; padding:9px 15px; border-radius:11px; font-family:'Manrope', sans-serif; font-size:11px; color:var(--ink); box-shadow:0 12px 24px rgba(0,0,0,0.18); animation:slideInRight .6s .4s var(--ease-out-cubic) forwards; opacity:0; }
   @keyframes slideInRight{ 0%{opacity:0; transform:translateX(-16px);} to{opacity:1; transform:translateX(0);} }
@@ -1119,21 +1164,61 @@
 <body>
 
 <header id="siteHeader">
-  <nav>
-    <div class="logo"><span class="logo-mark"></span>GAIA</div>
-    <div class="nav-links">
-      <a href="#journey">How it works</a>
-      <a href="#events">Life events</a>
-      <a href="#stack">Why GAIA</a>
-      <a href="#stories">Stories</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#trust">Trust</a>
+  <!-- Top info bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="social-links">
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M13.5 21v-8.1h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2C16.5 3.1 15.4 3 14.2 3c-2.5 0-4.2 1.5-4.2 4.3v2.4H7.3v3.2h2.7V21h3.5z"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter">
+          <svg viewBox="0 0 24 24"><path d="M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.6.8-2.6 1-.7-.8-1.8-1.3-3-1.3-2.2 0-4 1.8-4 4 0 .3 0 .6.1.9-3.3-.2-6.3-1.8-8.2-4.2-.4.6-.6 1.3-.6 2 0 1.4.7 2.6 1.7 3.3-.6 0-1.2-.2-1.7-.5v.1c0 1.9 1.4 3.5 3.2 3.9-.3.1-.7.1-1.1.1-.3 0-.5 0-.8-.1.5 1.6 2 2.7 3.8 2.8-1.4 1.1-3.2 1.7-5.1 1.7-.3 0-.7 0-1-.1 1.8 1.2 4 1.8 6.3 1.8 7.5 0 11.7-6.3 11.7-11.7v-.5c.8-.6 1.5-1.3 2-2.1z"/></svg>
+        </a>
+        <a href="#" aria-label="Dribbble">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.6 4.6a8.4 8.4 0 011.8 5c-.3-.1-2.7-.6-5.3-.2-.1-.3-.2-.5-.4-.8-.1-.3-.3-.6-.4-.9 2.8-1.1 4-2.7 4.3-3.1zM12 3.6c1.9 0 3.7.7 5 1.9-.3.4-1.4 1.8-4 2.8-1.3-2.3-2.6-4.2-2.9-4.6.6-.1 1.2-.1 1.9-.1zm-3.4.6c.3.4 1.7 2.3 3 4.6-3.7 1-7 1-7.4 1a8.4 8.4 0 014.4-5.6zm-4.7 7c.4 0 4.3 0 8.2-1.1.2.4.4.9.6 1.3-.1 0-.2.1-.3.1-4.1 1.3-6.3 5-6.5 5.2A8.3 8.3 0 013.9 11.2zm4.7 6.9c.2-.3 1.9-3.6 5.6-4.9h.1c1.2 3.2 1.7 5.9 1.8 6.6a8.4 8.4 0 01-7.5-1.7zm9.1.4c-.1-.6-.6-3.1-1.7-6.2 2.4-.4 4.6.3 4.9.4a8.4 8.4 0 01-3.2 5.8z"/></svg>
+        </a>
+        <a href="#" aria-label="Behance">
+          <svg viewBox="0 0 24 24"><path d="M7.8 9.4c.9 0 1.6-.2 2-.5.4-.4.6-.9.6-1.6 0-.4-.1-.7-.2-1-.2-.3-.4-.5-.6-.6-.3-.2-.6-.3-.9-.3-.4-.1-.7-.1-1.1-.1H3v4.1h4.8zm.4 2H3V16h5.4c.4 0 .8 0 1.2-.1.4-.1.7-.2 1-.4.3-.2.5-.4.7-.7.2-.3.3-.7.3-1.1 0-.9-.2-1.5-.7-1.9-.5-.4-1.1-.6-1.7-.7v-.1zM15 8.7h5.3V7.2H15v1.5zM22 14c0 .5-.1 1-.2 1.4-.1.4-.4.8-.7 1.1-.3.3-.7.6-1.2.8-.5.2-1.1.3-1.7.3-.7 0-1.4-.1-1.9-.4-.6-.2-1-.6-1.4-1-.4-.4-.6-.9-.8-1.5-.2-.6-.3-1.2-.3-1.9 0-.7.1-1.3.3-1.9.2-.6.5-1.1.9-1.5.4-.4.8-.7 1.4-1 .5-.2 1.1-.3 1.8-.3.7 0 1.4.1 1.9.4.6.3 1 .6 1.4 1.1.3.4.6.9.7 1.5.2.5.2 1.1.2 1.7v.2h-6.3c0 .7.2 1.2.6 1.6.4.4.9.6 1.5.6.5 0 .8-.1 1.1-.3.3-.2.5-.5.6-.8H22zM16.1 12h4.1c0-.6-.2-1.1-.5-1.4-.4-.4-.9-.6-1.5-.6-.6 0-1.1.2-1.5.6-.3.3-.5.8-.6 1.4z"/></svg>
+        </a>
+      </div>
+      <div class="contact-info">
+        <a href="mailto:support@gaia.app">support@gaia.app</a>
+      </div>
     </div>
-    <div class="nav-cta">
-      <a href="#" class="nav-signin">Sign in</a>
-      <a href="#" class="btn btn-primary">Build my future</a>
+  </div>
+
+  <!-- Main navigation -->
+  <div class="main-header">
+    <div class="container">
+      <a href="/" class="logo">
+        <svg class="logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="15" stroke="#C89B5C" stroke-width="1.4"/>
+          <path d="M16 5C16 5 21 11 21 17C21 20.866 18.866 24 16 24C13.134 24 11 20.866 11 17C11 11 16 5 16 5Z" fill="#7FA487"/>
+        </svg>
+        GAIA
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-and-actions">
+        <nav class="main-nav">
+          <a href="#journey">How it works</a>
+          <a href="#events">Life events</a>
+          <a href="#stack">Why GAIA</a>
+          <a href="#stories">Stories</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#trust">Trust</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="#" class="signin-link">Sign in</a>
+          <a href="#" class="cta-button">Build my future</a>
+        </div>
+      </div>
     </div>
-  </nav>
+  </div>
 </header>
 
 <section class="hero">
@@ -2617,6 +2702,26 @@
     lastY = y;
   }, {passive:true});
 
+  /* Mobile header toggle */
+  const toggle = document.querySelector('.nav-toggle');
+  const navAndActions = document.querySelector('.nav-and-actions');
+
+  if(toggle && navAndActions){
+    toggle.addEventListener('click', () => {
+      const isOpen = navAndActions.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    navAndActions.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navAndActions.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
   /* Business tabs */
   const businessTabs = document.querySelectorAll('.business-tab');
   const businessContents = {
@@ -2767,7 +2872,10 @@
     const INTERVAL = 3000;
     let idx = 0;
     let timer = null;
-    const isMobile = window.innerWidth <= 640;
+
+    function isMobileScreen() {
+      return window.innerWidth <= 640;
+    }
 
     document.querySelectorAll('.phone-clock').forEach(c=>{
       c.textContent = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
@@ -2782,14 +2890,14 @@
         const prog = t.querySelector('.showcase-tab-progress');
         prog.classList.remove('run');
         void prog.offsetWidth; // restart the CSS animation
-        if(isActive && !isMobile) prog.classList.add('run');
+        if(isActive && !isMobileScreen()) prog.classList.add('run');
       });
       panels.forEach((p, n)=> p.classList.toggle('active', n === idx));
-      if(userTriggered && !isMobile) resetTimer();
+      if(userTriggered && !isMobileScreen()) resetTimer();
     }
 
     function resetTimer(){
-      if(isMobile) return;
+      if(isMobileScreen()) return;
       clearInterval(timer);
       timer = setInterval(()=> {
         goTo(idx + 1, false);
